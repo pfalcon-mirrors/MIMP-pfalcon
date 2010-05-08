@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Maps In My Pocket</string>
+    <string name="info">Info</string>
+    <string name="voices">Voix</string>
+    <string name="gps">GPS</string>
+    <string name="registration">Enregistrement</string>
+    <string name="resolution">Resolution</string>
+    <string name="search">Recherche</string>
+    <string name="units">Unités</string>
+    <string name="abouttxt">Cette application à été créée par\nBoulanger Marc en tant que travail de fin d'étude.</string>
+    <string name="by">Maps In My Pocket\nCréé par Boulanger Marc\n2010</string>
+    <string name="year">2009 - 2010</string>
+    <string name="research">Recherche : </string>
+    <string name="position">Ma Position</string>
+    <string name="compass">Compas</string>
+    <string name ="mapstyle">Style de Carte</string>
+    <string name="minfo">Infos</string>
+    <string name="perspective">Perspective</string>
+    <string name="settings">Préferences</string>
+</resources>

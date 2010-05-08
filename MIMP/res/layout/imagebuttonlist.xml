@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ImageButtonTable"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:stretchColumns="1">
+	<TableRow>
+		<ImageView
+			android:id="@+id/LineLeftImage"
+		/>
+		<TextView
+			android:id="@+id/LineText"
+			android:layout_gravity="center"
+			android:textSize="16px"
+			android:textStyle="bold"
+			android:typeface="monospace"
+		/>
+		<ImageView
+			android:id="@+id/LineRightImage"
+			android:layout_gravity="center"
+			android:layout_marginRight="12px"
+		/>		
+	</TableRow>
+</TableLayout>
