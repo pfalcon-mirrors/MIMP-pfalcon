@@ -3,13 +3,15 @@ package org.mimp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.hardware.SensorListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;
 
-public class ExtendedMapView extends MapView {
+@SuppressWarnings("deprecation")
+public class ExtendedMapView extends MapView implements SensorListener {
 
 	private long lastTouchTime = -1;
 	private Matrix mMatrix = new Matrix();
@@ -17,7 +19,6 @@ public class ExtendedMapView extends MapView {
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	@SuppressWarnings("unused")
 	private static final float SQ2 = 1.414213562373095f;
-	@SuppressWarnings("unused")
 	private float mHeading = 0;
 
 	public ExtendedMapView(Context context, AttributeSet attrs) {
@@ -73,7 +74,7 @@ public class ExtendedMapView extends MapView {
 			mMatrix.setPolyToPoly(src, 0, dst, 0, src.length >> 1);
 	        canvas.save(Canvas.MATRIX_SAVE_FLAG);
 	        canvas.concat(mMatrix);
-            //canvas.rotate(-mHeading, getWidth() * 0.5f, getHeight() * 0.5f);
+            canvas.rotate(-mHeading, getWidth() * 0.5f, getHeight() * 0.5f);
 	        mCanvas.delegate = canvas;
 			super.draw(mCanvas);
 	        canvas.restore();
@@ -93,5 +94,10 @@ public class ExtendedMapView extends MapView {
 	            invalidate();
 	        }
     	}
+    }
+
+    @Override
+    public void onAccuracyChanged(int paramInt1, int paramInt2) {
+
     }
 }
