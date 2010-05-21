@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import org.mapping.DrivingDirections;
-import org.mapping.DrivingDirectionsFactory;
-import org.mapping.Route;
-import org.mapping.DrivingDirections.IDirectionsListener;
-import org.mapping.DrivingDirections.Mode;
-import org.mapping.impl.DrivingDirectionsGoogleKML;
+import org.mapping.google.DrivingDirections;
+import org.mapping.google.DrivingDirectionsFactory;
+import org.mapping.google.Route;
+import org.mapping.google.DrivingDirections.IDirectionsListener;
+import org.mapping.google.DrivingDirections.Mode;
+import org.mapping.google.impl.DrivingDirectionsGoogleKML;
 import org.mimp.R;
 import org.mimp.displayables.DrawableMapOverlay;
 import org.mimp.displayables.LineMapOverlay;
@@ -103,7 +103,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 		});
 		mapView.getOverlays().add(mapLocationOverlay);
 		
-		
 		directionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory.createDrivingDirections();
 		Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
 		Double lat = 50* 1E6;
@@ -112,7 +111,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 		lng = 6 * 1E6;
 		geoPoints.add(new GeoPoint(lat.intValue(), lng.intValue()));
 		directionsGoogleKML.driveTo(geoPoints, DrivingDirections.Mode.DRIVING, this);
-		
 		
 		checkMapStyle();
 		checkCompass();
@@ -171,9 +169,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		boolean mode = settings.getBoolean("perspective", false);
 		if (mode) {
-			enablePerspective();
+		    mapView.setPerspective(true);
 		} else {
-			disablePerspective();
+		    mapView.setPerspective(false);
 		}
 	}
 
@@ -450,14 +448,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 
 	public boolean isCompassEnabled() {
 		return mapLocationOverlay.isCompassEnabled();
-	}
-
-	private void disablePerspective() {
-		mapView.setPerspective(false);
-	}
-
-	private void enablePerspective() {
-		mapView.setPerspective(true);
 	}
 
 	private void disableFollow() {

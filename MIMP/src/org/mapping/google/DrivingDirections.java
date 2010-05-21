@@ -1,4 +1,4 @@
-package org.mapping;
+package org.mapping.google;
 
 import java.util.Vector;
 

@@ -1,10 +1,10 @@
-package org.mapping.impl;
+package org.mapping.google.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapping.Placemark;
-import org.mapping.Route;
+import org.mapping.google.Placemark;
+import org.mapping.google.Route;
 
 import com.google.android.maps.GeoPoint;
 

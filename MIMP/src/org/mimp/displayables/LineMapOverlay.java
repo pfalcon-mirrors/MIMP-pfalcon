@@ -11,7 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Bitmap.Config;
-import android.os.AsyncTask;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
@@ -35,7 +35,8 @@ public class LineMapOverlay extends Overlay {
 	private int oldZoom;
 	private int height;
 	private int width;
-	private DrawTask drawTask;
+	private Path thePath = null;
+	private boolean draw = false;
 
     /**
      * @param context the context in which to display the overlay
@@ -50,15 +51,34 @@ public class LineMapOverlay extends Overlay {
 		this.pathPaint.setARGB(100, 113, 105, 252);
 		this.height = height;
 		this.width = width;
-		this.drawTask = new DrawTask();
+		this.drawingThread.start();
 	}
+    
+    private Thread drawingThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                if (draw) {
+                    actualDraw();
+                }
+            }
+        }
+    });
     
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
     	this.canvas = canvas;
     	this.mapView = mapView;
-    	drawTask.cancel(true);
-    	drawTask.doInBackground(new Integer(0));
+    	draw = true;
+    }
+    
+    public void draw(Canvas canvas, MapView mapView, boolean shadow, int x, int y) {
+        super.draw(canvas, mapView, shadow);
+        this.canvas = canvas;
+        this.mapView = mapView;
+        this.X = x;
+        this.Y = y;
+        actualDraw();
     }
     
     public void actualDraw() {
@@ -80,6 +100,7 @@ public class LineMapOverlay extends Overlay {
     	else {
     		showByCalculation(canvas,matrix,mapView);
     	}
+        draw = false;
     }
     
     /**
@@ -116,6 +137,7 @@ public class LineMapOverlay extends Overlay {
 		if (renderBuffer != null) {
             renderBuffer.recycle();
             renderBuffer = null;
+            System.gc();
 		}
         renderCanvas = null;
         renderBuffer = Bitmap.createBitmap(mapView.getWidth()*2, mapView.getHeight()*2, Config.ARGB_8888);
@@ -135,7 +157,7 @@ public class LineMapOverlay extends Overlay {
 	 * @param mapView
 	 */
 	private void drawPath(Canvas canvas, MapView mapView) {
-		Path thePath = new Path();
+		thePath = new Path();
         projection.toPixels(geoPoints.get(0), screenPointa);
 		thePath.moveTo(screenPointa.x+width/2,screenPointa.y+height/2);
 		for (int i=0; i < geoPoints.size() ;i++) {
@@ -143,14 +165,6 @@ public class LineMapOverlay extends Overlay {
         	thePath.lineTo(screenPointb.x+width/2, screenPointb.y+height/2);
         }
 		this.pathPaint.setStyle(Paint.Style.STROKE);
-		canvas.drawPath(thePath, this.pathPaint);
+		canvas.drawPath(thePath, pathPaint);
 	}
-	
-    private class DrawTask extends AsyncTask<Integer, Integer, Long> {
-        @Override
-        protected Long doInBackground(Integer... params) {
-            actualDraw();
-            return null;
-        }
-    }
 }

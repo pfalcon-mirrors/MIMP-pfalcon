@@ -1,6 +1,6 @@
-package org.mapping.impl;
+package org.mapping.google.impl;
 
-import org.mapping.Placemark;
+import org.mapping.google.Placemark;
 
 import com.google.android.maps.GeoPoint;
 

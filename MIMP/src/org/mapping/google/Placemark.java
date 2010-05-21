@@ -1,4 +1,4 @@
-package org.mapping;
+package org.mapping.google;
 
 import com.google.android.maps.GeoPoint;
 
