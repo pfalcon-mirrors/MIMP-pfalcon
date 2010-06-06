@@ -10,11 +10,19 @@ import android.os.Environment;
 import android.util.Log;
 
 public class OsmApi {
+    
     static final double _d2r = Math.PI / 180;
+    static final double _r2d = 180.0 / Math.PI;
     static final double _ky = 6378137.0 * _d2r;
     static final double _kx = _ky * Math.cos(46.5 * _d2r);
     static int zmax = 18;
 
+    /*****************************************************************************
+     * 
+     * Math functions
+     * 
+     *****************************************************************************/
+    
     public static int[] LatLngToPixel(double[] latlng, int zoom) {
         double mx = latlng[1] * _kx;
         double my = latlng[0] * _ky;
@@ -31,7 +39,21 @@ public class OsmApi {
         return new double[] { lat, lon };
     }
 
-    static byte[] download(String url) {
+    /*****************************************************************************
+     * 
+     * Download functions
+     * 
+     *****************************************************************************/
+    
+    public static byte[] tileLoad(int tx, int ty, int z) {
+        // http://tile.openstreetmap.org/7/63/42.png
+        String url = "http://tile.openstreetmap.org/" + (zmax-z) + "/" + tx + "/" + ty + ".png";
+        Log.e("OsmApi DL" , url.toString());
+        byte[] dat = download(url);
+        return dat;
+    }
+    
+    private static byte[] download(String url) {
         byte[] dat = null;
         try {
             URLConnection cnx = new URL(url).openConnection();
@@ -43,8 +65,25 @@ public class OsmApi {
         }
         return dat;
     }
-
-    public static byte[] open(String filename) {
+    
+    /*****************************************************************************
+     * 
+     * Opening functions
+     * 
+     *****************************************************************************/
+    
+    public static byte[] tileOpen(int tx, int ty, int z) {
+        String filename = tx + "_" + ty + "_" + (zmax-z);
+        byte[] dat = open(filename);
+        return dat;
+    }
+    
+    /**
+     * 
+     * @param filename
+     * @return dat : tile in byte array
+     */
+    private static byte[] open(String filename) {
         byte[] dat = null;
         long length = 0;
         Log.e("OsmApi Open" , filename);
@@ -65,12 +104,33 @@ public class OsmApi {
         catch (Exception e) {
             e.printStackTrace();
         }
-
-        Log.e("OsmApi Open" , filename + " " + length + " " + dat);
         return dat;
     }
 
-    public static void save(String filename, byte[] dat) {
+    /*****************************************************************************
+     * 
+     * Saving functions
+     * 
+     *****************************************************************************/
+    
+    /**
+     * 
+     * @param dat tile in byte array
+     * @param tx 
+     * @param ty
+     * @param z
+     */
+    public static void tileSave(byte[] dat, int tx, int ty, int z) {
+        String filename = tx + "_" + ty + "_" + (zmax-z);
+        save(filename, dat);
+    }
+    
+    /**
+     * 
+     * @param filename
+     * @param dat : tile in byte array
+     */
+    private static void save(String filename, byte[] dat) {
         if (dat == null)
             return;
         File file = Environment.getExternalStorageDirectory();
@@ -78,11 +138,10 @@ public class OsmApi {
         file.mkdirs();
         file = new File(file.getAbsolutePath() + File.separator + filename);
         if (!file.exists()) {
-            Log.e("OsmApi Save" , ""+dat);
+            Log.e("OsmApi Save" , filename);
             FileOutputStream fileOutputStream;
             try {
                 fileOutputStream = new FileOutputStream(file);
-                Log.e("OsmApi" , ""+fileOutputStream);
                 fileOutputStream.write(dat);
                 fileOutputStream.close();
             }
@@ -90,24 +149,5 @@ public class OsmApi {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static byte[] tileLoad(int tx, int ty, int z) {
-        // http://tile.openstreetmap.org/7/63/42.png
-        String url = "http://tile.openstreetmap.org/" + (zmax-z) + "/" + tx + "/" + ty + ".png";
-        Log.e("OsmApi DL" , url.toString());
-        byte[] dat = download(url);
-        return dat;
-    }
-
-    public static void tileSave(byte[] dat, int tx, int ty, int z) {
-        String filename = tx + "_" + ty + "_" + (zmax-z);
-        save(filename, dat);
-    }
-
-    public static byte[] tileOpen(int tx, int ty, int z) {
-        String filename = tx + "_" + ty + "_" + (zmax-z);
-        byte[] dat = open(filename);
-        return dat;
     }
 }

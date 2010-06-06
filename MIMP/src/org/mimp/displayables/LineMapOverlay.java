@@ -19,6 +19,12 @@ import com.google.android.maps.Projection;
 
 public class LineMapOverlay extends Overlay {
 
+    /*****************************************************************************
+     * 
+     * Members
+     * 
+     *****************************************************************************/
+    
 	private Vector<GeoPoint> geoPoints;
 	private Point screenPointa = new Point();
 	private Point screenPointb = new Point();
@@ -37,7 +43,14 @@ public class LineMapOverlay extends Overlay {
 	private int width;
 	private Path thePath = null;
 	private boolean draw = false;
+	private boolean move = false;
 
+    /*****************************************************************************
+     * 
+     * Life handling
+     * 
+     *****************************************************************************/
+	
     /**
      * @param context the context in which to display the overlay
      * @param geoPoint the geographical point where the overlay is located
@@ -51,10 +64,10 @@ public class LineMapOverlay extends Overlay {
 		this.pathPaint.setARGB(100, 113, 105, 252);
 		this.height = height;
 		this.width = width;
-		this.drawingThread.start();
+		//this.drawingThread.start();
 	}
     
-    private Thread drawingThread = new Thread(new Runnable() {
+    public Thread drawingThread = new Thread(new Runnable() {
         @Override
         public void run() {
             while (true) {
@@ -65,8 +78,16 @@ public class LineMapOverlay extends Overlay {
         }
     });
     
+    /*****************************************************************************
+     * 
+     * Drawing methods
+     * 
+     *****************************************************************************/
+    
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+        if (shadow)
+            return;
     	this.canvas = canvas;
     	this.mapView = mapView;
     	draw = true;
@@ -167,4 +188,8 @@ public class LineMapOverlay extends Overlay {
 		this.pathPaint.setStyle(Paint.Style.STROKE);
 		canvas.drawPath(thePath, pathPaint);
 	}
+
+    public void onMove(boolean move) {
+        this.move = move;
+    }
 }

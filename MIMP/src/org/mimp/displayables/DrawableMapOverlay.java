@@ -2,6 +2,7 @@ package org.mimp.displayables;
 
 import org.mapping.osm.OsmView;
 import org.mapping.osm.OsmApi;
+import org.mimp.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -63,10 +64,15 @@ public class DrawableMapOverlay extends Overlay {
         Point screenPoint = new Point();
         int[] pa = OsmApi.LatLngToPixel(new double[] {geoPoint.getLatitudeE6() / 1E6, geoPoint.getLongitudeE6() / 1E6 }, ((OsmView)mapView).getScale());
         screenPoint = new Point(pa[0] - x + mapView.getWidth() / 2, mapView.getHeight() - (pa[1] - y + mapView.getHeight() / 2));
-
+        Bitmap markerImage = null;
         // Read the image
-        Bitmap markerImage = BitmapFactory.decodeResource(context.getResources(), drawable);
-
+        if (shadow) {
+            markerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.shadow);   
+        }
+        else {
+            markerImage = BitmapFactory.decodeResource(context.getResources(), drawable);
+        }
+        
         // Draw it around the given coordinates
         if (type == LEFT)
             canvas.drawBitmap(markerImage, screenPoint.x - markerImage.getWidth(), screenPoint.y - markerImage.getHeight(), null);
