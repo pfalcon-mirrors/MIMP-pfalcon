@@ -38,12 +38,9 @@ public class LineMapOverlay extends Overlay {
 	private boolean first = true;
 	private MapView mapView;
 	private Canvas canvas;
-	private int oldZoom;
 	private int height;
 	private int width;
 	private Path thePath = null;
-	private boolean draw = false;
-	private boolean move = false;
 
     /*****************************************************************************
      * 
@@ -64,19 +61,7 @@ public class LineMapOverlay extends Overlay {
 		this.pathPaint.setARGB(100, 113, 105, 252);
 		this.height = height;
 		this.width = width;
-		//this.drawingThread.start();
 	}
-    
-    public Thread drawingThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            while (true) {
-                if (draw) {
-                    actualDraw();
-                }
-            }
-        }
-    });
     
     /*****************************************************************************
      * 
@@ -88,9 +73,10 @@ public class LineMapOverlay extends Overlay {
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
         if (shadow)
             return;
+        super.draw(canvas, mapView, shadow);
     	this.canvas = canvas;
     	this.mapView = mapView;
-    	draw = true;
+    	actualDraw();
     }
     
     public void draw(Canvas canvas, MapView mapView, boolean shadow, int x, int y) {
@@ -109,19 +95,17 @@ public class LineMapOverlay extends Overlay {
         
         initPoints();
         matrix.postTranslate(screenPoint.x-X-width/2, screenPoint.y-Y-height/2);
-
-        int maxX = (int) (screenPoint.x-X);
-        if (maxX < 0) maxX *= -1;
-        int maxY = (int) (screenPoint.y-Y);
-        if (maxY < 0) maxY *= -1;
     	
-        if (renderBuffer != null && oldZoom == mapView.getZoomLevel() && maxX+width/4 < width/2 && maxY+height/4 < height/2) {
+        if (renderBuffer != null) {
     		showByBitmap(canvas,matrix,mapView);
         }
     	else {
     		showByCalculation(canvas,matrix,mapView);
     	}
-        draw = false;
+    }
+    
+    public void forceCalc() {
+        renderBuffer = null;
     }
     
     /**
@@ -132,7 +116,6 @@ public class LineMapOverlay extends Overlay {
             X = screenPoint.x;
             Y = screenPoint.y;
             first = false;
-            oldZoom = mapView.getZoomLevel();
         }
 	}
 	
@@ -158,7 +141,6 @@ public class LineMapOverlay extends Overlay {
 		if (renderBuffer != null) {
             renderBuffer.recycle();
             renderBuffer = null;
-            System.gc();
 		}
         renderCanvas = null;
         renderBuffer = Bitmap.createBitmap(mapView.getWidth()*2, mapView.getHeight()*2, Config.ARGB_8888);
@@ -169,7 +151,6 @@ public class LineMapOverlay extends Overlay {
 		projection.toPixels(geoPoints.get(0), screenPoint);
         X = screenPoint.x;
         Y = screenPoint.y;
-        oldZoom = mapView.getZoomLevel();
 	}
 	
 	/**
@@ -188,8 +169,4 @@ public class LineMapOverlay extends Overlay {
 		this.pathPaint.setStyle(Paint.Style.STROKE);
 		canvas.drawPath(thePath, pathPaint);
 	}
-
-    public void onMove(boolean move) {
-        this.move = move;
-    }
 }

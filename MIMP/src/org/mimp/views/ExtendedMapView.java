@@ -27,6 +27,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	private boolean mPerspective = false;
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	private float mHeading = 0;
+	private int lastEvent;
 
 	
     /*****************************************************************************
@@ -113,18 +114,9 @@ public class ExtendedMapView extends MapView implements SensorListener {
      *****************************************************************************/
     
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            long thisTime = System.currentTimeMillis();
-            if (thisTime - mLastTouchTime < 250) {
-                this.getController().zoomInFixing((int) ev.getX(),(int) ev.getY());
-                mLastTouchTime = -1;
-            } 
-            else {
-                mLastTouchTime = thisTime;
-            }
-        }
-        return super.onInterceptTouchEvent(ev);
+    public boolean onTouchEvent(MotionEvent ev) {
+
+        return super.onTouchEvent(ev);
     }
     
     /*****************************************************************************
@@ -139,22 +131,34 @@ public class ExtendedMapView extends MapView implements SensorListener {
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
                     public boolean onFling(MotionEvent e1, MotionEvent e2,float velocityX, float velocityY) {
-                        if (getOverlays().size() > 1)
-                            ((LineMapOverlay)getOverlays().get(1)).onMove(true);
-                        boolean ans = super.onFling(e1, e2, velocityX, velocityY);
-                        if (getOverlays().size() > 1)
-                            ((LineMapOverlay)getOverlays().get(1)).onMove(false);
-                        return ans;
+                        return true;
                     }
                 });
         this.setOnTouchListener(new OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_MOVE && getOverlays().size() > 1)
-                    ((LineMapOverlay)getOverlays().get(1)).onMove(true);
-                if(event.getAction() == MotionEvent.ACTION_UP && getOverlays().size() > 1)
-                    ((LineMapOverlay)getOverlays().get(1)).onMove(false);
-                return gd.onTouchEvent(event);
+            public boolean onTouch(View v, MotionEvent ev) {
+                System.out.println(ev);
+                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+                    long thisTime = System.currentTimeMillis();
+                    if (thisTime - mLastTouchTime < 250) {
+                        getController().zoomInFixing((int) ev.getX(),(int) ev.getY());
+                        mLastTouchTime = -1;
+                        if (getOverlays().size() > 1)
+                            ((LineMapOverlay)getOverlays().get(1)).forceCalc();
+                    } 
+                    else {
+                        mLastTouchTime = thisTime;
+                    }
+                    lastEvent = MotionEvent.ACTION_DOWN;
+                }
+                if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+                    lastEvent = MotionEvent.ACTION_MOVE;
+                }
+                if (ev.getAction() == MotionEvent.ACTION_UP) {
+                    if (getOverlays().size() > 1 && lastEvent == MotionEvent.ACTION_MOVE)
+                        ((LineMapOverlay)getOverlays().get(1)).forceCalc();
+                }
+                return gd.onTouchEvent(ev);
             }
         });
     }

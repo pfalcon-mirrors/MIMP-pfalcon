@@ -52,7 +52,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private MyLocationOverlay mMapLocationOverlay;
     private WindowManager mWindowManager;
     private Display mDisplay;
-    @SuppressWarnings("unused")
     private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
     private Locator mLocator;
 
@@ -90,18 +89,16 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             }
         });
         mMapView.getOverlays().add(mMapLocationOverlay);
+        
         mLocator = new Locator(this, mMapView);
         mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory.createDrivingDirections();
-        
-        /*
         Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
         Double lat = 50* 1E6;
         Double lng = 5 * 1E6;
         geoPoints.add(new GeoPoint(lat.intValue(), lng.intValue()));
         lng = 6 * 1E6;
         geoPoints.add(new GeoPoint(lat.intValue(), lng.intValue()));
-        mDirectionsGoogleKML.driveTo(geoPoints, DrivingDirections.Mode.DRIVING, this);
-        */
+        mDirectionsGoogleKML.driveTo(geoPoints, org.mapping.google.DrivingDirections.Mode.DRIVING, this);
         
         checkMapStyle();
         checkCompass();
@@ -115,9 +112,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     protected void onDestroy() {
         if (isListening()) {
             disableLocationListener();
-        }
-        if (mMapView.getOverlays().size() > 1) {
-            ((LineMapOverlay)mMapView.getOverlays().get(1)).drawingThread.stop();
         }
         super.onDestroy();
     }
