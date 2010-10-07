@@ -320,7 +320,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         Address address = addresses.get(arg2);
         Double lat = address.getLatitude() * 1E6;
         Double lng = address.getLongitude() * 1E6;
-
         GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
         mMapController.animateTo(point);
     }
@@ -330,7 +329,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("listener", true);
         editor.commit();
-
         mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1l, 5, this);
@@ -343,7 +341,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("listener", false);
         editor.commit();
-
         mMapLocationOverlay.disableMyLocation();
         mLocationManager.removeUpdates(this);
         mMapView.postInvalidate();
@@ -358,7 +355,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("compass", true);
         editor.commit();
-
         mMapLocationOverlay.enableCompass();
     }
 
@@ -367,7 +363,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("compass", false);
         editor.commit();
-
         mMapLocationOverlay.disableCompass();
     }
 

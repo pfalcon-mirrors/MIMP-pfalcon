@@ -142,6 +142,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
                     long thisTime = System.currentTimeMillis();
                     if (thisTime - mLastTouchTime < 250) {
                         getController().zoomInFixing((int) ev.getX(),(int) ev.getY());
+                        getController().notifyAll();
                         mLastTouchTime = -1;
                         if (getOverlays().size() > 1)
                             ((LineMapOverlay)getOverlays().get(1)).forceCalc();
