@@ -204,7 +204,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
      */
     private void showInfo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Info").setMessage(R.string.by).setCancelable(false)
+        builder.setTitle("Map In My Poket").setMessage(R.string.about).setCancelable(false)
                 .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -260,17 +260,19 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
      * Creates the menu items when physical Menu button is pressed
      */
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, S.POS, 0, R.string.position).setIcon(
+        menu.add(0, S.POS, 0, R.string.map_menu_position).setIcon(
                 android.R.drawable.ic_menu_mylocation);
-        menu.add(0, S.COMPASS, 0, R.string.compass).setIcon(
+        menu.add(0, S.COMPASS, 0, R.string.map_menu_compass).setIcon(
                 android.R.drawable.ic_menu_compass);
-        menu.add(1, S.MAP, 0, R.string.mapstyle).setIcon(
+        menu.add(1, S.MAP, 0, R.string.map_menu_mapstyle).setIcon(
                 android.R.drawable.ic_menu_mapmode);
-        menu.add(1, S.INFO, 0, R.string.minfo).setIcon(
+        menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
-        menu.add(2, S.MODE, 0, R.string.perspective).setIcon(
+        menu.add(2, S.MODE, 0, R.string.map_menu_perspective).setIcon(
                 android.R.drawable.ic_menu_revert);
-        menu.add(2, S.SET, 0, R.string.settings).setIcon(
+        menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
+        		android.R.drawable.ic_menu_search);
+        menu.add(2, S.SET, 0, R.string.map_menu_settings).setIcon(
                 android.R.drawable.ic_menu_preferences);
         return true;
     }
@@ -306,6 +308,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         case S.MODE:
             changePerspective();
             return true;
+        case S.SEARCH:
+        	onSearchRequested();
+        	return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,16 +1,17 @@
 package org.mimp.views;
 
-import org.mimp.displayables.LineMapOverlay;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.hardware.SensorListener;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
+import com.devoteam.quickaction.QuickActionWindow;
 import com.google.android.maps.MapView;
 
 @SuppressWarnings("deprecation")
@@ -22,13 +23,12 @@ public class ExtendedMapView extends MapView implements SensorListener {
      * 
      *****************************************************************************/
     
-    private long mLastTouchTime = -1;
+	private Context mContext;
 	private Matrix mMatrix = new Matrix();
 	private boolean mPerspective = false;
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	private float mHeading = 0;
-	private int lastEvent;
-
+	private View self = this;
 	
     /*****************************************************************************
      * 
@@ -38,10 +38,12 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	
 	public ExtendedMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext = context;
 	}
 	
 	public ExtendedMapView(Context context, String apiKey) {
 		super(context, apiKey);
+		mContext = context;
 	}
 	
 	@Override
@@ -113,54 +115,62 @@ public class ExtendedMapView extends MapView implements SensorListener {
      * 
      *****************************************************************************/
     
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-
-        return super.onTouchEvent(ev);
-    }
-    
-    /*****************************************************************************
-     * 
-     * Moves handling
-     * 
-     *****************************************************************************/
-    
     protected void applyMapViewListener() {
         // System.out.println("~~~~~~~~~~~~~~~~ New GestureDetector");
         final GestureDetector gd = new GestureDetector(
-                new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2,float velocityX, float velocityY) {
-                        return true;
-                    }
-                });
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent ev) {
-                System.out.println(ev);
-                if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-                    long thisTime = System.currentTimeMillis();
-                    if (thisTime - mLastTouchTime < 250) {
-                        getController().zoomInFixing((int) ev.getX(),(int) ev.getY());
-                        getController().notifyAll();
-                        mLastTouchTime = -1;
-                        if (getOverlays().size() > 1)
-                            ((LineMapOverlay)getOverlays().get(1)).forceCalc();
-                    } 
-                    else {
-                        mLastTouchTime = thisTime;
-                    }
-                    lastEvent = MotionEvent.ACTION_DOWN;
+            new GestureDetector.SimpleOnGestureListener() {
+            	
+            	private View parent;
+            	public void setParent(View v) {
+            		parent = v;
+            	}
+            	
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2,float velocityX, float velocityY) {
+                    return true;
                 }
-                if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-                    lastEvent = MotionEvent.ACTION_MOVE;
+                
+                @Override
+                public void onLongPress(MotionEvent e) {
+                	super.onLongPress(e);
+                	/*
+                	GeoPoint gp = getProjection().fromPixels((int)e.getX(), (int)e.getY());
+                	BubbleOverlay bubbleOverlay = new BubbleOverlay("test Title", "test Description", gp,mContext);
+                	getOverlays().add(bubbleOverlay);
+                	*/
+    				//array to hold the coordinates of the clicked view
+    				int[] xy = new int[2];
+    				//fills the array with the computed coordinates
+    				getLocationInWindow(xy);
+    				//rectangle holding the clicked view area
+    				Rect rect = new Rect(xy[0], xy[1], xy[0]+getWidth(), xy[1]+getHeight());
+    				
+    				//a new QuickActionWindow object
+    				final QuickActionWindow qa = new QuickActionWindow(mContext, self, rect);
+    				qa.addItem(getResources().getDrawable(android.R.drawable.ic_menu_agenda), "agenda", new OnClickListener() {
+    					public void onClick(View v) {
+    						Toast.makeText(mContext, "agenda", Toast.LENGTH_SHORT).show();
+    						qa.dismiss();
+    					}
+    				});
+    				qa.show();
                 }
-                if (ev.getAction() == MotionEvent.ACTION_UP) {
-                    if (getOverlays().size() > 1 && lastEvent == MotionEvent.ACTION_MOVE)
-                        ((LineMapOverlay)getOverlays().get(1)).forceCalc();
+                
+                @Override
+                public boolean onDoubleTapEvent(MotionEvent e) {
+                	getController().zoomInFixing((int) e.getX(),(int) e.getY());
+                	return super.onDoubleTapEvent(e);
                 }
-                return gd.onTouchEvent(ev);
             }
-        });
+        );
+        this.setOnTouchListener(
+    		new OnTouchListener() {
+	            @Override
+	            public boolean onTouch(View v, MotionEvent ev) {
+	                System.out.println(ev);
+	                return gd.onTouchEvent(ev);
+	            }
+    		}
+		);
     }
 }

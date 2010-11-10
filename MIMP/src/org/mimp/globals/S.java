@@ -27,6 +27,7 @@ public class S {
     public static final int POS = 200003;
     public static final int COMPASS = 200004;
     public static final int MODE = 200005;
+    public static final int SEARCH = 200006;
 
     /**
      * map providers list
@@ -42,10 +43,4 @@ public class S {
     public static final int DATABASE_VERSION = 1;
     public static final String AUTHORITY = "org.mapping";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/gpspoint");
-
-    public static class SettingsList {
-        public ImageView liv;
-        public TextView tv;
-        public ImageView riv;
-    }
 }

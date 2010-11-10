@@ -3,6 +3,7 @@ package org.mimp.adapters;
 import org.mimp.R;
 
 import android.content.Context;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,11 @@ import android.widget.TextView;
 
 public class ListButtonAdapter extends BaseAdapter {
 	
+	private Context context;
+	
     public ListButtonAdapter(Context context) {
     	mInflater = LayoutInflater.from(context);
-    	//mContext = context;
+    	this.context = context;
 	}
     
 	/**
@@ -24,7 +27,7 @@ public class ListButtonAdapter extends BaseAdapter {
      * @see android.widget.ListAdapter#getCount()
      */
     public int getCount() {
-        return mStrings.length;
+        return mMenus.length;
     }
 
     /**
@@ -61,8 +64,8 @@ public class ListButtonAdapter extends BaseAdapter {
         	convertView = mInflater.inflate(R.layout.imagebuttonlist, null);
         	sl = new SettingsList();
         	sl.liv = (ImageView) convertView.findViewById(R.id.LineLeftImage);
-        	sl.tv = (TextView) convertView.findViewById(R.id.LineText);
-        	sl.riv = (ImageView) convertView.findViewById(R.id.LineRightImage);
+        	sl.btv = (TextView) convertView.findViewById(R.id.BigText);
+        	sl.stv = (TextView) convertView.findViewById(R.id.SmallText);
         	convertView.setId(10000+position);
         	convertView.setTag(sl);
         }
@@ -71,34 +74,37 @@ public class ListButtonAdapter extends BaseAdapter {
         }
 		
         sl.liv.setImageResource(mLeftImages[position]);
-        sl.tv.setText(mStrings[position]);
-        sl.riv.setImageResource(arrow);
-        
+        sl.btv.setText(mMenus[position]);
+        sl.btv.setTextAppearance(context,android.R.style.TextAppearance_Large);
+        sl.stv.setText(mInfos[position]);
+        sl.stv.setTextAppearance(context,android.R.style.TextAppearance_Small_Inverse);
         return convertView;
     }
 	
     private LayoutInflater mInflater;
 
     private int[] mLeftImages = {
-    		android.R.drawable.ic_menu_info_details,
     		android.R.drawable.ic_menu_call,
     		android.R.drawable.ic_menu_view,
-    		android.R.drawable.ic_menu_search,
+    		android.R.drawable.ic_menu_search
     };
-    private int[] mStrings = {
-    		R.string.info,
-    		R.string.voices,
-    		R.string.resolution,
-    		R.string.search,
+    private int[] mMenus = {
+    		R.string.settings_voices,
+    		R.string.settings_resolution,
+    		R.string.settings_search
     };
     
-    private int arrow = android.R.drawable.ic_menu_more;
+    private int[] mInfos = {
+    		R.string.settings_summary_voices,
+    		R.string.settings_summary_resolution,
+    		R.string.settings_summary_search
+    };
     
     //private Context mContext;
     
     static class SettingsList {
     	ImageView liv;
-    	TextView tv;
-    	ImageView riv;
+    	TextView btv;
+    	TextView stv;
     }
 }

@@ -2,6 +2,7 @@ package org.mapping.google.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.mimp.R;
 
@@ -34,7 +35,7 @@ public class Locator {
     public void proposeSearch() {
         mSearchBox = new EditText(mContext);
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(R.string.research).setCancelable(false).setView(mSearchBox)
+        builder.setTitle(R.string.searchbox_title).setCancelable(false).setView(mSearchBox)
                 .setPositiveButton(android.R.string.search_go, new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -53,7 +54,7 @@ public class Locator {
     }
     
     private void proposeLocations(String location) {
-        Geocoder geocoder = new Geocoder(mContext);
+        Geocoder geocoder = new Geocoder(mContext,Locale.getDefault());
         try {
             mAddresses = geocoder.getFromLocationName(location, 100);
         } 
