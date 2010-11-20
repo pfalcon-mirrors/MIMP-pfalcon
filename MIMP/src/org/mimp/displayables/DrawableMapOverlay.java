@@ -1,8 +1,9 @@
 package org.mimp.displayables;
 
-import org.mapping.osm.OsmView;
 import org.mapping.osm.OsmApi;
+import org.mapping.osm.OsmView;
 import org.mimp.R;
+import org.mimp.parser.GeoPointer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -36,7 +37,7 @@ public class DrawableMapOverlay extends Overlay {
         this.drawable = drawable;
         this.type = type;
     }
-
+    
     @Override
     public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
         super.draw(canvas, mapView, shadow);
@@ -85,7 +86,7 @@ public class DrawableMapOverlay extends Overlay {
     
     @Override
     public boolean onTap(GeoPoint p, MapView mapView) {
-        // Handle tapping on the overlay here
+    	
         return true;
     }
 }

@@ -1,18 +1,19 @@
 package org.mimp.displayables;
 
-import android.app.AlertDialog;
+import java.util.List;
+
+import org.mimp.screens.BubbleInteractionScreen;
+
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Path.Direction;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.provider.Settings.System;
-import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -24,17 +25,44 @@ public class BubbleOverlay extends Overlay {
 	private Paint innerPaint;
 	private Paint borderPaint;
 	private Paint textPaint;
-	private String bubbleTitle;
+	private Paint mainTextPaint;
+	private List<String> mAddress;
 	private String bubbleDescription;
 	private Context mContext;
+	private float scale;
+	private int fontSize;
+
+	private int INFO_POINTER_WIDTH = 20;
+	private int INFO_POINTER_HEIGHT = 20;
+	private int INFO_WINDOW_WIDTH = 30;
+	private int INFO_WINDOW_HEIGHT = 35;
 	
-	public BubbleOverlay(String title, String description, GeoPoint location, Context context) {
-		bubbleTitle = title;
+	public BubbleOverlay(List<String> address, String description, GeoPoint location, Context context) {
+		this.mAddress = address;
 		bubbleDescription = description;
 		selectedMapLocation = location;
 		mContext = context;
+		scale = mContext.getResources().getDisplayMetrics().density;
+		fontSize = (int)(scale * 15 + 0.5f);
+		generateWindowDimensions();
 	}
 		
+	private void generateWindowDimensions() {
+		if (mAddress.size() > 0) {
+			Rect rect = new Rect();
+			getMainTextPaint().getTextBounds(mAddress.get(0),0, mAddress.get(0).length(),rect);
+			INFO_WINDOW_WIDTH = rect.width();
+			for (int i=1; i < mAddress.size() ;i++) {
+				getTextPaint().getTextBounds(mAddress.get(i),0, mAddress.get(i).length(),rect);
+				if (INFO_WINDOW_WIDTH < rect.width()) {
+					INFO_WINDOW_WIDTH = rect.width();
+				}
+			}
+			INFO_WINDOW_WIDTH += 20; // text offset
+			INFO_WINDOW_HEIGHT = 35 * mAddress.size();
+		}
+	}
+
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		super.draw(canvas, mapView, shadow);
@@ -45,22 +73,16 @@ public class BubbleOverlay extends Overlay {
 	    	
 			// Setup the info window position pointer
 			Matrix matrix = new Matrix();
-			int INFO_POINTER_WIDTH = 20;
-			int INFO_POINTER_HEIGHT = 20;
 			RectF infoPointerRect = new RectF(0,0,INFO_POINTER_WIDTH,INFO_POINTER_HEIGHT);
 			int infoPointerOffsetX = selDestinationOffset.x-INFO_POINTER_WIDTH/2;
 			int infoPointerOffsetY = selDestinationOffset.y-INFO_POINTER_HEIGHT - 10;			
 			infoPointerRect.offset(infoPointerOffsetX,infoPointerOffsetY);
 			
-			
 			//  Setup the info window with the right size & location
-			int INFO_WINDOW_WIDTH = 25 * bubbleTitle.length();
-			int INFO_WINDOW_HEIGHT = 35;
 			RectF infoWindowRect = new RectF(0,0,INFO_WINDOW_WIDTH,INFO_WINDOW_HEIGHT);				
 			int infoWindowOffsetX = selDestinationOffset.x-INFO_WINDOW_WIDTH/2;
 			int infoWindowOffsetY = selDestinationOffset.y-INFO_WINDOW_HEIGHT - 30;
 			infoWindowRect.offset(infoWindowOffsetX,infoWindowOffsetY);
-			
 			
 			// Draw Pointer Border
 			Path path = new Path();
@@ -93,9 +115,17 @@ public class BubbleOverlay extends Overlay {
 			
 			//  Draw the MapLocation's name
 			int TEXT_OFFSET_X = 10;
-			int TEXT_OFFSET_Y = 15;
+			int TEXT_OFFSET_Y = 25;
 			
-			canvas.drawText(bubbleTitle,infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y,getTextPaint());
+			//TextView mTextView = new TextView(mContext);
+			//mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+			
+			if (mAddress.size() > 0) {
+				canvas.drawText(mAddress.get(0),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y,getMainTextPaint());
+				for (int i=1; i < mAddress.size() ;i++) {
+					canvas.drawText(mAddress.get(i),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y*(i+1),getTextPaint());
+				}
+			}
 		}
 		else {
 			
@@ -105,31 +135,40 @@ public class BubbleOverlay extends Overlay {
 	@Override
 	public boolean onTap(GeoPoint p, MapView mapView) {
 		super.onTap(p, mapView);
-    	TextView mTextView = new TextView(mContext);
-    	mTextView.setText(bubbleDescription);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(bubbleTitle).setCancelable(false).setView(mTextView)
-    		.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        AlertDialog alert = builder.create();
-        alert.show();
-		return true;
+		if (isTapOnElement(p, mapView)) {
+			/*
+		    BubbleInteractionWindow bubbleInteractionWindow = new BubbleInteractionWindow(mContext, mapView, null);
+		    bubbleInteractionWindow.show();
+		    return true;
+		    */
+			mContext.startActivity(new Intent(mContext, BubbleInteractionScreen.class));
+		}
+		return false;
+	}
+
+	public boolean isTapOnElement(GeoPoint p, MapView mapView) {
+		Point screenCoords = new Point();
+		mapView.getProjection().toPixels(selectedMapLocation, screenCoords);
+		RectF hitTestRecr = new RectF();
+		hitTestRecr.set(-INFO_WINDOW_WIDTH/2,-(INFO_WINDOW_HEIGHT+INFO_POINTER_HEIGHT),INFO_WINDOW_WIDTH/2,0);
+		hitTestRecr.offset(screenCoords.x,screenCoords.y);
+		mapView.getProjection().toPixels(p, screenCoords);
+		if (hitTestRecr.contains(screenCoords.x,screenCoords.y)) {
+			return true;
+		}
+		return false;
 	}
 	
-	public Paint getInnerPaint() {
+	private Paint getInnerPaint() {
 		if ( innerPaint == null) {
 			innerPaint = new Paint();
-			innerPaint.setARGB(255, 245, 245, 245); //gray
+			innerPaint.setARGB(255, 231, 235, 231); //gray
 			innerPaint.setAntiAlias(true);
 		}
 		return innerPaint;
 	}
 
-	public Paint getBorderPaint() {
+	private Paint getBorderPaint() {
 		if ( borderPaint == null) {
 			borderPaint = new Paint();
 			borderPaint.setARGB(255, 0, 0, 0);
@@ -140,11 +179,25 @@ public class BubbleOverlay extends Overlay {
 		return borderPaint;
 	}
 
-	public Paint getTextPaint() {
+	private Paint getMainTextPaint() {
+		if ( mainTextPaint == null) {
+			mainTextPaint = new Paint();
+			mainTextPaint.setARGB(255, 0, 0, 0);
+			mainTextPaint.setAntiAlias(true);
+			//mainTextPaint.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
+			mainTextPaint.setTextSize(fontSize);
+			mainTextPaint.setFakeBoldText(true);
+		}
+		return mainTextPaint;
+	}
+	
+	private Paint getTextPaint() {
 		if ( textPaint == null) {
 			textPaint = new Paint();
 			textPaint.setARGB(255, 0, 0, 0);
 			textPaint.setAntiAlias(true);
+			//textPaint.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
+			textPaint.setTextSize(fontSize - 5);
 		}
 		return textPaint;
 	}

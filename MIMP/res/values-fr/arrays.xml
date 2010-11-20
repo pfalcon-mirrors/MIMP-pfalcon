@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="entries_list_map_names">
+        <item>Google</item>
+        <item>Open Street Map</item>
+        <item>Open Cycle Map</item>
+    </string-array>
+
+    <string-array name="entryvalues_list_map_names">
+        <item>google</item>
+        <item>osm</item>
+        <item>ocm</item>
+    </string-array>
+
+    <string-array name="entries_list_directions_modes">
+        <item>A pieds</item>
+        <item>En voiture</item>
+    </string-array>
+
+    <string-array name="entryvalues_list_directions_modes">
+	    <item>foot</item>
+	    <item>car</item>
+	    <item>transports</item>
+    </string-array>
+
+    <string-array name="entries_list_bubble_interactions_body_new">
+        <item>Ajouter comme waypoint</item>
+        <item>Partager cette addresse</item>
+    </string-array>
+
+    <string-array name="entries_list_bubble_interactions_body">
+        <item>Suprimer le waypoint</item>
+        <item>Partager cette addresse</item>
+    </string-array>
+
+</resources>

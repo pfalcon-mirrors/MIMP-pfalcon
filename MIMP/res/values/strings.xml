@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Maps In My Pocket</string>
-	<string name="info">Info</string>
-	<string name="voices">Voices</string>
-	<string name="gps">GPS</string>
-	<string name="registration">Registration</string>
-	<string name="resolution">Resolution</string>
-	<string name="search">Search</string>
-	<string name="units">Units</string>
-	<string name="abouttxt">This application has been created by\nBoulanger Marc.</string>
-    <string name="by">Maps In My Pocket\nCreated by Boulanger Marc\n2010</string>
-	<string name="year">2009 - 2010</string>
-    <string name="research">Search : </string>
-    <string name="position">My Position</string>
-    <string name="compass">Compass</string>
-    <string name ="mapstyle">Map Style</string>
-    <string name="minfo">Info</string>
-    <string name="perspective">Perspective</string>
-    <string name="settings">Settings</string>
+    <string name="about">Version 0.2b\n
+                         \n
+                         Visit\n
+                         code.google.com/p/mapinmypocket\n
+                         \n
+                         Created by Boulanger Marc\n
+                         2010</string>
+    
+    <string name="map_menu_search">Search</string>
+    <string name="map_menu_position">My position</string>
+    <string name="map_menu_compass">Compass</string>
+    <string name="map_menu_mapstyle">Map style</string>
+    <string name="map_menu_infos">Info</string>
+    <string name="map_menu_perspective">Perspective</string>
+    <string name="map_menu_settings">Preferences</string>
+    <string name="map_menu_loadgpx">Load GPX/KML File</string>
+    <string name="map_menu_unloadgpx">Unload GPX/KML File</string>
+
+    <string name="searchbox_title">Search</string>
+
+    <string name="inline_preferences_maps">Map options</string>
+    <string name="inline_preferences_gps">GPS options</string>
+    <string name="inline_preferences_other">Other options</string>
+
+    <string name="settings_maps">Maps</string>
+    <string name="settings_directions">Directions</string>
+    <string name="settings_gps">GPS</string>
+    <string name="settings_resolution">Resolution</string>
+    <string name="settings_search">Search</string>
+    <string name="settings_units">Units</string>
+    <string name="settings_voices">Voice</string>
+
+    <string name="settings_summary_maps">Let you choose which type of map to use</string>
+    <string name="settings_summary_directions">Directions</string>
+    <string name="settings_summary_gps">GPS preferences</string>
+    <string name="settings_summary_resolution">Resolution</string>
+    <string name="settings_summary_search">Search</string>
+    <string name="settings_summary_units">Units</string>
+    <string name="settings_summary_voices">Voice</string>
+    <string name="settings_summary_notifications">Choose when and how to receive notifications</string>
+    
+    <string name="settings_dialog_list_title">Available maps</string>
+    
+    <string name="settings_gps_follow">Following</string>
+    <string name="settings_gps_precision">Precision</string>
+
+    <string name="settings_summary_gps_follow">The map follows the GPS position</string>
+    <string name="settings_summary_gps_precision">Show the GPS precision circle on the map</string>
+        
+    <string name="bubble_interactions_add_wpt">Add as a waypoint</string>
 </resources>

@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Maps In My Pocket</string>
-    <string name="info">Info</string>
-    <string name="voices">Voix</string>
-    <string name="gps">GPS</string>
-    <string name="registration">Enregistrement</string>
-    <string name="resolution">Resolution</string>
-    <string name="search">Recherche</string>
-    <string name="units">Unités</string>
-    <string name="abouttxt">Cette application à été créée par\nBoulanger Marc.</string>
-    <string name="by">Maps In My Pocket\nCréé par Boulanger Marc\n2010</string>
-    <string name="year">2009 - 2010</string>
-    <string name="research">Recherche : </string>
-    <string name="position">Ma Position</string>
-    <string name="compass">Compas</string>
-    <string name ="mapstyle">Style de Carte</string>
-    <string name="minfo">Infos</string>
-    <string name="perspective">Perspective</string>
-    <string name="settings">Préferences</string>
+    <string name="about">Version 0.2b\n
+                         \n
+                         Visit\n
+                         code.google.com/p/mapinmypocket\n
+                         \n
+                         Créé par Boulanger Marc\n
+                         2010</string>
+    
+    <string name="map_menu_search">Recherche</string>
+    <string name="map_menu_position">Ma position</string>
+    <string name="map_menu_compass">Compas</string>
+    <string name="map_menu_mapstyle">Style de carte</string>
+    <string name="map_menu_infos">Infos</string>
+    <string name="map_menu_perspective">Perspective</string>
+    <string name="map_menu_settings">Préférences</string>
+    <string name="map_menu_loadgpx">Charger un fichier GPX/KML</string>
+    <string name="map_menu_unloadgpx">Décharger le fichier GPX/KML</string>
+
+    <string name="searchbox_title">Recherche</string>
+
+    <string name="inline_preferences_maps">Options des cartes</string>
+    <string name="inline_preferences_gps">Options du GPS</string>
+    <string name="inline_preferences_other">Autres options</string>
+
+    <string name="settings_maps">Cartes</string>
+    <string name="settings_directions">Directions</string>
+    <string name="settings_gps">GPS</string>
+    <string name="settings_resolution">Resolution</string>
+    <string name="settings_search">Recherche</string>
+    <string name="settings_units">Unités</string>
+    <string name="settings_voices">Voix</string>
+    
+    <string name="settings_summary_maps">Permets de choisir le type de carte à utiliser</string>
+    <string name="settings_summary_directions">Directions</string>
+    <string name="settings_summary_gps">GPS preferences</string>
+    <string name="settings_summary_resolution">Resolution</string>
+    <string name="settings_summary_search">Search</string>
+    <string name="settings_summary_units">Units</string>
+    <string name="settings_summary_voices">Voice</string>
+    <string name="settings_summary_notifications">Choisissez quand et comment recevoir des notifications</string>
+    
+    <string name="settings_dialog_list_title">Cartes disponibles</string>
+    
+    <string name="settings_gps_follow">Suivi</string>
+    <string name="settings_gps_precision">Précision</string>
+        
+    <string name="settings_summary_gps_follow">La carte suit la position GPS</string>
+    <string name="settings_summary_gps_precision">Affiche sur la carte le cercle de précision du GPS</string>
+
+    <string name="bubble_interactions_add_wpt">Ajouter en tant que waypoint</string>
 </resources>

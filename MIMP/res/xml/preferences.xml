@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/inline_preferences_maps">            
+        <ListPreference
+            android:key="map_provider_name"
+            android:title="@string/settings_maps"
+            android:summary="@string/settings_summary_maps"
+            android:dialogTitle="@string/settings_dialog_list_title"
+            android:entries="@array/entries_list_map_names"
+            android:entryValues="@array/entryvalues_list_map_names" />
+                
+        <ListPreference
+            android:key="map_directions_mode"
+            android:title="@string/settings_directions"
+            android:summary="@string/settings_summary_directions"
+            android:entries="@array/entries_list_directions_modes"
+            android:entryValues="@array/entryvalues_list_directions_modes" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/inline_preferences_gps">
+        <PreferenceScreen
+            android:key="gps_screen_preference"
+            android:title="@string/settings_gps"
+            android:summary="@string/settings_summary_gps">
+
+            <CheckBoxPreference
+                android:key="follow_user"
+                android:title="@string/settings_gps_follow"
+                android:summary="@string/settings_summary_gps_follow" />
+                    
+            <CheckBoxPreference
+                android:key="show_precision"
+                android:title="@string/settings_gps_precision"
+                android:summary="@string/settings_summary_gps_precision" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/inline_preferences_other">
+        
+    </PreferenceCategory>
+    
+</PreferenceScreen>

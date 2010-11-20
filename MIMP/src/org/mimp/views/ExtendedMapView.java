@@ -1,17 +1,24 @@
 package org.mimp.views;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Vector;
+
+import org.mimp.displayables.BubbleOverlay;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
 import android.hardware.SensorListener;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-import com.devoteam.quickaction.QuickActionWindow;
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
 @SuppressWarnings("deprecation")
@@ -28,7 +35,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	private boolean mPerspective = false;
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	private float mHeading = 0;
-	private View self = this;
+	BubbleOverlay bubbleOverlay;
 	
     /*****************************************************************************
      * 
@@ -120,9 +127,15 @@ public class ExtendedMapView extends MapView implements SensorListener {
         final GestureDetector gd = new GestureDetector(
             new GestureDetector.SimpleOnGestureListener() {
             	
-            	private View parent;
-            	public void setParent(View v) {
-            		parent = v;
+            	@Override
+            	public boolean onSingleTapConfirmed(MotionEvent e) {
+            		GeoPoint p = getProjection().fromPixels((int) e.getX(),(int) e.getY());
+            		if (isForChild(p) == true) {
+            			return false;
+            		}
+            		getOverlays().remove(bubbleOverlay);
+            		invalidate();
+            		return true;
             	}
             	
                 @Override
@@ -133,27 +146,29 @@ public class ExtendedMapView extends MapView implements SensorListener {
                 @Override
                 public void onLongPress(MotionEvent e) {
                 	super.onLongPress(e);
-                	/*
-                	GeoPoint gp = getProjection().fromPixels((int)e.getX(), (int)e.getY());
-                	BubbleOverlay bubbleOverlay = new BubbleOverlay("test Title", "test Description", gp,mContext);
-                	getOverlays().add(bubbleOverlay);
-                	*/
-    				//array to hold the coordinates of the clicked view
-    				int[] xy = new int[2];
-    				//fills the array with the computed coordinates
-    				getLocationInWindow(xy);
-    				//rectangle holding the clicked view area
-    				Rect rect = new Rect(xy[0], xy[1], xy[0]+getWidth(), xy[1]+getHeight());
-    				
-    				//a new QuickActionWindow object
-    				final QuickActionWindow qa = new QuickActionWindow(mContext, self, rect);
-    				qa.addItem(getResources().getDrawable(android.R.drawable.ic_menu_agenda), "agenda", new OnClickListener() {
-    					public void onClick(View v) {
-    						Toast.makeText(mContext, "agenda", Toast.LENGTH_SHORT).show();
-    						qa.dismiss();
-    					}
-    				});
-    				qa.show();
+                	
+                    GeoPoint p = getProjection().fromPixels((int) e.getX(),(int) e.getY());
+                    Geocoder geoCoder = new Geocoder( mContext, Locale.getDefault());
+                    try {
+                        List<Address> addresses = geoCoder.getFromLocation(p.getLatitudeE6()  / 1E6, 
+                            p.getLongitudeE6() / 1E6, 1);
+                        Vector<String> add = new Vector<String>();
+                        if (addresses.size() > 0)  {
+                            for (int i=0; i<addresses.get(0).getMaxAddressLineIndex(); 
+                                 i++)
+                               add.add(addresses.get(0).getAddressLine(i).trim());
+                        }
+                        if (bubbleOverlay != null) {
+                        	getOverlays().remove(bubbleOverlay);
+                        	invalidate();
+                        }
+                    	bubbleOverlay = new BubbleOverlay(add, "Test Description", p,mContext);
+                    	getOverlays().add(bubbleOverlay);
+                    	invalidate();
+                    }
+                    catch (IOException ex) {                
+                        ex.printStackTrace();
+                    }
                 }
                 
                 @Override
@@ -167,10 +182,21 @@ public class ExtendedMapView extends MapView implements SensorListener {
     		new OnTouchListener() {
 	            @Override
 	            public boolean onTouch(View v, MotionEvent ev) {
-	                System.out.println(ev);
 	                return gd.onTouchEvent(ev);
 	            }
     		}
 		);
+    }
+    
+    public boolean isForChild(GeoPoint p) {
+		if (bubbleOverlay != null && bubbleOverlay.isTapOnElement(p, this) == true) {
+			return true;
+		}
+		return false;
+    }
+    
+    public void removeBubble() {
+    	getOverlays().remove(bubbleOverlay);
+    	invalidate();
     }
 }
