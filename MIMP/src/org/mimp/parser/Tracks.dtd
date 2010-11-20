@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!ELEMENT trails (trail)*>
+
+<!ELEMENT trail (created|difficulty|activity|tps|title|downHill|uphill|distance|start|rating|owner|name)*>
+<!ATTLIST trail
+    id CDATA #IMPLIED
+  >
+
+<!ELEMENT name (#PCDATA)>
+
+<!ELEMENT owner (#PCDATA)>
+
+<!ELEMENT rating (#PCDATA)>
+
+<!ELEMENT start EMPTY>
+<!ATTLIST start
+    lat CDATA #IMPLIED
+    long CDATA #IMPLIED
+  >
+
+<!ELEMENT distance (#PCDATA)>
+
+<!ELEMENT uphill (#PCDATA)>
+
+<!ELEMENT downHill (#PCDATA)>
+
+<!ELEMENT title (#PCDATA)>
+
+<!ELEMENT tps (#PCDATA)>
+
+<!ELEMENT activity (#PCDATA)>
+
+<!ELEMENT difficulty (#PCDATA)>
+
+<!ELEMENT created (#PCDATA)>

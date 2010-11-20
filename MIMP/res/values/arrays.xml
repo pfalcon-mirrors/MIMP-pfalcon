@@ -25,14 +25,24 @@
 	    <item>transports</item>
     </string-array>
 
-    <string-array name="entries_list_bubble_interactions_body_new">
+    <string-array name="entries_list_bubble_interactions_body_info_new">
         <item>Add as a waypoint</item>
         <item>Share this address</item>
     </string-array>
 
-    <string-array name="entries_list_bubble_interactions_body">
-        <item>Remove waypoint</item>
+    <string-array name="entries_list_bubble_interactions_body_info">
+        <item>Remove the waypoint</item>
         <item>Share this address</item>
+    </string-array>
+
+    <string-array name="entries_list_bubble_interactions_body_descr_new">
+        <item>Add to the current track or creates a new track for using with directions</item>
+        <item>Send address via email ...</item>
+    </string-array>
+
+    <string-array name="entries_list_bubble_interactions_body_descr">
+        <item>Remove the waypoint from the current track or delete track if it is the only waypoint</item>
+        <item>Send address via email ...</item>
     </string-array>
 
 </resources>
