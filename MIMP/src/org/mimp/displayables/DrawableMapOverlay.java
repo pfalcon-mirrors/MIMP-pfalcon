@@ -3,7 +3,6 @@ package org.mimp.displayables;
 import org.mapping.osm.OsmApi;
 import org.mapping.osm.OsmView;
 import org.mimp.R;
-import org.mimp.parser.GeoPointer;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -2,6 +2,7 @@ package org.mimp.adapters;
 
 import org.mimp.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,14 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 	private BubbleInfoListBodyAdapter mBodyAdapter;
 	private LayoutInflater mInflater;
 	private boolean mExists;
+	private String[] mAddress;
 	
 	public BubbleInfoListAdapter(Context context, boolean exists) {
 		mContext = context;
 		mExists = exists;
 		mInflater = LayoutInflater.from(mContext);
+		mAddress = ((Activity)mContext).getIntent().getStringArrayExtra("address");
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + mAddress);
 	}
 	
 	@Override
@@ -46,17 +50,17 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.bubbleinfolistheader, null);
 				mHeaderAdapter = new BubbleInfoListHeaderAdapter();
+				mHeaderAdapter.pLocation = (TextView) convertView.findViewById(R.id.bubble_interactions_header_location);
+				mHeaderAdapter.pDescription = (TextView) convertView.findViewById(R.id.bubble_interactions_header_descr);
+	            mHeaderAdapter.pMapButton = (ImageButton) convertView.findViewById(R.id.bubble_interactions_header_map);
+	            mHeaderAdapter.pDirectionButton = (ImageButton) convertView.findViewById(R.id.bubble_interactions_header_directions);
 			}
-
-			mHeaderAdapter.pLocation = (TextView) convertView.findViewById(R.id.bubble_interactions_header_location);
-            mHeaderAdapter.pDescription = (TextView) convertView.findViewById(R.id.bubble_interactions_header_descr);
-
-            mHeaderAdapter.pMapButton = (ImageButton) convertView.findViewById(R.id.bubble_interactions_header_map);
+			
+			mHeaderAdapter.pLocation.setText(mAddress[0]);
+			mHeaderAdapter.pDescription.setText(mAddress[1]);
             mHeaderAdapter.pMapButton.setOnClickListener((OnClickListener) mContext);
-            
-            mHeaderAdapter.pDirectionButton = (ImageButton) convertView.findViewById(R.id.bubble_interactions_header_directions);
             mHeaderAdapter.pDirectionButton.setOnClickListener((OnClickListener) mContext);
-            
+
             convertView.setId(position);
             convertView.setTag(mHeaderAdapter);
 		}
@@ -64,10 +68,10 @@ public class BubbleInfoListAdapter extends BaseAdapter {
             if (convertView == null) {
             	convertView = mInflater.inflate(R.layout.bubbleinfolistbody, null);
                 mBodyAdapter = new BubbleInfoListBodyAdapter();
+                mBodyAdapter.pInfoTextView = (TextView) convertView.findViewById(R.id.bubble_interactions_body_info);
+                mBodyAdapter.pDescrTextView = (TextView) convertView.findViewById(R.id.bubble_interactions_body_descr);
             }
             
-            mBodyAdapter.pInfoTextView = (TextView) convertView.findViewById(R.id.bubble_interactions_body_info);
-            mBodyAdapter.pDescrTextView = (TextView) convertView.findViewById(R.id.bubble_interactions_body_descr);
             if (mExists) {
             	mBodyAdapter.pInfoTextView.setText(mBodyAdapter.pInfoText[position-1]);
             	mBodyAdapter.pDescrTextView.setText(mBodyAdapter.pDescrText[position-1]);
@@ -76,6 +80,7 @@ public class BubbleInfoListAdapter extends BaseAdapter {
             	mBodyAdapter.pInfoTextView.setText(mBodyAdapter.pInfoTextNew[position-1]);
             	mBodyAdapter.pDescrTextView.setText(mBodyAdapter.pDescrTextNew[position-1]);
             }
+            
             convertView.setId(position);
             convertView.setTag(mBodyAdapter);
         }

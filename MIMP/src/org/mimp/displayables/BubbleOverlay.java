@@ -7,7 +7,6 @@ import org.mimp.screens.BubbleInteractionScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
@@ -27,7 +26,6 @@ public class BubbleOverlay extends Overlay {
 	private Paint textPaint;
 	private Paint mainTextPaint;
 	private List<String> mAddress;
-	private String bubbleDescription;
 	private Context mContext;
 	private float scale;
 	private int fontSize;
@@ -37,9 +35,8 @@ public class BubbleOverlay extends Overlay {
 	private int INFO_WINDOW_WIDTH = 30;
 	private int INFO_WINDOW_HEIGHT = 35;
 	
-	public BubbleOverlay(List<String> address, String description, GeoPoint location, Context context) {
+	public BubbleOverlay(List<String> address, GeoPoint location, Context context) {
 		this.mAddress = address;
-		bubbleDescription = description;
 		selectedMapLocation = location;
 		mContext = context;
 		scale = mContext.getResources().getDisplayMetrics().density;
@@ -72,7 +69,6 @@ public class BubbleOverlay extends Overlay {
 			mapView.getProjection().toPixels(selectedMapLocation, selDestinationOffset);
 	    	
 			// Setup the info window position pointer
-			Matrix matrix = new Matrix();
 			RectF infoPointerRect = new RectF(0,0,INFO_POINTER_WIDTH,INFO_POINTER_HEIGHT);
 			int infoPointerOffsetX = selDestinationOffset.x-INFO_POINTER_WIDTH/2;
 			int infoPointerOffsetY = selDestinationOffset.y-INFO_POINTER_HEIGHT - 10;			
@@ -113,12 +109,8 @@ public class BubbleOverlay extends Overlay {
 				path.lineTo(inner[i], inner[i+1]);
 			canvas.drawPath(path, getInnerPaint());
 			
-			//  Draw the MapLocation's name
 			int TEXT_OFFSET_X = 10;
 			int TEXT_OFFSET_Y = 25;
-			
-			//TextView mTextView = new TextView(mContext);
-			//mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 			
 			if (mAddress.size() > 0) {
 				canvas.drawText(mAddress.get(0),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y,getMainTextPaint());
@@ -136,12 +128,12 @@ public class BubbleOverlay extends Overlay {
 	public boolean onTap(GeoPoint p, MapView mapView) {
 		super.onTap(p, mapView);
 		if (isTapOnElement(p, mapView)) {
-			/*
-		    BubbleInteractionWindow bubbleInteractionWindow = new BubbleInteractionWindow(mContext, mapView, null);
-		    bubbleInteractionWindow.show();
-		    return true;
-		    */
-			mContext.startActivity(new Intent(mContext, BubbleInteractionScreen.class));
+			String[] array = new String[mAddress.size()];
+			for (int i=0; i < mAddress.size() ;i++) {
+				array[i] = mAddress.get(i);
+			}
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + array);
+			mContext.startActivity(new Intent(mContext, BubbleInteractionScreen.class).putExtra("address",array));
 		}
 		return false;
 	}
@@ -184,7 +176,6 @@ public class BubbleOverlay extends Overlay {
 			mainTextPaint = new Paint();
 			mainTextPaint.setARGB(255, 0, 0, 0);
 			mainTextPaint.setAntiAlias(true);
-			//mainTextPaint.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
 			mainTextPaint.setTextSize(fontSize);
 			mainTextPaint.setFakeBoldText(true);
 		}
@@ -196,7 +187,6 @@ public class BubbleOverlay extends Overlay {
 			textPaint = new Paint();
 			textPaint.setARGB(255, 0, 0, 0);
 			textPaint.setAntiAlias(true);
-			//textPaint.setTypeface(Typeface.create("monospace", Typeface.NORMAL));
 			textPaint.setTextSize(fontSize - 5);
 		}
 		return textPaint;

@@ -162,7 +162,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
                         	getOverlays().remove(bubbleOverlay);
                         	invalidate();
                         }
-                    	bubbleOverlay = new BubbleOverlay(add, "Test Description", p,mContext);
+                    	bubbleOverlay = new BubbleOverlay(add, p,mContext);
                     	getOverlays().add(bubbleOverlay);
                     	invalidate();
                     }

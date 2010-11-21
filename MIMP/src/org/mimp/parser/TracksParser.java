@@ -24,7 +24,8 @@ import org.xml.sax.*;
 @SuppressWarnings("unchecked")
 public class TracksParser implements DocumentHandler {
     private TracksHandler handler;
-    private Stack context;
+    @SuppressWarnings("rawtypes")
+	private Stack context;
     private StringBuffer buffer;
     private EntityResolver resolver;
 
@@ -38,7 +39,8 @@ public class TracksParser implements DocumentHandler {
      *            SAX entity resolver implementation or <code>null</code>. It is
      *            recommended that it could be able to resolve at least the DTD.
      */
-    public TracksParser(final TracksHandler handler,
+    @SuppressWarnings("rawtypes")
+	public TracksParser(final TracksHandler handler,
             final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;

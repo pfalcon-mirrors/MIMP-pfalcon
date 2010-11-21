@@ -9,25 +9,27 @@
     <TableRow
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+	    
 	    <TextView
 	       android:id="@+id/bubble_interactions_header_location"
 	       android:paddingLeft="5dip" 
            android:paddingTop="5dip"
            android:textSize="20dip"
            android:textStyle="bold" 
-           android:textColor="#000000"
-	       android:text="aaaaaaaa" />
+           android:textColor="#000000" />
+           
     </TableRow>
     
 	<TableRow
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">	
+	    
 	    <TextView 
            android:id="@+id/bubble_interactions_header_descr"
            android:paddingLeft="5dip" 
            android:paddingTop="5dip"
-           android:textColor="#000000"
-           android:text="aaaaaaaa" />
+           android:textColor="#000000" />           
+    
     </TableRow>
     
     <TableLayout
@@ -36,12 +38,14 @@
 	    android:layout_height="fill_parent"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
+        android:paddingBottom="5dip"
 	    android:background="#ffffff">
     
 	    <TableRow
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:paddingTop="10dip">
+	
 	        <ImageButton 
 	            android:id="@+id/bubble_interactions_header_map"
 	            android:layout_width="56dip"

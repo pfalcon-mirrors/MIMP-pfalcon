@@ -1,8 +1,6 @@
 package org.mimp.globals;
 
 import android.net.Uri;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * @author hellhand

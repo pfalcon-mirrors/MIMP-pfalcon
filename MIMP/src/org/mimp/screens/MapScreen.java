@@ -2,8 +2,6 @@ package org.mimp.screens;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Vector;
 
@@ -63,7 +61,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private MyLocationOverlay mMapLocationOverlay;
     private WindowManager mWindowManager;
     private Display mDisplay;
-    private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
+    @SuppressWarnings("unused")
+	private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
     private Locator mLocator;
 	private boolean trackLoaded;
 

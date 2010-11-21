@@ -37,7 +37,11 @@ public class BubbleInteractionScreen extends Activity implements
 	public void onClick(View v) {
 		System.out.println(">>>>>>>>>>>>>>> " + v);
 		switch (v.getId()) {
-			
+			case R.id.bubble_interactions_header_map:
+				finish();
+				break;
+			default:
+				break;
 		}
 	}
 

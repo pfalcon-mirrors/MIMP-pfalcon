@@ -2,7 +2,6 @@ package org.mimp.screens;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -29,8 +28,6 @@ public class BubbleInteractionWindow extends PopupWindow implements KeyEvent.Cal
 		super.setContentView(contentView);
 				
 		setWindowLayoutMode(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-		
-		final Resources res = mContext.getResources();
 		
 		setBackgroundDrawable(new ColorDrawable(0));
 		setFocusable(true);

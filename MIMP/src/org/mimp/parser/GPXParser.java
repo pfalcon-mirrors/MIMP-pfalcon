@@ -24,7 +24,8 @@ import org.xml.sax.*;
 @SuppressWarnings("unchecked")
 public class GPXParser implements DocumentHandler {
     private GPXHandler handler;
-    private Stack context;
+    @SuppressWarnings("rawtypes")
+	private Stack context;
     private StringBuffer buffer;
     private EntityResolver resolver;
 
@@ -38,7 +39,8 @@ public class GPXParser implements DocumentHandler {
      *            SAX entity resolver implementation or <code>null</code>. It is
      *            recommended that it could be able to resolve at least the DTD.
      */
-    public GPXParser(final GPXHandler handler, final EntityResolver resolver) {
+    @SuppressWarnings("rawtypes")
+	public GPXParser(final GPXHandler handler, final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
