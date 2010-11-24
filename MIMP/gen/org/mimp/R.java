@@ -81,26 +81,27 @@ containing a value of this type.
         public static final int white=0x7f020005;
     }
     public static final class id {
-        public static final int BigText=0x7f07000e;
-        public static final int ImageButtonTable=0x7f07000c;
-        public static final int LineLeftImage=0x7f07000d;
-        public static final int SettingsList=0x7f070013;
-        public static final int SettingsRalativeLayout=0x7f070012;
-        public static final int SmallText=0x7f07000f;
+        public static final int BigText=0x7f07000f;
+        public static final int ImageButtonTable=0x7f07000d;
+        public static final int LineLeftImage=0x7f07000e;
+        public static final int SettingsList=0x7f070014;
+        public static final int SettingsRalativeLayout=0x7f070013;
+        public static final int SmallText=0x7f070010;
         public static final int bubble_info_list=0x7f070000;
-        public static final int bubble_interactions=0x7f07000b;
-        public static final int bubble_interactions_body_descr=0x7f070003;
-        public static final int bubble_interactions_body_info=0x7f070002;
+        public static final int bubble_interactions=0x7f07000c;
+        public static final int bubble_interactions_body_descr=0x7f070004;
+        public static final int bubble_interactions_body_heightwrapper=0x7f070002;
+        public static final int bubble_interactions_body_info=0x7f070003;
         public static final int bubble_interactions_body_layout=0x7f070001;
-        public static final int bubble_interactions_directions=0x7f07000a;
-        public static final int bubble_interactions_header=0x7f070008;
-        public static final int bubble_interactions_header_descr=0x7f070005;
-        public static final int bubble_interactions_header_directions=0x7f070007;
-        public static final int bubble_interactions_header_location=0x7f070004;
-        public static final int bubble_interactions_header_map=0x7f070006;
-        public static final int bubble_interactions_map=0x7f070009;
-        public static final int mapView=0x7f070010;
-        public static final int zoom=0x7f070011;
+        public static final int bubble_interactions_directions=0x7f07000b;
+        public static final int bubble_interactions_header=0x7f070009;
+        public static final int bubble_interactions_header_descr=0x7f070006;
+        public static final int bubble_interactions_header_directions=0x7f070008;
+        public static final int bubble_interactions_header_location=0x7f070005;
+        public static final int bubble_interactions_header_map=0x7f070007;
+        public static final int bubble_interactions_map=0x7f07000a;
+        public static final int mapView=0x7f070011;
+        public static final int zoom=0x7f070012;
     }
     public static final class layout {
         public static final int bubbleinfolist=0x7f030000;

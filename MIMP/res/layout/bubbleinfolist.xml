@@ -9,8 +9,6 @@
     <ListView
         android:id="@+id/bubble_info_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip" />
+        android:layout_height="fill_parent" />
     
 </LinearLayout>

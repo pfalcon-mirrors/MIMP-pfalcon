@@ -10,4 +10,8 @@ public class TrackScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		
 	}
+	
+	public void onBackPressed() {
+		finish();
+	}
 }

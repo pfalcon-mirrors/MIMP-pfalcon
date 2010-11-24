@@ -44,26 +44,39 @@ public class BubbleOverlay extends Overlay {
 		generateWindowDimensions();
 	}
 		
+	/**
+	 * searching for best bubble size considering text length and font size
+	 */
 	private void generateWindowDimensions() {
 		if (mAddress.size() > 0) {
 			Rect rect = new Rect();
 			getMainTextPaint().getTextBounds(mAddress.get(0),0, mAddress.get(0).length(),rect);
+			/**
+			 * if the 1st line is the longer
+			 */
 			INFO_WINDOW_WIDTH = rect.width();
+			INFO_WINDOW_HEIGHT = rect.height();
 			for (int i=1; i < mAddress.size() ;i++) {
 				getTextPaint().getTextBounds(mAddress.get(i),0, mAddress.get(i).length(),rect);
+				/**
+				 * if it is another one
+				 */
 				if (INFO_WINDOW_WIDTH < rect.width()) {
 					INFO_WINDOW_WIDTH = rect.width();
 				}
 			}
-			INFO_WINDOW_WIDTH += 20; // text offset
-			INFO_WINDOW_HEIGHT = 35 * mAddress.size();
+			/**
+			 * now to add the offsets
+			 */
+			INFO_WINDOW_WIDTH += 20; 
+			INFO_WINDOW_HEIGHT = rect.height() * mAddress.size() + 30;
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		super.draw(canvas, mapView, shadow);
-		if (shadow == false) {
+		if (shadow == false) { // bored to draw a shadow if you do it send me the code ;)
 			//  First determine the screen coordinates of the selected MapLocation
 			Point selDestinationOffset = new Point();
 			mapView.getProjection().toPixels(selectedMapLocation, selDestinationOffset);
@@ -119,9 +132,6 @@ public class BubbleOverlay extends Overlay {
 				}
 			}
 		}
-		else {
-			
-		}
 	}
 
 	@Override
@@ -132,8 +142,9 @@ public class BubbleOverlay extends Overlay {
 			for (int i=0; i < mAddress.size() ;i++) {
 				array[i] = mAddress.get(i);
 			}
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + array);
-			mContext.startActivity(new Intent(mContext, BubbleInteractionScreen.class).putExtra("address",array));
+			int[] coords = {selectedMapLocation.getLatitudeE6(),selectedMapLocation.getLongitudeE6()};
+			mContext.startActivity(new Intent(mContext, BubbleInteractionScreen.class)
+				.putExtra("address",array).putExtra("coords",coords));
 		}
 		return false;
 	}

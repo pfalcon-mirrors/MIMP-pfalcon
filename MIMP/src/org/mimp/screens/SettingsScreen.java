@@ -23,6 +23,6 @@ public class SettingsScreen extends PreferenceActivity {
 	 * Handle physical Back button pression
 	 */
 	public void onBackPressed() {
-		System.exit(0);
+		finish();
 	}
 }
