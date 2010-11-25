@@ -78,8 +78,12 @@ public class BubbleInteractionScreen extends Activity implements
 	}
 	
 	private void sendEmail() {
-		mMessage = "Hey check this location : " + mAddress[0] + ", "
-			+ mAddress[1] + "\n" + "http://maps.google.com/maps?q="
+		mMessage = "Hey check this location : ";
+		for (int i=0; i < mAddress.length ;i++) {
+			mMessage += mAddress[i] + ", ";
+		}
+		mMessage += "\n";
+		mMessage += "http://maps.google.com/maps?q="
 			+ mCoords[0]/1E6 + "," + mCoords[1]/1E6;
 		emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 		emailIntent.setType("plain/text");

@@ -28,49 +28,66 @@ public class BubbleOverlay extends Overlay {
 	private List<String> mAddress;
 	private Context mContext;
 	private float scale;
-	private int fontSize;
+	private int mainFontSize;
+	private int altFontSize;
 
 	private int INFO_POINTER_WIDTH = 20;
 	private int INFO_POINTER_HEIGHT = 20;
 	private int INFO_WINDOW_WIDTH = 30;
-	private int INFO_WINDOW_HEIGHT = 35;
+	private int INFO_WINDOW_HEIGHT = 25;
+	private int TEXT_OFFSET_X = 10;
+	private int TEXT_OFFSET_Y = 5;
 	
 	public BubbleOverlay(List<String> address, GeoPoint location, Context context) {
-		this.mAddress = address;
+		mAddress = address;
 		selectedMapLocation = location;
 		mContext = context;
 		scale = mContext.getResources().getDisplayMetrics().density;
-		fontSize = (int)(scale * 15 + 0.5f);
+		mainFontSize = (int)(scale * 15 + 0.5f);
+		altFontSize = mainFontSize -5;
 		generateWindowDimensions();
 	}
 		
 	/**
-	 * searching for best bubble size considering text length and font size
+	 * searching for best bubble size considering text length and font size ! beware :D
 	 */
 	private void generateWindowDimensions() {
+		System.out.println("\t\tSize = " + mainFontSize);
+		System.out.println("\t\tmAddress.size() = " + mAddress.size());
 		if (mAddress.size() > 0) {
 			Rect rect = new Rect();
 			getMainTextPaint().getTextBounds(mAddress.get(0),0, mAddress.get(0).length(),rect);
+			System.out.println("\t\tTitle dimensions = " + rect.width() + " " + rect.height());
 			/**
-			 * if the 1st line is the longer
+			 * if the 1st line is the longest
 			 */
 			INFO_WINDOW_WIDTH = rect.width();
-			INFO_WINDOW_HEIGHT = rect.height();
+			INFO_WINDOW_HEIGHT = mainFontSize;
 			for (int i=1; i < mAddress.size() ;i++) {
 				getTextPaint().getTextBounds(mAddress.get(i),0, mAddress.get(i).length(),rect);
+				System.out.println("\t\tLine " + i +" dimensions = " + rect.width() + " " + rect.height());
 				/**
 				 * if it is another one
 				 */
 				if (INFO_WINDOW_WIDTH < rect.width()) {
 					INFO_WINDOW_WIDTH = rect.width();
 				}
+				INFO_WINDOW_HEIGHT += altFontSize;
 			}
 			/**
 			 * now to add the offsets
 			 */
-			INFO_WINDOW_WIDTH += 20; 
-			INFO_WINDOW_HEIGHT = rect.height() * mAddress.size() + 30;
+			INFO_WINDOW_WIDTH += TEXT_OFFSET_X * 2;
+			/**
+			 * inner offset (between lines)
+			 */
+			INFO_WINDOW_HEIGHT += TEXT_OFFSET_Y * mAddress.size();
+			/**
+			 * bottom offset
+			 */
+			INFO_WINDOW_HEIGHT += TEXT_OFFSET_Y * 2;
 		}
+		System.out.println("\t\tBubble dimensions = " + INFO_WINDOW_WIDTH + " " + INFO_WINDOW_HEIGHT);
 	}
 
 	@Override
@@ -122,18 +139,70 @@ public class BubbleOverlay extends Overlay {
 				path.lineTo(inner[i], inner[i+1]);
 			canvas.drawPath(path, getInnerPaint());
 			
-			int TEXT_OFFSET_X = 10;
-			int TEXT_OFFSET_Y = 25;
-			
 			if (mAddress.size() > 0) {
-				canvas.drawText(mAddress.get(0),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y,getMainTextPaint());
+				int height = TEXT_OFFSET_Y + mainFontSize;
+				canvas.drawText(mAddress.get(0),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+height,getMainTextPaint());
 				for (int i=1; i < mAddress.size() ;i++) {
-					canvas.drawText(mAddress.get(i),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+TEXT_OFFSET_Y*(i+1),getTextPaint());
+					height += TEXT_OFFSET_Y + altFontSize;
+					canvas.drawText(mAddress.get(i),infoWindowOffsetX+TEXT_OFFSET_X,infoWindowOffsetY+height,getTextPaint());
 				}
 			}
 		}
 	}
 
+    /*****************************************************************************
+     * 
+     * bubble color definitions
+     * 
+     *****************************************************************************/
+	
+	private Paint getInnerPaint() {
+		if ( innerPaint == null) {
+			innerPaint = new Paint();
+			innerPaint.setARGB(255, 231, 235, 231); //gray
+			innerPaint.setAntiAlias(true);
+		}
+		return innerPaint;
+	}
+
+	private Paint getBorderPaint() {
+		if ( borderPaint == null) {
+			borderPaint = new Paint();
+			borderPaint.setARGB(255, 0, 0, 0);
+			borderPaint.setAntiAlias(true);
+			borderPaint.setStyle(Style.STROKE);
+			borderPaint.setStrokeWidth(2);
+		}
+		return borderPaint;
+	}
+
+	private Paint getMainTextPaint() {
+		if ( mainTextPaint == null) {
+			mainTextPaint = new Paint();
+			mainTextPaint.setARGB(255, 0, 0, 0);
+			mainTextPaint.setAntiAlias(true);
+			mainTextPaint.setTextSize(mainFontSize);
+			mainTextPaint.setFakeBoldText(true);
+		}
+		return mainTextPaint;
+	}
+	
+	private Paint getTextPaint() {
+		if ( textPaint == null) {
+			textPaint = new Paint();
+			textPaint.setARGB(255, 0, 0, 0);
+			textPaint.setAntiAlias(true);
+			textPaint.setTextSize(altFontSize);
+		}
+		return textPaint;
+	}
+	
+    /*****************************************************************************
+     * 
+     * Key controls
+     * 
+     *****************************************************************************/
+	
 	@Override
 	public boolean onTap(GeoPoint p, MapView mapView) {
 		super.onTap(p, mapView);
@@ -161,46 +230,4 @@ public class BubbleOverlay extends Overlay {
 		}
 		return false;
 	}
-	
-	private Paint getInnerPaint() {
-		if ( innerPaint == null) {
-			innerPaint = new Paint();
-			innerPaint.setARGB(255, 231, 235, 231); //gray
-			innerPaint.setAntiAlias(true);
-		}
-		return innerPaint;
-	}
-
-	private Paint getBorderPaint() {
-		if ( borderPaint == null) {
-			borderPaint = new Paint();
-			borderPaint.setARGB(255, 0, 0, 0);
-			borderPaint.setAntiAlias(true);
-			borderPaint.setStyle(Style.STROKE);
-			borderPaint.setStrokeWidth(2);
-		}
-		return borderPaint;
-	}
-
-	private Paint getMainTextPaint() {
-		if ( mainTextPaint == null) {
-			mainTextPaint = new Paint();
-			mainTextPaint.setARGB(255, 0, 0, 0);
-			mainTextPaint.setAntiAlias(true);
-			mainTextPaint.setTextSize(fontSize);
-			mainTextPaint.setFakeBoldText(true);
-		}
-		return mainTextPaint;
-	}
-	
-	private Paint getTextPaint() {
-		if ( textPaint == null) {
-			textPaint = new Paint();
-			textPaint.setARGB(255, 0, 0, 0);
-			textPaint.setAntiAlias(true);
-			textPaint.setTextSize(fontSize - 5);
-		}
-		return textPaint;
-	}
-
 }

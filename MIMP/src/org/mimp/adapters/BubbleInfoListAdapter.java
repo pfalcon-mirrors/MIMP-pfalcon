@@ -57,7 +57,8 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 			}
 			
 			mHeaderAdapter.pLocation.setText(mAddress[0]);
-			mHeaderAdapter.pDescription.setText(mAddress[1]);
+			if (mAddress.length > 1)
+				mHeaderAdapter.pDescription.setText(mAddress[1]);
             mHeaderAdapter.pMapButton.setOnClickListener((OnClickListener) mContext);
             mHeaderAdapter.pDirectionButton.setOnClickListener((OnClickListener) mContext);
 
