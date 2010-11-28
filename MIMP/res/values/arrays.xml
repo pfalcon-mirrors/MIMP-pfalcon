@@ -22,7 +22,7 @@
     <string-array name="entryvalues_list_directions_modes">
 	    <item>foot</item>
 	    <item>car</item>
-	    <item>transports</item>
+	    <item>bus</item>
     </string-array>
 
     <string-array name="entries_list_bubble_interactions_body_info_new">

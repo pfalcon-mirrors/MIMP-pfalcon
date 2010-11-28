@@ -8,22 +8,22 @@
         <item>Open Cycle Map</item>
     </string-array>
 
-    <string-array name="entryvalues_list_map_names">
-        <item>google</item>
-        <item>osm</item>
-        <item>ocm</item>
-    </string-array>
+
+
+    <!-- Preferences values in base array.xml -->
+
+
 
     <string-array name="entries_list_directions_modes">
         <item>A pieds</item>
         <item>En voiture</item>
     </string-array>
 
-    <string-array name="entryvalues_list_directions_modes">
-	    <item>foot</item>
-	    <item>car</item>
-	    <item>transports</item>
-    </string-array>
+
+
+    <!-- Preferences values in base array.xml -->
+
+
 
     <string-array name="entries_list_bubble_interactions_body_info_new">
         <item>Ajouter comme waypoint</item>

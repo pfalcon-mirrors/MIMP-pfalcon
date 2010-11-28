@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.util.List;
 import java.util.Vector;
 
+import org.mapping.google.DrivingDirections;
 import org.mapping.google.DrivingDirections.IDirectionsListener;
 import org.mapping.google.DrivingDirections.Mode;
 import org.mapping.google.DrivingDirectionsFactory;
@@ -28,7 +29,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
@@ -61,10 +61,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private MyLocationOverlay mMapLocationOverlay;
     private WindowManager mWindowManager;
     private Display mDisplay;
-    @SuppressWarnings("unused")
 	private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
     private Locator mLocator;
-	private boolean trackLoaded;
+	private boolean mTrackLoaded;
 
     /*****************************************************************************
      * 
@@ -76,10 +75,14 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /**
+         * Setting Defaults
+         */
         setTheme(android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        /*
+         * setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+         */
         setContentView(R.layout.map);
         mMapView = (ExtendedMapView) findViewById(R.id.mapView);
         mMapController = mMapView.getController();
@@ -103,19 +106,19 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         
         mLocator = new Locator(this, mMapView);
         mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory.createDrivingDirections();
-        trackLoaded = false;
+        mTrackLoaded = false;
+
+        /**
+         * Setting preferences or previous status
+         */
         doChecks();
-        /*
-         * Getting directions from point to point
-         * 
-        Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
-        Double lat = 50* 1E6;
-        Double lng = 5 * 1E6;
-        geoPoints.add(new GeoPoint(lat.intValue(), lng.intValue()));
-        lng = 6 * 1E6;
-        geoPoints.add(new GeoPoint(lat.intValue(), lng.intValue()));
-        mDirectionsGoogleKML.driveTo(geoPoints, org.mapping.google.DrivingDirections.Mode.DRIVING, this);
-        */
+    }
+
+	@Override
+    protected void onSaveInstanceState(Bundle outState) {
+    	outState.putBoolean("isNew", false);
+    	
+    	super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -191,14 +194,29 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             disableFollow();
         }
     }
+    
+    private DrivingDirections.Mode getDirectionsMode() {
+        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
+        String mode = settings.getString("map_directions_mode", "car");
+        if (mode.equals("foot")) {
+        	return Mode.WALKING;
+        }
+        else if (mode.equals("bus")) {
+        	return Mode.BUS;
+        }
+        else {
+        	return Mode.DRIVING;
+        }
+    }
 
     private void checkTrack() {
-        // TODO check whenever a track should be displayed from a search
+        //TODO: check whenever a track should be displayed from a search
+    	//TODO: wonder if i should do this .... it's useless
     }
 
     /*****************************************************************************
      * 
-     * Screens handling // TODO to remove and replace by dispatcher
+     * Screens handling // TODO to remove and replace by dispatcher or not
      * Dialog handling
      * 
      *****************************************************************************/
@@ -374,11 +392,11 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     }
     
     public boolean isTrackLoaded() {
-    	return trackLoaded;
+    	return mTrackLoaded;
     }
     
     public void setTrackLoaded(boolean value) {
-    	trackLoaded = value;
+    	mTrackLoaded = value;
     }
 
 	/*****************************************************************************
@@ -501,6 +519,21 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
+    }
+
+    
+	/*****************************************************************************
+     * 
+     * Directions
+     * 
+     *****************************************************************************/
+    
+    
+    public void findDirectionsFromXToY(GeoPoint start, GeoPoint end) {
+        Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
+        geoPoints.add(start);
+        geoPoints.add(end);
+        mDirectionsGoogleKML.driveTo(geoPoints, getDirectionsMode(), this);
     }
     
     @Override

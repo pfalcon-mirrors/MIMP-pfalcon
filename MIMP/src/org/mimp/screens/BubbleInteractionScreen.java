@@ -5,7 +5,6 @@ import org.mimp.adapters.BubbleInfoListAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +28,6 @@ public class BubbleInteractionScreen extends Activity implements
 		super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.bubbleinfolist);
         
         mListView = (ListView) findViewById(R.id.bubble_info_list);

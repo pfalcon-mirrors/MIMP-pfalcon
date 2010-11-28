@@ -103,6 +103,4 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 		public TextView pInfoTextView;
 		public TextView pDescrTextView;
 	}
-	
-	
 }

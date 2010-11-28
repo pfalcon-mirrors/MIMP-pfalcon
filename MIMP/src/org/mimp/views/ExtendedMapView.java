@@ -35,7 +35,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	private boolean mPerspective = false;
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	private float mHeading = 0;
-	BubbleOverlay bubbleOverlay;
+	private BubbleOverlay mBubbleOverlay;
 	
     /*****************************************************************************
      * 
@@ -113,7 +113,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
 
     @Override
     public void onAccuracyChanged(int paramInt1, int paramInt2) {
-
+    	
     }
     
     /*****************************************************************************
@@ -133,7 +133,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
             		if (isForChild(p) == true) {
             			return false;
             		}
-            		getOverlays().remove(bubbleOverlay);
+            		getOverlays().remove(mBubbleOverlay);
             		invalidate();
             		return true;
             	}
@@ -158,12 +158,12 @@ public class ExtendedMapView extends MapView implements SensorListener {
                                  i++)
                                add.add(addresses.get(0).getAddressLine(i).trim());
                         }
-                        if (bubbleOverlay != null) {
-                        	getOverlays().remove(bubbleOverlay);
+                        if (mBubbleOverlay != null) {
+                        	getOverlays().remove(mBubbleOverlay);
                         	invalidate();
                         }
-                    	bubbleOverlay = new BubbleOverlay(add, p,mContext);
-                    	getOverlays().add(bubbleOverlay);
+                    	mBubbleOverlay = new BubbleOverlay(add, p,mContext);
+                    	getOverlays().add(mBubbleOverlay);
                     	invalidate();
                     }
                     catch (IOException ex) {                
@@ -189,14 +189,14 @@ public class ExtendedMapView extends MapView implements SensorListener {
     }
     
     public boolean isForChild(GeoPoint p) {
-		if (bubbleOverlay != null && bubbleOverlay.isTapOnElement(p, this) == true) {
+		if (mBubbleOverlay != null && mBubbleOverlay.isTapOnElement(p, this) == true) {
 			return true;
 		}
 		return false;
     }
     
     public void removeBubble() {
-    	getOverlays().remove(bubbleOverlay);
+    	getOverlays().remove(mBubbleOverlay);
     	invalidate();
     }
 }
