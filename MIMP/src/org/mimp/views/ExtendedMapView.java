@@ -152,17 +152,17 @@ public class ExtendedMapView extends MapView implements SensorListener {
                     try {
                         List<Address> addresses = geoCoder.getFromLocation(p.getLatitudeE6()  / 1E6, 
                             p.getLongitudeE6() / 1E6, 1);
-                        Vector<String> add = new Vector<String>();
+                        Vector<String> address = new Vector<String>();
                         if (addresses.size() > 0)  {
                             for (int i=0; i<addresses.get(0).getMaxAddressLineIndex(); 
                                  i++)
-                               add.add(addresses.get(0).getAddressLine(i).trim());
+                               address.add(addresses.get(0).getAddressLine(i).trim());
                         }
                         if (mBubbleOverlay != null) {
                         	getOverlays().remove(mBubbleOverlay);
                         	invalidate();
                         }
-                    	mBubbleOverlay = new BubbleOverlay(add, p,mContext);
+                    	mBubbleOverlay = new BubbleOverlay(address, p, mContext);
                     	getOverlays().add(mBubbleOverlay);
                     	invalidate();
                     }
