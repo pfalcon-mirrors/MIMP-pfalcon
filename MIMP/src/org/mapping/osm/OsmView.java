@@ -18,6 +18,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+@SuppressWarnings("unused")
 public class OsmView extends MapView {
     
     int x0, y0, z0 = 10;
@@ -29,7 +30,7 @@ public class OsmView extends MapView {
     int X, Y = 0;
     Canvas canvas;
     private boolean backed = false;
-    private List<Overlay> liov;
+	private List<Overlay> liov;
 
     public OsmView(Context context, AttributeSet attrs) {
         super(context, attrs);
