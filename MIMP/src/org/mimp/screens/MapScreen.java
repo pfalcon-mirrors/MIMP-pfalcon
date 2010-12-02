@@ -86,7 +86,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         setContentView(R.layout.map);
         mMapView = (ExtendedMapView) findViewById(R.id.mapView);
         mMapController = mMapView.getController();
-
+        
         LinearLayout zoomLayout = (LinearLayout) findViewById(R.id.zoom);
         View zoomView = mMapView.getZoomControls();
 
@@ -114,6 +114,20 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         doChecks();
     }
 
+    /**
+     * handling different relsults of other activities (add poi, waypoint, ... )
+     */
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (requestCode == S.BubbleInteractionScreen_RQC) {
+    		if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
+    			addWaypoint(data.getIntArrayExtra("coords"));
+    		}
+    	}
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
+    
 	@Override
     protected void onSaveInstanceState(Bundle outState) {
     	outState.putBoolean("isNew", false);
@@ -562,5 +576,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     @Override
     public void onDirectionsNotAvailable() {
         
+    }
+    
+    public void addWaypoint (int[] coords) {
+    	
     }
 }

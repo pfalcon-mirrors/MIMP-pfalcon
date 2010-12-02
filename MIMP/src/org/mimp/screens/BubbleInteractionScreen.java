@@ -61,7 +61,7 @@ public class BubbleInteractionScreen extends Activity implements
 		System.out.println(">>>>>>>>>>>>>>> " + arg1);
 		switch (arg2) {
 		case 1:
-			
+			addWaypoint();
 			break;
 		case 2:
 			sendEmail();
@@ -73,6 +73,10 @@ public class BubbleInteractionScreen extends Activity implements
 	
 	public void onBackPressed() {
 		finish();
+	}
+	
+	public void addWaypoint() {
+
 	}
 	
 	private void sendEmail() {

@@ -29,11 +29,18 @@ public class S {
     public static final int LOADTRKFILE = 200007;
 
     /**
-     * map providers list
+     * RequestCodes
      */
-    public static final int GOOGLE_PROVIDER = 0;
-    public static final int OSM_PROVIDER = 1;
+    
+    public static final int BubbleInteractionScreen_RQC = 1;
 
+    /**
+     * ResultCodes = RequestCode + 100 to RequestCode + 199
+     */
+	
+    public static final int BubbleInteractionScreen_WAYPOINT = 100;
+	
+    
     /**
      * database connection
      */
