@@ -9,6 +9,8 @@
                          Créé par Boulanger Marc\n
                          2010</string>
     
+    <string name="none">Aucun</string>
+    
     <string name="map_menu_search">Recherche</string>
     <string name="map_menu_position">Ma position</string>
     <string name="map_menu_compass">Compas</string>
@@ -16,8 +18,8 @@
     <string name="map_menu_infos">Infos</string>
     <string name="map_menu_perspective">Perspective</string>
     <string name="map_menu_settings">Préférences</string>
-    <string name="map_menu_loadgpx">Charger un fichier GPX/KML</string>
-    <string name="map_menu_unloadgpx">Décharger le fichier GPX/KML</string>
+    <string name="map_menu_load">Charger un fichier GPX/KML</string>
+    <string name="map_menu_unload">Décharger le fichier GPX/KML</string>
 
     <string name="searchbox_title">Recherche</string>
 

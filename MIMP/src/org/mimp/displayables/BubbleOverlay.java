@@ -2,6 +2,7 @@ package org.mimp.displayables;
 
 import java.util.List;
 
+import org.mimp.globals.S;
 import org.mimp.screens.BubbleInteractionScreen;
 
 import android.app.Activity;
@@ -214,7 +215,7 @@ public class BubbleOverlay extends Overlay {
 			}
 			int[] coords = {selectedMapLocation.getLatitudeE6(),selectedMapLocation.getLongitudeE6()};
 			Intent mIntent = new Intent(mContext, BubbleInteractionScreen.class).putExtra("address",array).putExtra("coords",coords);
-			((Activity)mContext).startActivityForResult(mIntent,0);
+			((Activity)mContext).startActivityForResult(mIntent,S.BubbleInteractionScreen_RQC);
 		}
 		return false;
 	}

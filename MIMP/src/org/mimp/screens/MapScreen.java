@@ -35,6 +35,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.ContextMenu;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -42,6 +43,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.LinearLayout;
 
 import com.google.android.maps.GeoPoint;
@@ -120,8 +122,13 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	System.out.println("requestCode : " + requestCode + " resultCode : " + resultCode);
     	if (requestCode == S.BubbleInteractionScreen_RQC) {
-    		if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
+    		if (resultCode == S.BubbleInteractionScreen_DIRECTIONS) {
+    			int[] coords = data.getIntArrayExtra("coords");
+    			findDirectionsFromHereToY(new GeoPoint(coords[0], coords[1]));
+    		}
+    		else if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
     			addWaypoint(data.getIntArrayExtra("coords"));
     		}
     	}
@@ -225,7 +232,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 
     private void checkTrack() {
         //TODO: check whenever a track should be displayed from a search
-    	//TODO: wonder if i should do this .... it's useless
     }
 
     /*****************************************************************************
@@ -284,8 +290,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     }
 
     /**
-     * Creates the menu items when physical Menu button is pressed
-     */
+     * Creates the menu items when Menu button is pressed
+     */    
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, S.POS, 0, R.string.map_menu_position).setIcon(
                 android.R.drawable.ic_menu_mylocation);
@@ -300,11 +306,11 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
         		android.R.drawable.ic_menu_search);
         if (isTrackLoaded()) {
-	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unloadgpx).setIcon(
+	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unload).setIcon(
 	        		android.R.drawable.ic_menu_directions);
         }
         else {
-	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_loadgpx).setIcon(
+	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_load).setIcon(
 	        		android.R.drawable.ic_menu_directions);
         }
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
@@ -371,7 +377,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             parser.parse(is);
             GPXObject gpxObject = handler.getGPXObject();
             System.out.println(gpxObject);
-            System.out.println(gpxObject.getTrack().getGeoPoints());
             
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
@@ -399,9 +404,10 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 	}
     
     private void unloadTracks() {
-        List<Overlay> overlays = mMapView.getOverlays().subList(0, 1);
-        overlays = new Vector<Overlay>();
-        overlays.add(mMapLocationOverlay);
+    	int size = mMapView.getOverlays().size();
+    	for (int i=1; i<size ;i++) {
+            mMapView.getOverlays().remove(1);
+    	}
         setTrackLoaded(false);
     }
     
@@ -542,6 +548,13 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
      * 
      *****************************************************************************/
     
+    public void findDirectionsFromHereToY(GeoPoint end) {
+        Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
+        geoPoints.add(mMapLocationOverlay.getMyLocation());
+        geoPoints.add(end);
+        mDirectionsGoogleKML.driveTo(geoPoints, getDirectionsMode(), this);
+        System.out.println("mDirectionsGoogleKML called");
+    }
     
     public void findDirectionsFromXToY(GeoPoint start, GeoPoint end) {
         Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();

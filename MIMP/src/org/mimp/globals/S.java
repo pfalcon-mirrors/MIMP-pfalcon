@@ -38,7 +38,8 @@ public class S {
      * ResultCodes = RequestCode + 100 to RequestCode + 199
      */
 	
-    public static final int BubbleInteractionScreen_WAYPOINT = 100;
+    public static final int BubbleInteractionScreen_DIRECTIONS = 100;
+    public static final int BubbleInteractionScreen_WAYPOINT = 101;
 	
     
     /**

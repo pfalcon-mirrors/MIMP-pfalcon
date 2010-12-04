@@ -2,6 +2,7 @@ package org.mimp.screens;
 
 import org.mimp.R;
 import org.mimp.adapters.BubbleInfoListAdapter;
+import org.mimp.globals.S;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -51,6 +52,8 @@ public class BubbleInteractionScreen extends Activity implements
 			case R.id.bubble_interactions_header_map:
 				finish();
 				break;
+			case R.id.bubble_interactions_header_directions:
+				getDirections();
 			default:
 				break;
 		}
@@ -74,9 +77,19 @@ public class BubbleInteractionScreen extends Activity implements
 	public void onBackPressed() {
 		finish();
 	}
+
+	public void getDirections() {
+		Intent intent = new Intent();
+		intent.putExtra("coords", mCoords);
+		setResult(S.BubbleInteractionScreen_DIRECTIONS, intent);
+		finish();
+	}
 	
 	public void addWaypoint() {
-
+		Intent intent = new Intent();
+		intent.putExtra("coords", mCoords);
+		setResult(S.BubbleInteractionScreen_WAYPOINT, intent);
+		finish();
 	}
 	
 	private void sendEmail() {
@@ -85,7 +98,7 @@ public class BubbleInteractionScreen extends Activity implements
 			mMessage += mAddress[i] + ", ";
 		}
 		mMessage += "\n";
-		mMessage += "http://maps.google.com/maps?q="
+		mMessage += "http://maps.		finish();google.com/maps?q="
 			+ mCoords[0]/1E6 + "," + mCoords[1]/1E6;
 		emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 		emailIntent.setType("plain/text");
