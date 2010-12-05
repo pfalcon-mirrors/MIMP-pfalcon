@@ -10,6 +10,7 @@
                          2010</string>
     
     <string name="none">None</string>
+    <string name="error">Error</string>
     
     <string name="map_menu_search">Search</string>
     <string name="map_menu_position">My position</string>
@@ -53,4 +54,9 @@
     <string name="settings_summary_gps_precision">Show the GPS precision circle on the map</string>
         
     <string name="bubble_interactions_add_wpt">Add as a waypoint</string>
+    
+    <string name="navigation_directions_error">An error occured when getting drections</string>
+    <string name="navigation_position_unavailable">Current position unavailable</string>
+    <string name="navigation_destination_unavailable">Destination unavailable</string>
+    
 </resources>

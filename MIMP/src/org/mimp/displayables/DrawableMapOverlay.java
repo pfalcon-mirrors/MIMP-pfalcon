@@ -38,7 +38,7 @@ public class DrawableMapOverlay extends Overlay {
     }
     
     @Override
-    public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
+    public void draw(Canvas canvas, MapView mapView, boolean shadow) {
         super.draw(canvas, mapView, shadow);
 
         // Convert geo coordinates to screen pixels
@@ -55,10 +55,9 @@ public class DrawableMapOverlay extends Overlay {
         	canvas.drawBitmap(markerImage,screenPoint.x - markerImage.getWidth()/2,screenPoint.y - markerImage.getHeight(), null);
         else if (type == RIGHT)
         	canvas.drawBitmap(markerImage,screenPoint.x,screenPoint.y - markerImage.getHeight(), null);
-        return true;
     }
 
-    public boolean draw(Canvas canvas, MapView mapView, boolean shadow, int x, int y) {
+    public void draw(Canvas canvas, MapView mapView, boolean shadow, int x, int y) {
 
         // Convert geo coordinates to screen pixels
         Point screenPoint = new Point();
@@ -80,7 +79,6 @@ public class DrawableMapOverlay extends Overlay {
             canvas.drawBitmap(markerImage, screenPoint.x - markerImage.getWidth() / 2, screenPoint.y - markerImage.getHeight(), null);
         else if (type == RIGHT)
             canvas.drawBitmap(markerImage, screenPoint.x, screenPoint.y - markerImage.getHeight(), null);
-        return true;
     }
     
     @Override

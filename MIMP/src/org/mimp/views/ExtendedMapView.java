@@ -6,6 +6,9 @@ import java.util.Locale;
 import java.util.Vector;
 
 import org.mimp.displayables.BubbleOverlay;
+import org.mimp.displayables.OverlayGroup;
+import org.mimp.displayables.MapPointOverlay;
+import org.mimp.displayables.MapPointOverlay.SIZE;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,6 +23,7 @@ import android.view.View;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 
 @SuppressWarnings("deprecation")
 public class ExtendedMapView extends MapView implements SensorListener {
@@ -35,7 +39,9 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	private boolean mPerspective = false;
 	private final SmoothCanvas mCanvas = new SmoothCanvas();
 	private float mHeading = 0;
+    private MyLocationOverlay mMapLocationOverlay;
 	private BubbleOverlay mBubbleOverlay;
+	private OverlayGroup mOverlayGroup = new OverlayGroup();
 	
     /*****************************************************************************
      * 
@@ -46,17 +52,41 @@ public class ExtendedMapView extends MapView implements SensorListener {
 	public ExtendedMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
+		addLocationOverlay();
+		getOverlays().add(mOverlayGroup);
 	}
 	
 	public ExtendedMapView(Context context, String apiKey) {
 		super(context, apiKey);
 		mContext = context;
+		addLocationOverlay();
+		getOverlays().add(mOverlayGroup);
 	}
 	
 	@Override
 	protected void onFinishInflate() {
 	    super.onFinishInflate();
 	    applyMapViewListener();
+	}
+	
+    /*****************************************************************************
+     * 
+     * Location handling
+     * 
+     *****************************************************************************/
+	
+	private void addLocationOverlay() {
+        mMapLocationOverlay = new MyLocationOverlay(mContext, this);
+        mMapLocationOverlay.runOnFirstFix(new Runnable() {
+            public void run() {
+                getController().animateTo(mMapLocationOverlay.getMyLocation());
+            }
+        });
+        getOverlays().add(mMapLocationOverlay);		
+	}
+	
+	public MyLocationOverlay getLocationOverlay() {
+		return mMapLocationOverlay;
 	}
 	
     /*****************************************************************************
@@ -94,6 +124,10 @@ public class ExtendedMapView extends MapView implements SensorListener {
 			super.draw(canvas);
 			canvas.restore();
 		}
+	}
+	
+	public OverlayGroup getOverlayGroup() {
+		return mOverlayGroup;
 	}
 	
     /*****************************************************************************

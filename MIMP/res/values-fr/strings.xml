@@ -10,6 +10,7 @@
                          2010</string>
     
     <string name="none">Aucun</string>
+    <string name="error">Erreur</string>
     
     <string name="map_menu_search">Recherche</string>
     <string name="map_menu_position">Ma position</string>
@@ -37,7 +38,7 @@
     
     <string name="settings_summary_maps">Permets de choisir le type de carte à utiliser</string>
     <string name="settings_summary_directions">Directions</string>
-    <string name="settings_summary_gps">GPS preferences</string>
+    <string name="settings_summary_gps">Préférences liées au GPS</string>
     <string name="settings_summary_resolution">Resolution</string>
     <string name="settings_summary_search">Search</string>
     <string name="settings_summary_units">Units</string>
@@ -53,4 +54,9 @@
     <string name="settings_summary_gps_precision">Affiche sur la carte le cercle de précision du GPS</string>
 
     <string name="bubble_interactions_add_wpt">Ajouter en tant que waypoint</string>
+    
+    <string name="navigation_directions_error">Une erreur c\'est produite lors de la récupération des données</string>
+    <string name="navigation_position_unavailable">Position actuelle non disponible</string>
+    <string name="navigation_destination_unavailable">Destination non disponible</string>
+    
 </resources>

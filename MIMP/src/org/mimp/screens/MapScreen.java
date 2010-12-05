@@ -15,6 +15,7 @@ import org.mapping.google.impl.Locator;
 import org.mimp.R;
 import org.mimp.displayables.DrawableMapOverlay;
 import org.mimp.displayables.LineMapOverlay;
+import org.mimp.displayables.OverlayGroup;
 import org.mimp.globals.S;
 import org.mimp.parser.GPXHandler;
 import org.mimp.parser.GPXHandlerImpl;
@@ -35,7 +36,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.ContextMenu;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -43,14 +43,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.LinearLayout;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView.LayoutParams;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
 public class MapScreen extends MapActivity implements LocationListener, IDirectionsListener {
@@ -60,7 +58,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private ExtendedMapView mMapView;
     private MapController mMapController;
     private LocationManager mLocationManager;
-    private MyLocationOverlay mMapLocationOverlay;
     private WindowManager mWindowManager;
     private Display mDisplay;
 	private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
@@ -97,14 +94,6 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         mMapView.displayZoomControls(true);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mMapLocationOverlay = new MyLocationOverlay(getApplicationContext(),
-                mMapView);
-        mMapLocationOverlay.runOnFirstFix(new Runnable() {
-            public void run() {
-                mMapController.animateTo(mMapLocationOverlay.getMyLocation());
-            }
-        });
-        mMapView.getOverlays().add(mMapLocationOverlay);
         
         mLocator = new Locator(this, mMapView);
         mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory.createDrivingDirections();
@@ -129,7 +118,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     			findDirectionsFromHereToY(new GeoPoint(coords[0], coords[1]));
     		}
     		else if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
-    			addWaypoint(data.getIntArrayExtra("coords"));
+    			int[] coords = data.getIntArrayExtra("coords");
+    			addWaypoint(new GeoPoint(coords[0], coords[1]));
     		}
     	}
     	super.onActivityResult(requestCode, resultCode, data);
@@ -404,9 +394,10 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
 	}
     
     private void unloadTracks() {
-    	int size = mMapView.getOverlays().size();
+    	List<Overlay> overlays = mMapView.getOverlays();
+    	int size = overlays.size();
     	for (int i=1; i<size ;i++) {
-            mMapView.getOverlays().remove(1);
+            overlays.remove(1);
     	}
         setTrackLoaded(false);
     }
@@ -463,7 +454,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1l, 5, this);
-        mMapLocationOverlay.enableMyLocation();
+        mMapView.getLocationOverlay().enableMyLocation();
         mMapView.postInvalidate();
     }
 
@@ -472,13 +463,13 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("listener", false);
         editor.commit();
-        mMapLocationOverlay.disableMyLocation();
+        mMapView.getLocationOverlay().disableMyLocation();
         mLocationManager.removeUpdates(this);
         mMapView.postInvalidate();
     }
 
     public boolean isListening() {
-        return mMapLocationOverlay.isMyLocationEnabled();
+        return mMapView.getLocationOverlay().isMyLocationEnabled();
     }
 
     public void enableCompass() {
@@ -486,7 +477,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("compass", true);
         editor.commit();
-        mMapLocationOverlay.enableCompass();
+        mMapView.getLocationOverlay().enableCompass();
     }
 
     public void disableCompass() {
@@ -494,11 +485,11 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("compass", false);
         editor.commit();
-        mMapLocationOverlay.disableCompass();
+        mMapView.getLocationOverlay().disableCompass();
     }
 
     public boolean isCompassEnabled() {
-        return mMapLocationOverlay.isCompassEnabled();
+        return mMapView.getLocationOverlay().isCompassEnabled();
     }
 
     private void disableFollow() {
@@ -547,13 +538,39 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
      * Directions
      * 
      *****************************************************************************/
+
+    
+    public void addWaypoint (GeoPoint end) {
+    	
+    }
     
     public void findDirectionsFromHereToY(GeoPoint end) {
-        Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
-        geoPoints.add(mMapLocationOverlay.getMyLocation());
+    	String message = "";
+    	if (mMapView.getLocationOverlay().getLastFix() == null) {
+    		message += getString(R.string.navigation_position_unavailable) + "\n";
+    	}
+    	if (end == null) {
+    		message += getString(R.string.navigation_destination_unavailable) + "\n";
+    	}
+    	if (message.equals("") == false) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.error).setMessage(message).setCancelable(false)
+                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+    		return;
+    	}
+    	Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
+    	Location location = mMapView.getLocationOverlay().getLastFix();
+    	GeoPoint start = new GeoPointer(location.getLatitude(), location.getLongitude());
+        geoPoints.add(start);
         geoPoints.add(end);
+        mMapView.getOverlayGroup().clear();
         mDirectionsGoogleKML.driveTo(geoPoints, getDirectionsMode(), this);
-        System.out.println("mDirectionsGoogleKML called");
     }
     
     public void findDirectionsFromXToY(GeoPoint start, GeoPoint end) {
@@ -565,11 +582,24 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     
     @Override
     public void onDirectionsAvailable(Route route, Mode mode) {
+    	if (route == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.error).setMessage(R.string.navigation_destination_unavailable)
+            		.setCancelable(false)
+                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+    		return;
+    	}
         mWindowManager = getWindowManager();
         mDisplay = mWindowManager.getDefaultDisplay();
 
         Vector<GeoPoint> geo = new Vector<GeoPoint>(route.getGeoPoints());
-        List<Overlay> overlays = mMapView.getOverlays();
+        OverlayGroup overlays = mMapView.getOverlayGroup();
 
         LineMapOverlay lineMapOverlay = new LineMapOverlay();
         lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo, mDisplay.getHeight(), mDisplay.getHeight());
@@ -589,9 +619,5 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     @Override
     public void onDirectionsNotAvailable() {
         
-    }
-    
-    public void addWaypoint (int[] coords) {
-    	
     }
 }

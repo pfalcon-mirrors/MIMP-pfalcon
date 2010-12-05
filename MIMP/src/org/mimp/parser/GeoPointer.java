@@ -23,6 +23,11 @@ public class GeoPointer extends GeoPoint implements Serializable, BaseColumns {
         super(latitudeE6, longitudeE6);
         elevation = 0;
     }
+    
+    public GeoPointer(double latitude, double longitude) {
+        super((int)(latitude*1E6), (int)(longitude*1E6));
+        elevation = 0;
+    }
 
     public GeoPointer(int latitudeE6, int longitudeE6, int height) {
         super(latitudeE6, longitudeE6);
