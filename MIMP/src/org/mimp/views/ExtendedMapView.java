@@ -7,8 +7,6 @@ import java.util.Vector;
 
 import org.mimp.displayables.BubbleOverlay;
 import org.mimp.displayables.OverlayGroup;
-import org.mimp.displayables.MapPointOverlay;
-import org.mimp.displayables.MapPointOverlay.SIZE;
 
 import android.content.Context;
 import android.graphics.Canvas;

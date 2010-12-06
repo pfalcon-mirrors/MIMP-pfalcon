@@ -15,6 +15,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
+import android.view.SoundEffectConstants;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -209,6 +211,8 @@ public class BubbleOverlay extends Overlay {
 	public boolean onTap(GeoPoint p, MapView mapView) {
 		super.onTap(p, mapView);
 		if (isTapOnElement(p, mapView)) {
+		    MediaPlayer mp = MediaPlayer.create(mContext, SoundEffectConstants.CLICK);
+		    mp.start();
 			String[] array = new String[mAddress.size()];
 			for (int i=0; i < mAddress.size() ;i++) {
 				array[i] = mAddress.get(i);

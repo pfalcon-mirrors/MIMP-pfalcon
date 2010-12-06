@@ -14,21 +14,20 @@ import com.google.android.maps.Overlay;
 
 public abstract class MapPointOverlay extends Overlay {
 
-	private int POI_POINTER_WIDTH = 20;
-	private int POI_POINTER_HEIGHT = 20;
-	private int POI_BLOC_WIDTH = 20;
-	private int POI_BLOC_HEIGHT = 10;
+	private int POINTER_WIDTH = 20;
+	private int POINTER_HEIGHT = 20;
+	private int BLOC_WIDTH = 20;
+	private int BLOC_HEIGHT = 10;
 	
-	private int CORE_POI_POINTER_WIDTH = 10;
-	private int CORE_POI_POINTER_HEIGHT = 10;
-	private int CORE_POI_BLOC_WIDTH = 10;
-	private int CORE_POI_BLOC_HEIGHT = 10;
+	private int CORE_POINTER_WIDTH = 10;
+	private int CORE_POINTER_HEIGHT = 10;
+	private int CORE_BLOC_WIDTH = 10;
+	private int CORE_BLOC_HEIGHT = 10;
 	
 	private GeoPoint selectedMapLocation;
 	private Paint innerPaint;
 	private Paint corePaint;
 	private Paint borderPaint;
-	private Context mContext;
 	
 	public enum SIZE {
 		BIG,
@@ -38,15 +37,14 @@ public abstract class MapPointOverlay extends Overlay {
 	
 	public MapPointOverlay(GeoPoint location, Context context) {
 		selectedMapLocation = location;
-		mContext = context;
 	}
 	
 	public void setHeight(SIZE size) {
 		if (size == SIZE.BIG) {
-			POI_BLOC_HEIGHT = CORE_POI_BLOC_HEIGHT = 25;
+			BLOC_HEIGHT = CORE_BLOC_HEIGHT = 25;
 		}
 		else if (size == SIZE.MEDIUM) {
-			POI_BLOC_HEIGHT = CORE_POI_BLOC_HEIGHT = 15;
+			BLOC_HEIGHT = CORE_BLOC_HEIGHT = 15;
 		}
 		else if (size == SIZE.SMALL) {
 			return;
@@ -66,93 +64,69 @@ public abstract class MapPointOverlay extends Overlay {
 			mapView.getProjection().toPixels(selectedMapLocation, selDestinationOffset);
 	    	
 			// Setup the poi position pointer
-			RectF pointerRect = new RectF(0,0,POI_POINTER_WIDTH,POI_POINTER_HEIGHT);
-			int pointerOffsetX = selDestinationOffset.x-POI_POINTER_WIDTH/2;
-			int pointerOffsetY = selDestinationOffset.y-POI_POINTER_HEIGHT;			
+			RectF pointerRect = new RectF(0,0,POINTER_WIDTH,POINTER_HEIGHT);
+			int pointerOffsetX = selDestinationOffset.x-POINTER_WIDTH/2;
+			int pointerOffsetY = selDestinationOffset.y-POINTER_HEIGHT;			
 			pointerRect.offset(pointerOffsetX,pointerOffsetY);
 			
 			//  Setup the poi bloc coords
-			RectF blocRect = new RectF(0,0,POI_BLOC_WIDTH,POI_BLOC_HEIGHT);
-			int blocOffsetX = selDestinationOffset.x-POI_BLOC_WIDTH/2;
-			int blocOffsetY = selDestinationOffset.y-POI_BLOC_HEIGHT-POI_POINTER_HEIGHT;
+			RectF blocRect = new RectF(0,0,BLOC_WIDTH,BLOC_HEIGHT);
+			int blocOffsetX = selDestinationOffset.x-BLOC_WIDTH/2;
+			int blocOffsetY = selDestinationOffset.y-BLOC_HEIGHT-POINTER_HEIGHT;
 			blocRect.offset(blocOffsetX,blocOffsetY);
 			
 			// Setup the core
-			RectF corePointerRect = new RectF(0,0,CORE_POI_POINTER_WIDTH,CORE_POI_POINTER_HEIGHT);
-			int corePointerOffsetX = selDestinationOffset.x-CORE_POI_POINTER_WIDTH/2;
-			int corePointerOffsetY = selDestinationOffset.y-CORE_POI_POINTER_HEIGHT-POI_POINTER_HEIGHT/2;
+			RectF corePointerRect = new RectF(0,0,CORE_POINTER_WIDTH,CORE_POINTER_HEIGHT);
+			int corePointerOffsetX = selDestinationOffset.x-CORE_POINTER_WIDTH/2;
+			int corePointerOffsetY = selDestinationOffset.y-CORE_POINTER_HEIGHT-POINTER_HEIGHT/2;
 			corePointerRect.offset(corePointerOffsetX,corePointerOffsetY);
 			
 			//  Setup the poi bloc coords
-			RectF coreBlocRect = new RectF(0,0,CORE_POI_BLOC_WIDTH,CORE_POI_BLOC_HEIGHT);
-			int coreBlocOffsetX = selDestinationOffset.x-CORE_POI_BLOC_WIDTH/2;
-			int coreBlocOffsetY = selDestinationOffset.y-CORE_POI_BLOC_HEIGHT-CORE_POI_POINTER_HEIGHT-POI_POINTER_HEIGHT/2;
+			RectF coreBlocRect = new RectF(0,0,CORE_BLOC_WIDTH,CORE_BLOC_HEIGHT);
+			int coreBlocOffsetX = selDestinationOffset.x-CORE_BLOC_WIDTH/2;
+			int coreBlocOffsetY = selDestinationOffset.y-CORE_BLOC_HEIGHT-CORE_POINTER_HEIGHT-POINTER_HEIGHT/2;
 			coreBlocRect.offset(coreBlocOffsetX,coreBlocOffsetY);
 			
 			/**
 			 * DRAW POI
 			 */
 			
-			// Draw Pointer Border
+			float points[] = {
+					pointerOffsetX,pointerOffsetY,
+				    pointerOffsetX+POINTER_WIDTH/2,pointerOffsetY+POINTER_HEIGHT,
+					pointerOffsetX+POINTER_WIDTH,pointerOffsetY,
+					blocOffsetX+BLOC_WIDTH,blocOffsetY,
+					blocOffsetX,blocOffsetY
+			};
+			
 			Path path = new Path();
-			path.moveTo(pointerOffsetX,pointerOffsetY);
-			float border[] = {pointerOffsetX+10,pointerOffsetY+20,
-					 pointerOffsetX+20,pointerOffsetY,
-					 pointerOffsetX,pointerOffsetY};
+			path.moveTo(blocOffsetX,blocOffsetY);
+			for (int i=0; i < points.length ;i+=2)
+				path.lineTo(points[i], points[i+1]);
+			path.lineTo(pointerOffsetX,pointerOffsetY);
 			
-			for (int i=0; i < border.length ;i+=2)
-				path.lineTo(border[i], border[i+1]);
-			canvas.drawPath(path, getBorderPaint());
-			
-			//  Draw inner info window
-			canvas.drawRect(blocRect, getInnerPaint());
-			
-			//  Draw border for info window
-			canvas.drawRect(blocRect, getBorderPaint());
-
-			// Draw Pointer inner
-			path = new Path();
-			pointerOffsetY = pointerOffsetY - 1;
-			path.moveTo(pointerOffsetX,pointerOffsetY);
-			float inner[] = {pointerOffsetX+10,pointerOffsetY+20,
-					 pointerOffsetX+20,pointerOffsetY,
-					 pointerOffsetX,pointerOffsetY};
-			
-			for (int i=0; i < border.length ;i+=2)
-				path.lineTo(inner[i], inner[i+1]);
+			canvas.drawPath(path, getBorderPaint());			
 			canvas.drawPath(path, getInnerPaint());
 			
 			/**
 			 * DRAW CORE
 			 */
 			
-			// Draw Pointer Border
-			Path corepath = new Path();
-			corepath.moveTo(corePointerOffsetX,corePointerOffsetY);
-			float coreborder[] = {corePointerOffsetX+5,corePointerOffsetY+10,
-					corePointerOffsetX+10,corePointerOffsetY,
-					corePointerOffsetX,corePointerOffsetY};
-			
-			for (int i=0; i < coreborder.length ;i+=2)
-				corepath.lineTo(coreborder[i], coreborder[i+1]);
-			canvas.drawPath(corepath, getBorderPaint());
-			
-			//  Draw inner info window
-			canvas.drawRect(coreBlocRect, getCorePaint());
-			
-			//  Draw border for info window
-			canvas.drawRect(coreBlocRect, getBorderPaint());
+			float corepoints[] = {
+					corePointerOffsetX,corePointerOffsetY,
+					corePointerOffsetX+CORE_POINTER_WIDTH/2,corePointerOffsetY+CORE_POINTER_HEIGHT,
+					corePointerOffsetX+CORE_POINTER_WIDTH,corePointerOffsetY,
+					coreBlocOffsetX+CORE_BLOC_WIDTH,coreBlocOffsetY,
+					coreBlocOffsetX,coreBlocOffsetY,
+			};
 
-			// Draw Pointer inner
-			corepath = new Path();
-			corePointerOffsetY = corePointerOffsetY - 1;
-			corepath.moveTo(corePointerOffsetX,corePointerOffsetY);
-			float coreinner[] = {corePointerOffsetX+5,corePointerOffsetY+10,
-					corePointerOffsetX+10,corePointerOffsetY,
-					corePointerOffsetX,corePointerOffsetY};
+			Path corepath = new Path();
+			corepath.moveTo(coreBlocOffsetX,coreBlocOffsetY);
+			for (int i=0; i < corepoints.length ;i+=2)
+				corepath.lineTo(corepoints[i], corepoints[i+1]);
+			corepath.lineTo(corePointerOffsetX,corePointerOffsetY);
 			
-			for (int i=0; i < coreborder.length ;i+=2)
-				corepath.lineTo(coreinner[i], coreinner[i+1]);
+			canvas.drawPath(corepath, getBorderPaint());			
 			canvas.drawPath(corepath, getCorePaint());
 		}
 	}
@@ -204,7 +178,7 @@ public abstract class MapPointOverlay extends Overlay {
 		Point screenCoords = new Point();
 		mapView.getProjection().toPixels(selectedMapLocation, screenCoords);
 		RectF hitTestRecr = new RectF();
-		hitTestRecr.set(-POI_BLOC_WIDTH/2,-(POI_BLOC_HEIGHT+POI_BLOC_HEIGHT),POI_BLOC_WIDTH/2,0);
+		hitTestRecr.set(-BLOC_WIDTH/2,-(BLOC_HEIGHT+BLOC_HEIGHT),BLOC_WIDTH/2,0);
 		hitTestRecr.offset(screenCoords.x,screenCoords.y);
 		mapView.getProjection().toPixels(p, screenCoords);
 		if (hitTestRecr.contains(screenCoords.x,screenCoords.y)) {

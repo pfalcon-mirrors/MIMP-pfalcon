@@ -19,7 +19,7 @@
     <string name="map_menu_infos">Infos</string>
     <string name="map_menu_perspective">Perspective</string>
     <string name="map_menu_settings">Préférences</string>
-    <string name="map_menu_load">Charger un fichier GPX/KML</string>
+    <string name="map_menu_load">Dé/Charger un fichier GPX/KML</string>
     <string name="map_menu_unload">Décharger le fichier GPX/KML</string>
 
     <string name="searchbox_title">Recherche</string>

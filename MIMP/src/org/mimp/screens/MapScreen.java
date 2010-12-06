@@ -13,9 +13,10 @@ import org.mapping.google.Route;
 import org.mapping.google.impl.DrivingDirectionsGoogleKML;
 import org.mapping.google.impl.Locator;
 import org.mimp.R;
-import org.mimp.displayables.DrawableMapOverlay;
 import org.mimp.displayables.LineMapOverlay;
 import org.mimp.displayables.OverlayGroup;
+import org.mimp.displayables.TrackEndPoint;
+import org.mimp.displayables.TrackStartPoint;
 import org.mimp.globals.S;
 import org.mimp.parser.GPXHandler;
 import org.mimp.parser.GPXHandlerImpl;
@@ -295,14 +296,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
                 android.R.drawable.ic_menu_revert);
         menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
         		android.R.drawable.ic_menu_search);
-        if (isTrackLoaded()) {
-	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unload).setIcon(
-	        		android.R.drawable.ic_menu_directions);
-        }
-        else {
-	        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_load).setIcon(
-	        		android.R.drawable.ic_menu_directions);
-        }
+        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unload).setIcon(
+        		android.R.drawable.ic_menu_directions);
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
         return true;
@@ -353,7 +348,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         return super.onOptionsItemSelected(item);
     }
     
-    private void loadTracksFile() { //TODO get rid of this ugly thing with same method as directions
+    private void loadTracksFile() { //TODO get rid of this ugly thing with selection screen
         try {
         	File root = Environment.getExternalStorageDirectory();
             String filename = root.getAbsolutePath() + File.separator;
@@ -378,13 +373,11 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo, mDisplay.getHeight(), mDisplay.getHeight());
             overlays.add(lineMapOverlay);
             
-            DrawableMapOverlay dmo = new DrawableMapOverlay();
-            dmo.setImageMapOverlay(getApplicationContext(), geo.get(0), R.drawable.bubble, DrawableMapOverlay.CENTER);
-            overlays.add(dmo);
-            
-            dmo = new DrawableMapOverlay();
-            dmo.setImageMapOverlay(getApplicationContext(), geo.get(geo.size()-1), R.drawable.bubble, DrawableMapOverlay.CENTER);
-            overlays.add(dmo);
+            TrackStartPoint startPoint = new TrackStartPoint(geo.get(0), getApplicationContext());
+            overlays.add(startPoint);
+
+            TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size()-1), getApplicationContext());
+            overlays.add(endPoint);
             
             setTrackLoaded(true);
             mMapView.invalidate();
@@ -400,6 +393,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             overlays.remove(1);
     	}
         setTrackLoaded(false);
+        mMapView.invalidate();
     }
     
     public boolean isTrackLoaded() {
@@ -547,10 +541,10 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     public void findDirectionsFromHereToY(GeoPoint end) {
     	String message = "";
     	if (mMapView.getLocationOverlay().getLastFix() == null) {
-    		message += getString(R.string.navigation_position_unavailable) + "\n";
+    		message += getString(R.string.navigation_position_unavailable);
     	}
     	if (end == null) {
-    		message += getString(R.string.navigation_destination_unavailable) + "\n";
+    		message += getString(R.string.navigation_destination_unavailable);
     	}
     	if (message.equals("") == false) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -605,13 +599,11 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo, mDisplay.getHeight(), mDisplay.getHeight());
         overlays.add(lineMapOverlay);
         
-        DrawableMapOverlay dmo = new DrawableMapOverlay();
-        dmo.setImageMapOverlay(getApplicationContext(), geo.get(0), R.drawable.bubble, DrawableMapOverlay.CENTER);
-        overlays.add(dmo);
-        
-        dmo = new DrawableMapOverlay();
-        dmo.setImageMapOverlay(getApplicationContext(), geo.get(geo.size()-1), R.drawable.bubble, DrawableMapOverlay.CENTER);
-        overlays.add(dmo);
+        TrackStartPoint startPoint = new TrackStartPoint(geo.get(0), getApplicationContext());
+        overlays.add(startPoint);
+
+        TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size()-1), getApplicationContext());
+        overlays.add(endPoint);
         
         mMapView.invalidate();
     }
