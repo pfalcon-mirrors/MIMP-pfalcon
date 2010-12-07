@@ -37,6 +37,13 @@ public class LineMapOverlay extends Overlay {
      * 
      *****************************************************************************/
 	
+	public LineMapOverlay() {
+        this.pathPaint = new Paint();
+		this.pathPaint.setAntiAlias(false);
+		this.pathPaint.setStrokeWidth(4);
+		this.pathPaint.setARGB(200, 100, 170, 240);
+	}
+	
     /**
      * @param context the context in which to display the overlay
      * @param geoPoint the geographical point where the overlay is located
@@ -44,10 +51,6 @@ public class LineMapOverlay extends Overlay {
      */
     public void setLineMapOverlay(Context context, List<GeoPoint> geoPoints, int height, int width) {
         this.geoPoints = new Vector<GeoPoint>(geoPoints);      
-		this.pathPaint = new Paint();
-		this.pathPaint.setAntiAlias(false);
-		this.pathPaint.setStrokeWidth(4);
-		this.pathPaint.setARGB(100, 113, 105, 252);
 	}
 
     public void setLineMapOverlay(Context context, Vector<GeoPointer> geoPoints, int height, int width) {
@@ -55,10 +58,6 @@ public class LineMapOverlay extends Overlay {
     	for (int i=0; i < geoPoints.size() ;i++) {
     		this.geoPoints.add(geoPoints.get(i));
     	}
-        this.pathPaint = new Paint();
-		this.pathPaint.setAntiAlias(false);
-		this.pathPaint.setStrokeWidth(4);
-		this.pathPaint.setARGB(100, 113, 105, 252);
 	}
 
     

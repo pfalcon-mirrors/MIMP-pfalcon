@@ -2,18 +2,25 @@ package org.mimp.adapters;
 
 import java.util.ArrayList;
 
+import org.mimp.R;
 import org.mimp.parser.GPXFile;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class TrackListAdapter extends BaseAdapter {
 
+	private Context mContext;
+	private LayoutInflater mInflater;
 	private ArrayList<GPXFile> mGpxFiles;
 	
-	public TrackListAdapter(ArrayList<GPXFile> gpxFiles) {
+	public TrackListAdapter(Context context, ArrayList<GPXFile> gpxFiles) {
 		mGpxFiles = gpxFiles;
+		mContext = context;
+		mInflater = LayoutInflater.from(mContext);
 	}
 	
 	@Override
@@ -33,7 +40,10 @@ public class TrackListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
+		if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.tracklistbody, parent);
+			
+		}
 		return null;
 	}
 

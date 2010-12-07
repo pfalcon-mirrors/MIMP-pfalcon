@@ -26,7 +26,6 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 		mExists = exists;
 		mInflater = LayoutInflater.from(mContext);
 		mAddress = ((Activity)mContext).getIntent().getStringArrayExtra("address");
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + mAddress);
 	}
 	
 	@Override

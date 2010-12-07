@@ -104,11 +104,12 @@ containing a value of this type.
         public static final int bubble_interactions_header_map=0x7f070007;
         public static final int bubble_interactions_map=0x7f070009;
         public static final int mapView=0x7f070010;
-        public static final int track_list_body_descr=0x7f070018;
-        public static final int track_list_body_layout=0x7f070014;
-        public static final int track_list_body_name=0x7f070017;
-        public static final int track_list_body_title=0x7f070016;
-        public static final int track_list_body_type=0x7f070015;
+        public static final int track_list=0x7f070014;
+        public static final int track_list_body_descr=0x7f070019;
+        public static final int track_list_body_layout=0x7f070015;
+        public static final int track_list_body_name=0x7f070018;
+        public static final int track_list_body_title=0x7f070017;
+        public static final int track_list_body_type=0x7f070016;
         public static final int zoom=0x7f070011;
     }
     public static final class layout {
@@ -119,7 +120,8 @@ containing a value of this type.
         public static final int imagebuttonlist=0x7f030004;
         public static final int map=0x7f030005;
         public static final int settings=0x7f030006;
-        public static final int tracklistbody=0x7f030007;
+        public static final int tracklist=0x7f030007;
+        public static final int tracklistbody=0x7f030008;
     }
     public static final class string {
         public static final int about=0x7f060001;
