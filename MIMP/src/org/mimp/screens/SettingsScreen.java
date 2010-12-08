@@ -11,18 +11,18 @@ public class SettingsScreen extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-    	super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         showSettingsScreen();
     }
 
     private void showSettingsScreen() {
-    	addPreferencesFromResource(R.xml.preferences);
-	}
+        addPreferencesFromResource(R.xml.preferences);
+    }
 
-	/**
-	 * Handle physical Back button pression
-	 */
-	public void onBackPressed() {
-		finish();
-	}
+    /**
+     * Handle physical Back button pression
+     */
+    public void onBackPressed() {
+        finish();
+    }
 }

@@ -51,22 +51,19 @@ final class SmoothCanvas extends Canvas {
         return delegate.saveLayer(bounds, paint, saveFlags);
     }
 
-    public int saveLayer(float left, float top, float right, float
-            bottom, Paint paint,
-            int saveFlags) {
-        return delegate.saveLayer(left, top, right, bottom, paint,
-                saveFlags);
+    public int saveLayer(float left, float top, float right, float bottom,
+            Paint paint, int saveFlags) {
+        return delegate.saveLayer(left, top, right, bottom, paint, saveFlags);
     }
 
     public int saveLayerAlpha(RectF bounds, int alpha, int saveFlags) {
         return delegate.saveLayerAlpha(bounds, alpha, saveFlags);
     }
 
-    public int saveLayerAlpha(float left, float top, float right,
-            float bottom, int alpha,
-            int saveFlags) {
-        return delegate.saveLayerAlpha(left, top, right, bottom,
-                alpha, saveFlags);
+    public int saveLayerAlpha(float left, float top, float right, float bottom,
+            int alpha, int saveFlags) {
+        return delegate.saveLayerAlpha(left, top, right, bottom, alpha,
+                saveFlags);
     }
 
     public void restore() {
@@ -125,13 +122,12 @@ final class SmoothCanvas extends Canvas {
         return delegate.clipRect(rect);
     }
 
-    public boolean clipRect(float left, float top, float right,
-            float bottom, Region.Op op) {
+    public boolean clipRect(float left, float top, float right, float bottom,
+            Region.Op op) {
         return delegate.clipRect(left, top, right, bottom, op);
     }
 
-    public boolean clipRect(float left, float top, float right,
-            float bottom) {
+    public boolean clipRect(float left, float top, float right, float bottom) {
         return delegate.clipRect(left, top, right, bottom);
     }
 
@@ -176,8 +172,7 @@ final class SmoothCanvas extends Canvas {
     }
 
     public boolean quickReject(float left, float top, float right,
-            float bottom,
-            EdgeType type) {
+            float bottom, EdgeType type) {
         return delegate.quickReject(left, top, right, bottom, type);
     }
 
@@ -205,8 +200,7 @@ final class SmoothCanvas extends Canvas {
         delegate.drawPaint(paint);
     }
 
-    public void drawPoints(float[] pts, int offset, int count,
-            Paint paint) {
+    public void drawPoints(float[] pts, int offset, int count, Paint paint) {
         delegate.drawPoints(pts, offset, count, paint);
     }
 
@@ -218,8 +212,8 @@ final class SmoothCanvas extends Canvas {
         delegate.drawPoint(x, y, paint);
     }
 
-    public void drawLine(float startX, float startY, float stopX,
-            float stopY, Paint paint) {
+    public void drawLine(float startX, float startY, float stopX, float stopY,
+            Paint paint) {
         delegate.drawLine(startX, startY, stopX, stopY, paint);
     }
 
@@ -239,8 +233,8 @@ final class SmoothCanvas extends Canvas {
         delegate.drawRect(r, paint);
     }
 
-    public void drawRect(float left, float top, float right, float
-            bottom, Paint paint) {
+    public void drawRect(float left, float top, float right, float bottom,
+            Paint paint) {
         delegate.drawRect(left, top, right, bottom, paint);
     }
 
@@ -252,9 +246,8 @@ final class SmoothCanvas extends Canvas {
         delegate.drawCircle(cx, cy, radius, paint);
     }
 
-    public void drawArc(RectF oval, float startAngle, float
-            sweepAngle, boolean useCenter,
-            Paint paint) {
+    public void drawArc(RectF oval, float startAngle, float sweepAngle,
+            boolean useCenter, Paint paint) {
         delegate.drawArc(oval, startAngle, sweepAngle, useCenter, paint);
     }
 
@@ -266,21 +259,21 @@ final class SmoothCanvas extends Canvas {
         delegate.drawPath(path, paint);
     }
 
-    public void drawBitmap(Bitmap bitmap, float left, float top,
-            Paint paint) {
+    public void drawBitmap(Bitmap bitmap, float left, float top, Paint paint) {
         if (paint == null) {
             paint = mSmooth;
-        } else {
+        }
+        else {
             paint.setFilterBitmap(true);
         }
         delegate.drawBitmap(bitmap, left, top, paint);
     }
 
-    public void drawBitmap(Bitmap bitmap, Rect src, RectF dst,
-            Paint paint) {
+    public void drawBitmap(Bitmap bitmap, Rect src, RectF dst, Paint paint) {
         if (paint == null) {
             paint = mSmooth;
-        } else {
+        }
+        else {
             paint.setFilterBitmap(true);
         }
         delegate.drawBitmap(bitmap, src, dst, paint);
@@ -289,53 +282,53 @@ final class SmoothCanvas extends Canvas {
     public void drawBitmap(Bitmap bitmap, Rect src, Rect dst, Paint paint) {
         if (paint == null) {
             paint = mSmooth;
-        } else {
+        }
+        else {
             paint.setFilterBitmap(true);
         }
         delegate.drawBitmap(bitmap, src, dst, paint);
     }
 
-    public void drawBitmap(int[] colors, int offset, int stride,
-            int x, int y, int width,
-            int height, boolean hasAlpha, Paint paint) {
+    public void drawBitmap(int[] colors, int offset, int stride, int x, int y,
+            int width, int height, boolean hasAlpha, Paint paint) {
         if (paint == null) {
             paint = mSmooth;
-        } else {
+        }
+        else {
             paint.setFilterBitmap(true);
         }
-        delegate.drawBitmap(colors, offset, stride, x, y, width,
-                height, hasAlpha, paint);
+        delegate.drawBitmap(colors, offset, stride, x, y, width, height,
+                hasAlpha, paint);
     }
 
     public void drawBitmap(Bitmap bitmap, Matrix matrix, Paint paint) {
         if (paint == null) {
             paint = mSmooth;
-        } else {
+        }
+        else {
             paint.setFilterBitmap(true);
         }
         delegate.drawBitmap(bitmap, matrix, paint);
     }
 
-    public void drawBitmapMesh(Bitmap bitmap, int meshWidth, int
-            meshHeight, float[] verts,
-            int vertOffset, int[] colors, int colorOffset, Paint paint) {
-        delegate.drawBitmapMesh(bitmap, meshWidth, meshHeight,
-                verts, vertOffset, colors,
-                colorOffset, paint);
+    public void drawBitmapMesh(Bitmap bitmap, int meshWidth, int meshHeight,
+            float[] verts, int vertOffset, int[] colors, int colorOffset,
+            Paint paint) {
+        delegate.drawBitmapMesh(bitmap, meshWidth, meshHeight, verts,
+                vertOffset, colors, colorOffset, paint);
     }
 
-    public void drawVertices(VertexMode mode, int vertexCount,
-            float[] verts, int vertOffset,
-            float[] texs, int texOffset, int[] colors, int
-            colorOffset, short[] indices,
-            int indexOffset, int indexCount, Paint paint) {
-        delegate.drawVertices(mode, vertexCount, verts,
-                vertOffset, texs, texOffset, colors,
-                colorOffset, indices, indexOffset, indexCount, paint);
+    public void drawVertices(VertexMode mode, int vertexCount, float[] verts,
+            int vertOffset, float[] texs, int texOffset, int[] colors,
+            int colorOffset, short[] indices, int indexOffset, int indexCount,
+            Paint paint) {
+        delegate.drawVertices(mode, vertexCount, verts, vertOffset, texs,
+                texOffset, colors, colorOffset, indices, indexOffset,
+                indexCount, paint);
     }
 
-    public void drawText(char[] text, int index, int count, float
-            x, float y, Paint paint) {
+    public void drawText(char[] text, int index, int count, float x, float y,
+            Paint paint) {
         delegate.drawText(text, index, count, x, y, paint);
     }
 
@@ -343,18 +336,18 @@ final class SmoothCanvas extends Canvas {
         delegate.drawText(text, x, y, paint);
     }
 
-    public void drawText(String text, int start, int end, float x,
+    public void drawText(String text, int start, int end, float x, float y,
+            Paint paint) {
+        delegate.drawText(text, start, end, x, y, paint);
+    }
+
+    public void drawText(CharSequence text, int start, int end, float x,
             float y, Paint paint) {
         delegate.drawText(text, start, end, x, y, paint);
     }
 
-    public void drawText(CharSequence text, int start, int end,
-            float x, float y, Paint paint) {
-        delegate.drawText(text, start, end, x, y, paint);
-    }
-
-    public void drawPosText(char[] text, int index, int count,
-            float[] pos, Paint paint) {
+    public void drawPosText(char[] text, int index, int count, float[] pos,
+            Paint paint) {
         delegate.drawPosText(text, index, count, pos, paint);
     }
 
@@ -362,16 +355,14 @@ final class SmoothCanvas extends Canvas {
         delegate.drawPosText(text, pos, paint);
     }
 
-    public void drawTextOnPath(char[] text, int index, int count,
-            Path path, float hOffset,
-            float vOffset, Paint paint) {
-        delegate.drawTextOnPath(text, index, count, path, hOffset,
-                vOffset, paint);
+    public void drawTextOnPath(char[] text, int index, int count, Path path,
+            float hOffset, float vOffset, Paint paint) {
+        delegate.drawTextOnPath(text, index, count, path, hOffset, vOffset,
+                paint);
     }
 
-    public void drawTextOnPath(String text, Path path, float
-            hOffset, float vOffset,
-            Paint paint) {
+    public void drawTextOnPath(String text, Path path, float hOffset,
+            float vOffset, Paint paint) {
         delegate.drawTextOnPath(text, path, hOffset, vOffset, paint);
     }
 

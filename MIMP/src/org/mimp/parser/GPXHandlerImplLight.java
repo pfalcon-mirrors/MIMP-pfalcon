@@ -91,22 +91,26 @@ public abstract class GPXHandlerImplLight implements GPXHandler {
         float minlat, minlon, maxlat, maxlon = 0;
         if (meta.getValue("minlat") == null) {
             minlat = 0;
-        } else {
+        }
+        else {
             minlat = Float.parseFloat(meta.getValue("minlat"));
         }
         if (meta.getValue("maxlat") == null) {
             maxlat = 0;
-        } else {
+        }
+        else {
             maxlat = Float.parseFloat(meta.getValue("maxlat"));
         }
         if (meta.getValue("minlon") == null) {
             minlon = 0;
-        } else {
+        }
+        else {
             minlon = Float.parseFloat(meta.getValue("minlon"));
         }
         if (meta.getValue("maxlon") == null) {
             maxlon = 0;
-        } else {
+        }
+        else {
             maxlon = Float.parseFloat(meta.getValue("maxlon"));
         }
         gpxa.setLatLon(minlat, maxlat, minlon, maxlon);
@@ -125,7 +129,8 @@ public abstract class GPXHandlerImplLight implements GPXHandler {
         if (inCopyright) {
             if (data == null) {
                 gpxa.setYear("");
-            } else {
+            }
+            else {
                 gpxa.setYear(data);
             }
         }

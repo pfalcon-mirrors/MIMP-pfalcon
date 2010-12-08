@@ -52,7 +52,8 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView.LayoutParams;
 import com.google.android.maps.Overlay;
 
-public class MapScreen extends MapActivity implements LocationListener, IDirectionsListener {
+public class MapScreen extends MapActivity implements LocationListener,
+        IDirectionsListener {
 
     private boolean ROUTE = false;
 
@@ -61,9 +62,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private LocationManager mLocationManager;
     private WindowManager mWindowManager;
     private Display mDisplay;
-	private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
+    private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
     private Locator mLocator;
-	private boolean mTrackLoaded;
+    private boolean mTrackLoaded;
 
     /*****************************************************************************
      * 
@@ -86,7 +87,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         setContentView(R.layout.map);
         mMapView = (ExtendedMapView) findViewById(R.id.mapView);
         mMapController = mMapView.getController();
-        
+
         LinearLayout zoomLayout = (LinearLayout) findViewById(R.id.zoom);
         View zoomView = mMapView.getZoomControls();
 
@@ -95,9 +96,10 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         mMapView.displayZoomControls(true);
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        
+
         mLocator = new Locator(this, mMapView);
-        mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory.createDrivingDirections();
+        mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory
+                .createDrivingDirections();
         mTrackLoaded = false;
 
         /**
@@ -109,28 +111,29 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     /**
      * handling different relsults of other activities (add poi, waypoint, ... )
      */
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	System.out.println("requestCode : " + requestCode + " resultCode : " + resultCode);
-    	if (requestCode == S.BubbleInteractionScreen_RQC) {
-    		if (resultCode == S.BubbleInteractionScreen_DIRECTIONS) {
-    			int[] coords = data.getIntArrayExtra("coords");
-    			findDirectionsFromHereToY(new GeoPoint(coords[0], coords[1]));
-    		}
-    		else if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
-    			int[] coords = data.getIntArrayExtra("coords");
-    			addWaypoint(new GeoPoint(coords[0], coords[1]));
-    		}
-    	}
-    	super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("requestCode : " + requestCode + " resultCode : "
+                + resultCode);
+        if (requestCode == S.BubbleInteractionScreen_RQC) {
+            if (resultCode == S.BubbleInteractionScreen_DIRECTIONS) {
+                int[] coords = data.getIntArrayExtra("coords");
+                findDirectionsFromHereToY(new GeoPoint(coords[0], coords[1]));
+            }
+            else if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
+                int[] coords = data.getIntArrayExtra("coords");
+                addWaypoint(new GeoPoint(coords[0], coords[1]));
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
-    
-	@Override
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
-    	outState.putBoolean("isNew", false);
-    	
-    	super.onSaveInstanceState(outState);
+        outState.putBoolean("isNew", false);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -140,7 +143,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         }
         super.onDestroy();
     }
-    
+
     private void doChecks() {
         checkMapStyle();
         checkCompass();
@@ -172,7 +175,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         boolean mode = settings.getBoolean("compass", false);
         if (mode) {
             enableCompass();
-        } else {
+        }
+        else {
             disableCompass();
         }
     }
@@ -182,7 +186,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         boolean mode = settings.getBoolean("listener", false);
         if (mode) {
             enableLocationListener();
-        } else {
+        }
+        else {
             disableLocationListener();
         }
     }
@@ -192,7 +197,8 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         boolean mode = settings.getBoolean("perspective", false);
         if (mode) {
             mMapView.setPerspective(true);
-        } else {
+        }
+        else {
             mMapView.setPerspective(false);
         }
     }
@@ -202,27 +208,28 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         boolean mode = settings.getBoolean("follow", false);
         if (mode) {
             enableFollow();
-        } else {
+        }
+        else {
             disableFollow();
         }
     }
-    
+
     private DrivingDirections.Mode getDirectionsMode() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
         String mode = settings.getString("map_directions_mode", "car");
         if (mode.equals("foot")) {
-        	return Mode.WALKING;
+            return Mode.WALKING;
         }
         else if (mode.equals("bus")) {
-        	return Mode.BUS;
+            return Mode.BUS;
         }
         else {
-        	return Mode.DRIVING;
+            return Mode.DRIVING;
         }
     }
 
     private void checkTrack() {
-        //TODO: check whenever a track should be displayed from a search
+        // TODO: check whenever a track should be displayed from a search
     }
 
     /*****************************************************************************
@@ -238,15 +245,18 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     private void showSettings() {
         startActivity(new Intent(MapScreen.this, SettingsScreen.class));
     }
-    
+
     private void showInfo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Map In My Poket").setMessage(R.string.about).setCancelable(false)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+        builder.setTitle("Map In My Poket")
+                .setMessage(R.string.about)
+                .setCancelable(false)
+                .setNeutralButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -267,22 +277,22 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         MapController mc = mMapView.getController();
         switch (keyCode) {
-        case KeyEvent.KEYCODE_PLUS:
-            mc.zoomIn();
-            return true;
-        case KeyEvent.KEYCODE_MINUS:
-            mc.zoomOut();
-            return true;
-        case KeyEvent.KEYCODE_SEARCH:
-            onSearchRequested();
-            return true;
+            case KeyEvent.KEYCODE_PLUS:
+                mc.zoomIn();
+                return true;
+            case KeyEvent.KEYCODE_MINUS:
+                mc.zoomOut();
+                return true;
+            case KeyEvent.KEYCODE_SEARCH:
+                onSearchRequested();
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
     /**
      * Creates the menu items when Menu button is pressed
-     */    
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, S.POS, 0, R.string.map_menu_position).setIcon(
                 android.R.drawable.ic_menu_mylocation);
@@ -295,9 +305,9 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         menu.add(2, S.MODE, 0, R.string.map_menu_perspective).setIcon(
                 android.R.drawable.ic_menu_revert);
         menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
-        		android.R.drawable.ic_menu_search);
+                android.R.drawable.ic_menu_search);
         menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unload).setIcon(
-        		android.R.drawable.ic_menu_directions);
+                android.R.drawable.ic_menu_directions);
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
         return true;
@@ -308,49 +318,53 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case S.MAP:
-            changeMapStyle();
-            return true;
-        case S.SET:
-            showSettings();
-            return true;
-        case S.POS:
-            if (isListening()) {
-                disableLocationListener();
-            } else {
-                enableLocationListener();
-            }
-            return true;
-        case S.COMPASS:
-            if (isCompassEnabled()) {
-                disableCompass();
-            } else {
-                enableCompass();
-            }
-            return true;
-        case S.INFO:
-            showInfo();
-            return true;
-        case S.MODE:
-            changePerspective();
-            return true;
-        case S.SEARCH:
-        	onSearchRequested();
-        	return true;
-        case S.LOADTRKFILE:
-        	if (isTrackLoaded()) {
-        		unloadTracks();
-        	} else {
-        		loadTracksFile();
-        	}
-        	return true;
+            case S.MAP:
+                changeMapStyle();
+                return true;
+            case S.SET:
+                showSettings();
+                return true;
+            case S.POS:
+                if (isListening()) {
+                    disableLocationListener();
+                }
+                else {
+                    enableLocationListener();
+                }
+                return true;
+            case S.COMPASS:
+                if (isCompassEnabled()) {
+                    disableCompass();
+                }
+                else {
+                    enableCompass();
+                }
+                return true;
+            case S.INFO:
+                showInfo();
+                return true;
+            case S.MODE:
+                changePerspective();
+                return true;
+            case S.SEARCH:
+                onSearchRequested();
+                return true;
+            case S.LOADTRKFILE:
+                if (isTrackLoaded()) {
+                    unloadTracks();
+                }
+                else {
+                    loadTracksFile();
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    private void loadTracksFile() { //TODO get rid of this ugly thing with selection screen
+
+    private void loadTracksFile() { // TODO get rid of this ugly thing with
+                                    // selection screen
         try {
-        	File root = Environment.getExternalStorageDirectory();
+            File root = Environment.getExternalStorageDirectory();
             String filename = root.getAbsolutePath() + File.separator;
             filename += "Tracks" + File.separator;
             filename += "track.gpx";
@@ -362,7 +376,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             parser.parse(is);
             GPXObject gpxObject = handler.getGPXObject();
             System.out.println(gpxObject);
-            
+
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
 
@@ -370,41 +384,45 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
             List<Overlay> overlays = mMapView.getOverlays();
 
             LineMapOverlay lineMapOverlay = new LineMapOverlay();
-            lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo, mDisplay.getHeight(), mDisplay.getHeight());
+            lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
+                    mDisplay.getHeight(), mDisplay.getHeight());
             overlays.add(lineMapOverlay);
-            
-            TrackStartPoint startPoint = new TrackStartPoint(geo.get(0), getApplicationContext());
+
+            TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
+                    getApplicationContext());
             overlays.add(startPoint);
 
-            TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size()-1), getApplicationContext());
+            TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size() - 1),
+                    getApplicationContext());
             overlays.add(endPoint);
-            
+
             setTrackLoaded(true);
             mMapView.invalidate();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-	}
-    
+    }
+
     private void unloadTracks() {
-    	List<Overlay> overlays = mMapView.getOverlays();
-    	int size = overlays.size();
-    	for (int i=1; i<size ;i++) {
+        List<Overlay> overlays = mMapView.getOverlays();
+        int size = overlays.size();
+        for (int i = 1; i < size; i++) {
             overlays.remove(1);
-    	}
+        }
         setTrackLoaded(false);
         mMapView.invalidate();
     }
-    
+
     public boolean isTrackLoaded() {
-    	return mTrackLoaded;
-    }
-    
-    public void setTrackLoaded(boolean value) {
-    	mTrackLoaded = value;
+        return mTrackLoaded;
     }
 
-	/*****************************************************************************
+    public void setTrackLoaded(boolean value) {
+        mTrackLoaded = value;
+    }
+
+    /*****************************************************************************
      * 
      * User configuration changes
      * 
@@ -431,7 +449,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         editor.putBoolean("perspective", !mode);
         editor.commit();
     }
-    
+
     protected void displayLocation(List<Address> addresses, int arg2) {
         Address address = addresses.get(arg2);
         Double lat = address.getLatitude() * 1E6;
@@ -439,7 +457,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
         mMapController.animateTo(point);
     }
-    
+
     public void enableLocationListener() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
@@ -499,7 +517,7 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         editor.putBoolean("follow", false);
         editor.commit();
     }
-    
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
@@ -526,69 +544,75 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         // TODO Auto-generated method stub
     }
 
-    
-	/*****************************************************************************
+    /*****************************************************************************
      * 
      * Directions
      * 
      *****************************************************************************/
 
-    
-    public void addWaypoint (GeoPoint end) {
-    	
+    public void addWaypoint(GeoPoint end) {
+
     }
-    
+
     public void findDirectionsFromHereToY(GeoPoint end) {
-    	String message = "";
-    	if (mMapView.getLocationOverlay().getLastFix() == null) {
-    		message += getString(R.string.navigation_position_unavailable);
-    	}
-    	if (end == null) {
-    		message += getString(R.string.navigation_destination_unavailable);
-    	}
-    	if (message.equals("") == false) {
+        String message = "";
+        if (mMapView.getLocationOverlay().getLastFix() == null) {
+            message += getString(R.string.navigation_position_unavailable);
+        }
+        if (end == null) {
+            message += getString(R.string.navigation_destination_unavailable);
+        }
+        if (message.equals("") == false) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.error).setMessage(message).setCancelable(false)
-                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
+            builder.setTitle(R.string.error)
+                    .setMessage(message)
+                    .setCancelable(false)
+                    .setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    dialog.dismiss();
+                                }
+                            });
             AlertDialog alert = builder.create();
             alert.show();
-    		return;
-    	}
-    	Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
-    	Location location = mMapView.getLocationOverlay().getLastFix();
-    	GeoPoint start = new GeoPointer(location.getLatitude(), location.getLongitude());
+            return;
+        }
+        Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
+        Location location = mMapView.getLocationOverlay().getLastFix();
+        GeoPoint start = new GeoPointer(location.getLatitude(),
+                location.getLongitude());
         geoPoints.add(start);
         geoPoints.add(end);
         mMapView.getOverlayGroup().clear();
         mDirectionsGoogleKML.driveTo(geoPoints, getDirectionsMode(), this);
     }
-    
+
     public void findDirectionsFromXToY(GeoPoint start, GeoPoint end) {
         Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
         geoPoints.add(start);
         geoPoints.add(end);
         mDirectionsGoogleKML.driveTo(geoPoints, getDirectionsMode(), this);
     }
-    
+
     @Override
     public void onDirectionsAvailable(Route route, Mode mode) {
-    	if (route == null) {
+        if (route == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.error).setMessage(R.string.navigation_destination_unavailable)
-            		.setCancelable(false)
-                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
+            builder.setTitle(R.string.error)
+                    .setMessage(R.string.navigation_destination_unavailable)
+                    .setCancelable(false)
+                    .setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                        int id) {
+                                    dialog.dismiss();
+                                }
+                            });
             AlertDialog alert = builder.create();
             alert.show();
-    		return;
-    	}
+            return;
+        }
         mWindowManager = getWindowManager();
         mDisplay = mWindowManager.getDefaultDisplay();
 
@@ -596,20 +620,23 @@ public class MapScreen extends MapActivity implements LocationListener, IDirecti
         OverlayGroup overlays = mMapView.getOverlayGroup();
 
         LineMapOverlay lineMapOverlay = new LineMapOverlay();
-        lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo, mDisplay.getHeight(), mDisplay.getHeight());
+        lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
+                mDisplay.getHeight(), mDisplay.getHeight());
         overlays.add(lineMapOverlay);
-        
-        TrackStartPoint startPoint = new TrackStartPoint(geo.get(0), getApplicationContext());
+
+        TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
+                getApplicationContext());
         overlays.add(startPoint);
 
-        TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size()-1), getApplicationContext());
+        TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size() - 1),
+                getApplicationContext());
         overlays.add(endPoint);
-        
+
         mMapView.invalidate();
     }
 
     @Override
     public void onDirectionsNotAvailable() {
-        
+
     }
 }

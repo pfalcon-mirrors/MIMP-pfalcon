@@ -33,7 +33,8 @@ public class Gmaps {
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println(e.toString());
         }
         return aa;

@@ -50,23 +50,28 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inMetadata) {
             if (inAuthor) {
                 gpxa.setAuthor(data);
-            } else if (inGPXInfos) {
+            }
+            else if (inGPXInfos) {
                 gpxa.addGpxInfoName(meta.getValue("lang"), data);
             }
-        } else if (inWPT) {
+        }
+        else if (inWPT) {
             if (inWPTInfos) {
                 poi.addName(meta.getValue("lang"), data);
             }
             if (inMedia) {
                 if (inSource) {
                     media.setSourceName(data);
-                } else if (inPublisher) {
+                }
+                else if (inPublisher) {
                     media.setPubName(data);
-                } else if (inAuthor) {
+                }
+                else if (inAuthor) {
                     media.setAuthName(data);
                 }
             }
-        } else if (inRTE) {
+        }
+        else if (inRTE) {
             route.addGpxRteInfoName(meta.getValue("name"), data);
         }
     }
@@ -77,13 +82,16 @@ public class GPXHandlerImpl implements GPXHandler {
             if (inGPXInfos) {
                 if (meta.getValue("lang") == null) {
                     gpxa.addGpxInfoDescr("all", "");
-                } else {
+                }
+                else {
                     gpxa.addGpxInfoDescr(meta.getValue("lang"), data);
                 }
-            } else {
+            }
+            else {
                 if (meta.getValue("lang") == null) {
                     gpxa.setDescr("");
-                } else {
+                }
+                else {
                     gpxa.setDescr(data);
                 }
             }
@@ -91,7 +99,8 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inWPT) {
             if (meta.getValue("lang") == null) {
                 poi.addDesc("all", "");
-            } else {
+            }
+            else {
                 poi.addDesc(meta.getValue("lang"), data);
             }
         }
@@ -117,7 +126,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (data != null) {
             track.setEleMin(Integer.parseInt(data));
-        } else {
+        }
+        else {
             track.setEleMin(0);
         }
     }
@@ -126,7 +136,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (data != null) {
             track.setEleMax(Integer.parseInt(data));
-        } else {
+        }
+        else {
             track.setEleMax(0);
         }
     }
@@ -143,22 +154,26 @@ public class GPXHandlerImpl implements GPXHandler {
         float minlat, minlon, maxlat, maxlon = 0;
         if (meta.getValue("minlat") == null) {
             minlat = 0;
-        } else {
+        }
+        else {
             minlat = Float.parseFloat(meta.getValue("minlat"));
         }
         if (meta.getValue("maxlat") == null) {
             maxlat = 0;
-        } else {
+        }
+        else {
             maxlat = Float.parseFloat(meta.getValue("maxlat"));
         }
         if (meta.getValue("minlon") == null) {
             minlon = 0;
-        } else {
+        }
+        else {
             minlon = Float.parseFloat(meta.getValue("minlon"));
         }
         if (meta.getValue("maxlon") == null) {
             maxlon = 0;
-        } else {
+        }
+        else {
             maxlon = Float.parseFloat(meta.getValue("maxlon"));
         }
         gpxa.setLatLon(minlat, maxlat, minlon, maxlon);
@@ -205,13 +220,16 @@ public class GPXHandlerImpl implements GPXHandler {
             if (inWPTInfos) {
                 if (data == null) {
                     poi.setInfosSym("");
-                } else {
+                }
+                else {
                     poi.setInfosSym(data);
                 }
-            } else {
+            }
+            else {
                 if (data == null) {
                     poi.setSym("");
-                } else {
+                }
+                else {
                     poi.setSym(data);
                 }
             }
@@ -224,13 +242,16 @@ public class GPXHandlerImpl implements GPXHandler {
             if (inMedia) {
                 if (data == null) {
                     media.setType("");
-                } else {
+                }
+                else {
                     media.setType(data);
                 }
-            } else {
+            }
+            else {
                 if (data == null) {
                     poi.setType("");
-                } else {
+                }
+                else {
                     poi.setType(data);
                 }
             }
@@ -259,7 +280,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (inTRK) {
             track.setDistance(Integer.parseInt(data));
-        } else if (inRTE) {
+        }
+        else if (inRTE) {
             route.setDistance(Integer.parseInt(data));
         }
     }
@@ -269,7 +291,8 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inWPT) {
             if (data == null) {
                 pointer.setTime("");
-            } else {
+            }
+            else {
                 pointer.setTime(data);
             }
         }
@@ -279,7 +302,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (data == null) {
             media.setTitle("");
-        } else {
+        }
+        else {
             media.setTitle(data);
         }
     }
@@ -297,13 +321,16 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inTrkInfos) {
             if (data == null) {
                 track.setActivity(0);
-            } else {
+            }
+            else {
                 track.setActivity(Integer.valueOf(data));
             }
-        } else if (inRTEInfos) {
+        }
+        else if (inRTEInfos) {
             if (data == null) {
                 route.setActivity(0);
-            } else {
+            }
+            else {
                 route.setActivity(Integer.valueOf(data));
             }
         }
@@ -314,7 +341,8 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inCopyright) {
             if (data == null) {
                 gpxa.setYear("");
-            } else {
+            }
+            else {
                 gpxa.setYear(data);
             }
         }
@@ -334,7 +362,8 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inTrkInfos) {
             if (data == null) {
                 track.setRealdistance(0);
-            } else {
+            }
+            else {
                 track.setRealdistance(Integer.valueOf(data));
             }
         }
@@ -345,13 +374,16 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inTrkpt) {
             if (data == null) {
                 pointer.setElevation(0.0f);
-            } else {
+            }
+            else {
                 pointer.setElevation(Float.valueOf(data).floatValue());
             }
-        } else if (inRTEpt) {
+        }
+        else if (inRTEpt) {
             if (data == null) {
                 pointer.setElevation(0.0f);
-            } else {
+            }
+            else {
                 pointer.setElevation(Float.valueOf(data).floatValue());
             }
         }
@@ -362,13 +394,16 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inTrkInfos) {
             if (data == null) {
                 track.setThl(0);
-            } else {
+            }
+            else {
                 track.setThl(Integer.valueOf(data));
             }
-        } else if (inRTEInfos) {
+        }
+        else if (inRTEInfos) {
             if (data == null) {
                 route.setThl(0);
-            } else {
+            }
+            else {
                 route.setThl(Integer.valueOf(data));
             }
         }
@@ -376,9 +411,9 @@ public class GPXHandlerImpl implements GPXHandler {
 
     public void start_trkpt(final AttributeList meta) throws SAXException {
         inTrkpt = true;
-        pointer = new GeoPointer((int) (Double
-                .parseDouble(meta.getValue("lat")) * 1E6), (int) (Double
-                .parseDouble(meta.getValue("lon")) * 1E6));
+        pointer = new GeoPointer(
+                (int) (Double.parseDouble(meta.getValue("lat")) * 1E6),
+                (int) (Double.parseDouble(meta.getValue("lon")) * 1E6));
     }
 
     public void end_trkpt() throws SAXException {
@@ -397,7 +432,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (inTrkInfos) {
             track.setThg(Integer.valueOf(data));
-        } else if (inRTEInfos) {
+        }
+        else if (inRTEInfos) {
             route.setThg(Integer.valueOf(data));
         }
     }
@@ -428,11 +464,14 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inMedia) {
             if (inSource) {
                 media.setSourceUrl(data);
-            } else if (inPublisher) {
+            }
+            else if (inPublisher) {
                 media.setPubUrl(data);
-            } else if (inAuthor) {
+            }
+            else if (inAuthor) {
                 media.setAuthUrl(data);
-            } else {
+            }
+            else {
                 media.setUrl(data);
             }
         }
@@ -453,16 +492,17 @@ public class GPXHandlerImpl implements GPXHandler {
                 track.setDuration(-1);
             else
                 track.setDuration(Integer.valueOf(data));
-        } else if (inRTEInfos) {
+        }
+        else if (inRTEInfos) {
             route.setDuration(Integer.valueOf(data));
         }
     }
 
     public void start_rtept(final AttributeList meta) throws SAXException {
         inRTEpt = true;
-        pointer = new GeoPointer((int) (Double
-                .parseDouble(meta.getValue("lat")) * 1E6), (int) (Double
-                .parseDouble(meta.getValue("lon")) * 1E6));
+        pointer = new GeoPointer(
+                (int) (Double.parseDouble(meta.getValue("lat")) * 1E6),
+                (int) (Double.parseDouble(meta.getValue("lon")) * 1E6));
     }
 
     public void end_rtept() throws SAXException {
@@ -529,7 +569,8 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (data == null) {
             media.setContent("");
-        } else {
+        }
+        else {
             media.setContent(data);
         }
     }

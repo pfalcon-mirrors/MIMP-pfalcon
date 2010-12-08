@@ -12,9 +12,9 @@ public class S {
     /**
      * preferences filename
      */
-    
+
     public static final String PREFS_NAME = "Preferences";
-    
+
     /**
      * MENU
      */
@@ -31,17 +31,16 @@ public class S {
     /**
      * RequestCodes
      */
-    
+
     public static final int BubbleInteractionScreen_RQC = 1;
 
     /**
      * ResultCodes = RequestCode + 100 to RequestCode + 199
      */
-	
+
     public static final int BubbleInteractionScreen_DIRECTIONS = 100;
     public static final int BubbleInteractionScreen_WAYPOINT = 101;
-	
-    
+
     /**
      * database connection
      */
@@ -49,5 +48,6 @@ public class S {
     public static final String DATABASE_NAME = "gpsdata.db";
     public static final int DATABASE_VERSION = 1;
     public static final String AUTHORITY = "org.mimp";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/gpspoint");
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
+            + "/gpspoint");
 }

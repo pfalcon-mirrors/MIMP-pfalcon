@@ -4,33 +4,32 @@ import org.mapping.google.Placemark;
 
 import com.google.android.maps.GeoPoint;
 
+public class PlacemarkImpl implements Placemark {
+    private GeoPoint location;
+    private String instructions;
+    private String distance;
 
-public class PlacemarkImpl implements Placemark
-{
-	private GeoPoint location;
-	private String instructions;
-	private String distance;
-	
-	public void setLocation(GeoPoint location) {
-		this.location = location;
-	}
+    public void setLocation(GeoPoint location) {
+        this.location = location;
+    }
 
-	public GeoPoint getLocation() {
-		return location;
-	}
-	
-	public void setInstructions(String instructions) {
-		this.instructions = instructions;
-	}
+    public GeoPoint getLocation() {
+        return location;
+    }
 
-	public String getInstructions() {
-		return instructions;
-	}
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
 
-	public void setDistance(String distance) {
-		this.distance = distance;
-	}
-	public String getDistance() {
-		return distance;
-	}
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
 }

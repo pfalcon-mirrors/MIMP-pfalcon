@@ -12,16 +12,17 @@ public class GLView extends ViewGroup {
     private static final float SQ2 = 1.414213562373095f;
     private final SmoothCanvas mCanvas = new SmoothCanvas();
     @SuppressWarnings("unused")
-	private float mHeading = 0;
+    private float mHeading = 0;
     private Matrix mMatrix;
-    
-    public GLView(Context context,Matrix matrix) {
+
+    public GLView(Context context, Matrix matrix) {
         super(context);
         mMatrix = matrix;
     }
 
     public void onSensorChanged(int sensor, float[] values) {
-        //Log.d(TAG, "x: " + values[0] + "y: " + values[1] + "z: " + values[2]);
+        // Log.d(TAG, "x: " + values[0] + "y: " + values[1] + "z: " +
+        // values[2]);
         synchronized (this) {
             mHeading = values[0];
             invalidate();
@@ -31,8 +32,8 @@ public class GLView extends ViewGroup {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.concat(mMatrix); 
-        //canvas.rotate(-mHeading, getWidth() * 0.5f, getHeight() * 0.5f);
+        canvas.concat(mMatrix);
+        // canvas.rotate(-mHeading, getWidth() * 0.5f, getHeight() * 0.5f);
         mCanvas.delegate = canvas;
         super.dispatchDraw(mCanvas);
         canvas.restore();
@@ -49,11 +50,13 @@ public class GLView extends ViewGroup {
             final int childHeight = view.getMeasuredHeight();
             final int childLeft = (width - childWidth) / 2;
             final int childTop = (height - childHeight) / 2;
-            view.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
+            view.layout(childLeft, childTop, childLeft + childWidth, childTop
+                    + childHeight);
         }
-        float src[] = new float[] { 0, 0, width, 0, width, height, 0,height };
-        float dst[] = new float[] { 0, 0, width, 0, width*2, height, -width,height };
-		mMatrix.setPolyToPoly(src, 0, dst, 0, src.length >> 1); 
+        float src[] = new float[] { 0, 0, width, 0, width, height, 0, height };
+        float dst[] = new float[] { 0, 0, width, 0, width * 2, height, -width,
+                height };
+        mMatrix.setPolyToPoly(src, 0, dst, 0, src.length >> 1);
     }
 
     @Override
@@ -62,9 +65,12 @@ public class GLView extends ViewGroup {
         int h = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         int sizeSpec;
         if (w > h) {
-            sizeSpec = MeasureSpec.makeMeasureSpec((int) (w * SQ2), MeasureSpec.EXACTLY);
-        } else {
-            sizeSpec = MeasureSpec.makeMeasureSpec((int) (h * SQ2), MeasureSpec.EXACTLY);
+            sizeSpec = MeasureSpec.makeMeasureSpec((int) (w * SQ2),
+                    MeasureSpec.EXACTLY);
+        }
+        else {
+            sizeSpec = MeasureSpec.makeMeasureSpec((int) (h * SQ2),
+                    MeasureSpec.EXACTLY);
         }
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
@@ -81,6 +87,6 @@ public class GLView extends ViewGroup {
 
     public void onAccuracyChanged(int sensor, int accuracy) {
         // TODO Auto-generated method stub
-        
+
     }
 }

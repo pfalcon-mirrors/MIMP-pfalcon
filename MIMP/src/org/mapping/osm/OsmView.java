@@ -20,7 +20,7 @@ import com.google.android.maps.Overlay;
 
 @SuppressWarnings("unused")
 public class OsmView extends MapView {
-    
+
     int x0, y0, z0 = 10;
     boolean ortho = true;
     TileLoader tl;
@@ -30,18 +30,19 @@ public class OsmView extends MapView {
     int X, Y = 0;
     Canvas canvas;
     private boolean backed = false;
-	private List<Overlay> liov;
+    private List<Overlay> liov;
 
     public OsmView(Context context, AttributeSet attrs) {
         super(context, attrs);
         tl = new TileLoader(this);
         invalidate();
-        
-        SharedPreferences settings = context.getSharedPreferences(S.PREFS_NAME, 0);
+
+        SharedPreferences settings = context.getSharedPreferences(S.PREFS_NAME,
+                0);
         x0 = settings.getInt("x0", 0);
         y0 = settings.getInt("y0", 0);
         z0 = settings.getInt("z0", 0);
-        
+
         if (x0 == 0 || y0 == 0) {
 
         }
@@ -52,7 +53,7 @@ public class OsmView extends MapView {
         super.setSatellite(mode);
         ortho = mode;
     }
-    
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -61,7 +62,7 @@ public class OsmView extends MapView {
 
     @Override
     public void draw(Canvas canvas) {
-        //super.draw(canvas);
+        // super.draw(canvas);
         canvas.drawColor(Color.WHITE);
         int wi = getWidth();
         int he = getHeight();
@@ -90,11 +91,11 @@ public class OsmView extends MapView {
     public int getX0() {
         return x0;
     }
-    
+
     public int getY0() {
         return y0;
     }
-    
+
     public int getScale() {
         return z0;
     }
@@ -120,18 +121,18 @@ public class OsmView extends MapView {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
-	                case MotionEvent.ACTION_MOVE:
-	                    PointF p3 = new PointF(event.getX(), event.getY());
-	                    x0 -= p3.x - p2.x;
-	                    y0 += p3.y - p2.y;
-	                    p2 = p3;
-	                    invalidate();
-	                    if (!tl.thread.isAlive()) {
-	                        tl.thread = new Thread(tl);
-	                        tl.thread.start();
-	                    }
-	                    break;
-	                default:
+                    case MotionEvent.ACTION_MOVE:
+                        PointF p3 = new PointF(event.getX(), event.getY());
+                        x0 -= p3.x - p2.x;
+                        y0 += p3.y - p2.y;
+                        p2 = p3;
+                        invalidate();
+                        if (!tl.thread.isAlive()) {
+                            tl.thread = new Thread(tl);
+                            tl.thread.start();
+                        }
+                        break;
+                    default:
                 }
                 invalidate();
                 return gd.onTouchEvent(event);

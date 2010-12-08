@@ -25,7 +25,7 @@ import org.xml.sax.*;
 public class GPXParserLight implements DocumentHandler {
     private GPXHandler handler;
     @SuppressWarnings("rawtypes")
-	private Stack context;
+    private Stack context;
     private StringBuffer buffer;
     private EntityResolver resolver;
 
@@ -40,7 +40,8 @@ public class GPXParserLight implements DocumentHandler {
      *            recommended that it could be able to resolve at least the DTD.
      */
     @SuppressWarnings("rawtypes")
-	public GPXParserLight(final GPXHandler handler, final EntityResolver resolver) {
+    public GPXParserLight(final GPXHandler handler,
+            final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
@@ -79,17 +80,23 @@ public class GPXParserLight implements DocumentHandler {
                 new org.xml.sax.helpers.AttributeListImpl(attrs) });
         if ("publisher".equals(name)) {
             handler.start_publisher(attrs);
-        } else if ("author".equals(name)) {
+        }
+        else if ("author".equals(name)) {
             handler.start_author(attrs);
-        } else if ("copyright".equals(name)) {
+        }
+        else if ("copyright".equals(name)) {
             handler.start_copyright(attrs);
-        } else if ("source".equals(name)) {
+        }
+        else if ("source".equals(name)) {
             handler.start_source(attrs);
-        } else if ("email".equals(name)) {
+        }
+        else if ("email".equals(name)) {
             handler.handle_email(attrs);
-        } else if ("media".equals(name)) {
+        }
+        else if ("media".equals(name)) {
             handler.start_media(attrs);
-        } else if ("content".equals(name)) {
+        }
+        else if ("content".equals(name)) {
             handler.start_content(attrs);
         }
     }
@@ -104,17 +111,23 @@ public class GPXParserLight implements DocumentHandler {
         context.pop();
         if ("publisher".equals(name)) {
             handler.end_publisher();
-        } else if ("author".equals(name)) {
+        }
+        else if ("author".equals(name)) {
             handler.end_author();
-        } else if ("copyright".equals(name)) {
+        }
+        else if ("copyright".equals(name)) {
             handler.end_copyright();
-        } else if ("source".equals(name)) {
+        }
+        else if ("source".equals(name)) {
             handler.end_source();
-        } else if ("medias".equals(name)) {
+        }
+        else if ("medias".equals(name)) {
             handler.end_medias();
-        } else if ("media".equals(name)) {
+        }
+        else if ("media".equals(name)) {
             handler.end_media();
-        } else if ("content".equals(name)) {
+        }
+        else if ("content".equals(name)) {
             handler.end_content();
         }
     }
@@ -156,156 +169,178 @@ public class GPXParserLight implements DocumentHandler {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_elemin(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("desc".equals(here)) {
+            handler.handle_elemin(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("desc".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_desc(
                     buffer.length() == 0 ? null : buffer.toString(), attrs);
-        } else if ("sym".equals(here)) {
+        }
+        else if ("sym".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_sym(buffer.length() == 0 ? null : buffer.toString(),
                     attrs);
-        } else if ("type".equals(here)) {
+        }
+        else if ("type".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_type(
                     buffer.length() == 0 ? null : buffer.toString(), attrs);
-        } else if ("distance".equals(here)) {
+        }
+        else if ("distance".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_distance(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("time".equals(here)) {
+            handler.handle_distance(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("time".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_time(
                     buffer.length() == 0 ? null : buffer.toString(), attrs);
-        } else if ("title".equals(here)) {
+        }
+        else if ("title".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_title(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("name".equals(here)) {
+            handler.handle_title(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("name".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_name(
                     buffer.length() == 0 ? null : buffer.toString(), attrs);
-        } else if ("activitytype".equals(here)) {
+        }
+        else if ("activitytype".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_activitytype(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("year".equals(here)) {
+            handler.handle_activitytype(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("year".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_year(
                     buffer.length() == 0 ? null : buffer.toString(), attrs);
-        } else if ("realdistance".equals(here)) {
+        }
+        else if ("realdistance".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_realdistance(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("ele".equals(here)) {
+            handler.handle_realdistance(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("ele".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_ele(buffer.length() == 0 ? null : buffer.toString(),
                     attrs);
-        } else if ("thl".equals(here)) {
+        }
+        else if ("thl".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_thl(buffer.length() == 0 ? null : buffer.toString(),
                     attrs);
-        } else if ("thg".equals(here)) {
+        }
+        else if ("thg".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_thg(buffer.length() == 0 ? null : buffer.toString(),
                     attrs);
-        } else if ("url".equals(here)) {
+        }
+        else if ("url".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
             handler.handle_url(buffer.length() == 0 ? null : buffer.toString(),
                     attrs);
-        } else if ("duration".equals(here)) {
+        }
+        else if ("duration".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_duration(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("bearing".equals(here)) {
+            handler.handle_duration(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("bearing".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_bearing(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("radius".equals(here)) {
+            handler.handle_bearing(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("radius".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_radius(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("characteristic".equals(here)) {
+            handler.handle_radius(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("characteristic".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_characteristic(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("maxspeed".equals(here)) {
+            handler.handle_characteristic(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("maxspeed".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_maxspeed(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("elemax".equals(here)) {
+            handler.handle_maxspeed(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("elemax".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_elemax(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else if ("content".equals(here)) {
+            handler.handle_elemax(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else if ("content".equals(here)) {
             if (fireOnlyIfMixed) {
                 throw new IllegalStateException(
                         "Unexpected characters() event! (Missing DTD?)");
             }
-            handler.handle_content(buffer.length() == 0 ? null : buffer
-                    .toString(), attrs);
-        } else {
+            handler.handle_content(
+                    buffer.length() == 0 ? null : buffer.toString(), attrs);
+        }
+        else {
         }
         buffer.delete(0, buffer.length());
     }

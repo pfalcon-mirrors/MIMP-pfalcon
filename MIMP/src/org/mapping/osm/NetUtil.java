@@ -21,7 +21,8 @@ public class NetUtil {
                 }
                 dat = bao.toByteArray();
                 bao.close();
-            } else {
+            }
+            else {
                 dat = new byte[len];
                 int i = 0;
                 while (i < len) {
@@ -32,7 +33,8 @@ public class NetUtil {
                 }
             }
             is.close();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
         }
         return dat;
     }

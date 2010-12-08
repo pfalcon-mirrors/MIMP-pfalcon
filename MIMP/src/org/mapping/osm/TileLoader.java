@@ -23,7 +23,7 @@ public class TileLoader implements Runnable {
         thread = new Thread(this);
         thread.start();
     }
-    
+
     public TileLoader() {
         handler = new Handler();
         list = new LinkedList<Tile>();
@@ -58,7 +58,8 @@ public class TileLoader implements Runnable {
                 t.load();
                 t.save();
                 handler.post(update);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -90,12 +91,13 @@ public class TileLoader implements Runnable {
                 t.load();
                 t.save();
                 handler.post(update);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    
+
     public Tile getTile(boolean ortho, int tx, int ty, int tz, boolean force) {
         long key = (long) tz << 48 | (long) ty << 24 | tx & 0xFFFFFF;
         if (ortho)
@@ -110,7 +112,8 @@ public class TileLoader implements Runnable {
             if (force) {
                 t.load();
                 t.save();
-            } else {
+            }
+            else {
                 synchronized (list) {
                     list.addFirst(t);
                 }
