@@ -10,7 +10,7 @@
  * and open the template in the editor.
  */
 
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
 import java.io.IOException;
 import java.util.Stack;

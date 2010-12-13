@@ -33,6 +33,7 @@ public class S {
      */
 
     public static final int BubbleInteractionScreen_RQC = 1;
+    public static final int Search_RQC = 2;
 
     /**
      * ResultCodes = RequestCode + 100 to RequestCode + 199
@@ -41,6 +42,8 @@ public class S {
     public static final int BubbleInteractionScreen_DIRECTIONS = 100;
     public static final int BubbleInteractionScreen_WAYPOINT = 101;
 
+    
+    
     /**
      * database connection
      */

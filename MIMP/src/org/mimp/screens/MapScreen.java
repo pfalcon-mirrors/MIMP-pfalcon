@@ -18,15 +18,17 @@ import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
 import org.mimp.globals.S;
-import org.mimp.parser.GPXHandler;
-import org.mimp.parser.GPXHandlerImpl;
-import org.mimp.parser.GPXObject;
-import org.mimp.parser.GPXParser;
 import org.mimp.parser.GeoPointer;
+import org.mimp.parser.gpx.GPXHandler;
+import org.mimp.parser.gpx.GPXHandlerImpl;
+import org.mimp.parser.gpx.GPXObject;
+import org.mimp.parser.gpx.GPXParser;
+import org.mimp.search.LocationSearchProvider;
 import org.mimp.views.ExtendedMapView;
 import org.xml.sax.InputSource;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +37,7 @@ import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Display;
@@ -76,6 +79,7 @@ public class MapScreen extends MapActivity implements LocationListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         /**
          * Setting Defaults
          */
@@ -108,6 +112,16 @@ public class MapScreen extends MapActivity implements LocationListener,
         doChecks();
     }
 
+    @Override
+    public void onNewIntent(final Intent newIntent) {  
+        super.onNewIntent(newIntent);
+        System.out.println("NEW INTENT !!!!!!!!!!!!!!!!!!!!!!!!!");
+        final String queryAction = newIntent.getAction();     
+        if (Intent.ACTION_SEARCH.equals(queryAction)) {
+            doSearchQuery(newIntent, "onNewIntent()");
+        }
+    }
+    
     /**
      * handling different relsults of other activities (add poi, waypoint, ... )
      */
@@ -127,13 +141,6 @@ public class MapScreen extends MapActivity implements LocationListener,
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("isNew", false);
-
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -215,13 +222,18 @@ public class MapScreen extends MapActivity implements LocationListener,
     }
 
     private DrivingDirections.Mode getDirectionsMode() {
+        String[] modes = getResources().getStringArray(
+                R.array.entries_list_directions_modes);
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        String mode = settings.getString("map_directions_mode", "car");
-        if (mode.equals("foot")) {
+        String mode = settings.getString("map_directions_mode", "driving");
+        if (mode.equals(modes[0])) {
             return Mode.WALKING;
         }
-        else if (mode.equals("bus")) {
-            return Mode.BUS;
+        else if (mode.equals(modes[2])) {
+            return Mode.TRANSIT;
+        }
+        else if (mode.equals(modes[3])) {
+            return Mode.BICYCLING;
         }
         else {
             return Mode.DRIVING;
@@ -245,6 +257,10 @@ public class MapScreen extends MapActivity implements LocationListener,
     private void showSettings() {
         startActivity(new Intent(MapScreen.this, SettingsScreen.class));
     }
+    
+    private void showTracks() {
+        startActivity(new Intent(MapScreen.this, TracksScreen.class));
+    }    
 
     private void showInfo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -266,13 +282,7 @@ public class MapScreen extends MapActivity implements LocationListener,
      * Key controls and menu handling
      * 
      *****************************************************************************/
-
-    @Override
-    public boolean onSearchRequested() {
-        mLocator.proposeSearch();
-        return true;
-    }
-
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         MapController mc = mMapView.getController();
@@ -350,12 +360,7 @@ public class MapScreen extends MapActivity implements LocationListener,
                 onSearchRequested();
                 return true;
             case S.LOADTRKFILE:
-                if (isTrackLoaded()) {
-                    unloadTracks();
-                }
-                else {
-                    loadTracksFile();
-                }
+                showTracks();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -638,5 +643,26 @@ public class MapScreen extends MapActivity implements LocationListener,
     @Override
     public void onDirectionsNotAvailable() {
 
+    }
+    
+    /*****************************************************************************
+     * 
+     * Directions
+     * 
+     *****************************************************************************/
+    
+    @Override
+    public boolean onSearchRequested() {
+        System.out.println("SEARCH !!!!!!!!!!!!!!!!!!!!!!!!!");
+        startSearch(null, false, null, false);
+        return true;
+    }
+    
+    private void doSearchQuery(final Intent queryIntent, final String entryPoint) {
+        System.out.println("SEARCH QUERY !!!!!!!!!!!!!!!!!!!!!!!!!");
+        Uri coords = queryIntent.getData();
+        System.out.println(coords);
+        //GeoPoint geoPoint = new GeoPoint((int)(coords[0]*1E6), (int)(coords[1]*1E6));
+        //mMapController.animateTo(geoPoint);
     }
 }

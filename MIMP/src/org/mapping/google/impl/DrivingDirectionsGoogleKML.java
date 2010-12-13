@@ -82,6 +82,12 @@ public class DrivingDirectionsGoogleKML extends DrivingDirections {
             if (params[0] == Mode.WALKING) {
                 urlString.append("&dirflg=w");
             }
+            else if (params[0] == Mode.TRANSIT) {
+                urlString.append("&dirflg=r");
+            }
+            else if (params[0] == Mode.BICYCLING) {
+                urlString.append("&dirflg=b");
+            }
 
             RouteImpl route = null;
             try {

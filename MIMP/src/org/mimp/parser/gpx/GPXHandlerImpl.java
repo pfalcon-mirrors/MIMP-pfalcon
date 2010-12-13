@@ -1,5 +1,8 @@
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
+import org.mimp.parser.GeoPointer;
+import org.mimp.parser.MediaPoint;
+import org.mimp.parser.PointOfInterest;
 import org.xml.sax.AttributeList;
 import org.xml.sax.SAXException;
 
@@ -74,6 +77,9 @@ public class GPXHandlerImpl implements GPXHandler {
         else if (inRTE) {
             route.addGpxRteInfoName(meta.getValue("name"), data);
         }
+        else if (inTRK) {
+            gpxa.setName(data);
+        }
     }
 
     public void handle_desc(final String data, final AttributeList meta)
@@ -81,7 +87,12 @@ public class GPXHandlerImpl implements GPXHandler {
         if (inMetadata) {
             if (inGPXInfos) {
                 if (meta.getValue("lang") == null) {
-                    gpxa.addGpxInfoDescr("all", "");
+                    if (data == null) {
+                        gpxa.addGpxInfoDescr("all", "");
+                    }
+                    else {
+                        gpxa.addGpxInfoDescr("all", data);
+                    }
                 }
                 else {
                     gpxa.addGpxInfoDescr(meta.getValue("lang"), data);
@@ -96,13 +107,16 @@ public class GPXHandlerImpl implements GPXHandler {
                 }
             }
         }
-        if (inWPT) {
+        else if (inWPT) {
             if (meta.getValue("lang") == null) {
                 poi.addDesc("all", "");
             }
             else {
                 poi.addDesc(meta.getValue("lang"), data);
             }
+        }
+        else if (inTRK) {
+            gpxa.setDescr(data);
         }
     }
 

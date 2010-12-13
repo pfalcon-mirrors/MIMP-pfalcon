@@ -21,7 +21,7 @@ public abstract class DrivingDirections {
     }
 
     public enum Mode {
-        DRIVING, WALKING, BUS
+        DRIVING, WALKING, TRANSIT, BICYCLING
     }
 
     private Mode mode;

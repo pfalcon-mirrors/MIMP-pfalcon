@@ -15,14 +15,17 @@
     </string-array>
 
     <string-array name="entries_list_directions_modes">
-        <item>On foot</item>
-        <item>By car</item>
+        <item>Walking</item>
+        <item>Driving</item>
+        <item>Transit</item>
+        <item>Bicycling</item>
     </string-array>
 
     <string-array name="entryvalues_list_directions_modes">
-	    <item>foot</item>
-	    <item>car</item>
-	    <item>bus</item>
+	    <item>walking</item>
+	    <item>driving</item>
+	    <item>transit</item>
+	    <item>bicycling</item>
     </string-array>
 
     <string-array name="entries_list_bubble_interactions_body_info_new">

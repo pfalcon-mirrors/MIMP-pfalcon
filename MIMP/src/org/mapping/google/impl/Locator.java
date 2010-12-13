@@ -125,4 +125,16 @@ public class Locator {
         GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
         mMapView.getController().animateTo(point);
     }
+    
+    public static List<Address> getLocations(Context context, String location, int count) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> aList = null;
+        try {
+            aList = geocoder.getFromLocationName(location, count);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return aList;
+    }
 }

@@ -10,7 +10,7 @@
  * and open the template in the editor.
  */
 
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
 import org.xml.sax.AttributeList;
 import org.xml.sax.SAXException;

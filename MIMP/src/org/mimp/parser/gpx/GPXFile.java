@@ -1,11 +1,13 @@
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
 import java.io.File;
 import java.io.FileInputStream;
 
+import org.mimp.parser.ParsedFile;
+import org.mimp.parser.ParsedObject;
 import org.xml.sax.InputSource;
 
-public class GPXFile {
+public class GPXFile implements ParsedFile {
 
     private String mPath = "";
     private File mFile;
@@ -15,11 +17,12 @@ public class GPXFile {
         mPath = path;
         mFile = new File(path);
         GPXHandlerImpl gpxHandlerImpl = new GPXHandlerImpl();
-        GPXParserLight gpxParserLight = new GPXParserLight(gpxHandlerImpl, null);
+        GPXParser gpxParser = new GPXParser(gpxHandlerImpl, null);
         FileInputStream byteStream = null;
         byteStream = new FileInputStream(path);
         InputSource inputSource = new InputSource(byteStream);
-        gpxParserLight.parse(inputSource);
+        gpxParser.parse(inputSource);
+        gpxObject = gpxHandlerImpl.getGPXObject();
     }
 
     public String getPath() {
@@ -27,15 +30,14 @@ public class GPXFile {
     }
 
     public String getExtention() {
-        int dot = mPath.lastIndexOf(".");
-        return mPath.substring(dot + 1);
+        return "gpx";
     }
 
     public String getFileName() {
         return mFile.getName();
     }
 
-    public GPXObject getGpxObject() {
+    public ParsedObject getParsedObject() {
         return gpxObject;
     }
 }

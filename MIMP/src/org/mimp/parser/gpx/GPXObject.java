@@ -1,15 +1,18 @@
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.mimp.parser.ParsedObject;
+import org.mimp.parser.PointOfInterest;
 
 /**
  * @author hellhand
  * 
  */
 
-public class GPXObject implements Serializable {
+public class GPXObject implements Serializable, ParsedObject {
 
     private static final long serialVersionUID = 328690485076301013L;
     private static final String ENDLINE = "\n";

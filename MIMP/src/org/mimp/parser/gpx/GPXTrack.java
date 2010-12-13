@@ -1,7 +1,9 @@
-package org.mimp.parser;
+package org.mimp.parser.gpx;
 
 import java.io.Serializable;
 import java.util.Vector;
+
+import org.mimp.parser.GeoPointer;
 
 /**
  * @author hellhand

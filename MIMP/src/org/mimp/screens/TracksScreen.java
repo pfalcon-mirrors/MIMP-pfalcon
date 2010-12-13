@@ -1,11 +1,17 @@
 package org.mimp.screens;
 
+import java.io.File;
+
 import org.mimp.R;
 import org.mimp.adapters.TrackListAdapter;
 import org.mimp.globals.S;
+import org.mimp.parser.ParsedFile;
+import org.mimp.parser.ParsedFileFactory;
+import org.mimp.parser.gpx.GPXFile;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +24,8 @@ public class TracksScreen extends Activity implements OnItemClickListener {
 
     private ListView mListView;
     private TrackListAdapter mTrackListAdapter;
+    private File mExtFolder = Environment.getExternalStorageDirectory();
+    private File mBaseFolder;
 
     /*****************************************************************************
      * 
@@ -35,6 +43,10 @@ public class TracksScreen extends Activity implements OnItemClickListener {
         mListView = (ListView) findViewById(R.id.track_list);
         mListView.setOnItemClickListener(this);
         mListView.setAdapter(mTrackListAdapter);
+        
+        String path = mExtFolder.getAbsolutePath() + File.separator + "Tracks" + File.separator;
+        mBaseFolder = new File(path);
+        mBaseFolder.mkdirs();
         fetchFiles();
     }
 
@@ -48,13 +60,13 @@ public class TracksScreen extends Activity implements OnItemClickListener {
      * Creates the menu items when Menu button is pressed
      */
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, S.POS, 0, R.string.map_menu_position).setIcon(
-                android.R.drawable.ic_menu_mylocation);
+        menu.add(0, S.POS, 0, R.string.tracks_menu_refresh).setIcon(
+                android.R.drawable.ic_menu_search);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        
         return super.onOptionsItemSelected(item);
     }
 
@@ -69,11 +81,25 @@ public class TracksScreen extends Activity implements OnItemClickListener {
 
     /*****************************************************************************
      * 
-     * Files
+     * Files Threaded Method
      * 
      *****************************************************************************/
 
     public void fetchFiles() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                File[] files = mBaseFolder.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    try {
+                        System.out.println(">>>>>>>>>>>>>>>> " + files[i].getAbsolutePath());
+                        mTrackListAdapter.addTrack(ParsedFileFactory.getParsedFile(files[i]));
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

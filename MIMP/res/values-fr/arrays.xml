@@ -10,18 +10,21 @@
 
 
 
-    <!-- Preferences values in base array.xml -->
+
 
 
 
     <string-array name="entries_list_directions_modes">
         <item>A pieds</item>
         <item>En voiture</item>
+        <item>En transports</item>
+        <item>En Vélo</item>
     </string-array>
 
 
 
-    <!-- Preferences values in base array.xml -->
+
+
 
 
 
