@@ -239,4 +239,18 @@ public class ExtendedMapView extends MapView implements SensorListener {
         getOverlays().remove(mBubbleOverlay);
         invalidate();
     }
+    
+    public void setBubbleLocation(Address addresses, GeoPoint p) {
+        if (mBubbleOverlay != null) {
+            getOverlays().remove(mBubbleOverlay);
+            invalidate();
+        }
+        Vector<String> address = new Vector<String>();
+        for (int i = 0; i < addresses.getMaxAddressLineIndex(); i++)
+            address.add(addresses.getAddressLine(i).trim());
+        mBubbleOverlay = new BubbleOverlay(address, p,
+                mContext);
+        getOverlays().add(mBubbleOverlay);
+        invalidate();
+    }
 }

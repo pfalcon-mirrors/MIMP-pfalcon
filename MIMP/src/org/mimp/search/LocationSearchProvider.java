@@ -33,9 +33,8 @@ public class LocationSearchProvider extends ContentProvider {
     private static final String[] COLUMNS = {
         "_id",
         SearchManager.SUGGEST_COLUMN_TEXT_1,
-        SearchManager.SUGGEST_COLUMN_INTENT_DATA,
+        SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA,
         };
-    
     
     @Override
     public boolean onCreate() {
@@ -49,31 +48,25 @@ public class LocationSearchProvider extends ContentProvider {
         MatrixCursor cur = new MatrixCursor(COLUMNS);
         List<Address> list = Locator.getLocations(getContext(), selectionArgs[0], 15);
         for (int i=0; i < list.size() ;i++) {
-            cur.addRow(columnValuesOfWord(i, list.get(i)));
+            cur.addRow(columnValues(i, list.get(i)));
         }
         return cur;
     }
     
     
-    private Object[] columnValuesOfWord(long id, Address address) {
+    private Object[] columnValues(long id, Address address) {
         if (address.getAddressLine(1) == null) {
             return new Object[] {
                 id,
                 address.getAddressLine(0),
-                new double[] {
-                    address.getLatitude(),
-                    address.getLongitude(),   
-                },
+                address.getAddressLine(0),
              };
         }
         else {
             return new Object[] {
                 id,
                 address.getAddressLine(0) + " " + address.getAddressLine(1),
-                new double[] {
-                    address.getLatitude(),
-                    address.getLongitude(),
-                },
+                address.getAddressLine(0) + " " + address.getAddressLine(1),
              };
         }
     }

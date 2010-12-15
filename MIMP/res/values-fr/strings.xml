@@ -12,6 +12,7 @@
     <string name="none">Aucun</string>
     <string name="error">Erreur</string>
     <string name="search">Recherche</string>
+    <string name="select">Choisissez une proposition de la liste</string>
     
     <string name="map_menu_search">Recherche</string>
     <string name="map_menu_position">Ma position</string>

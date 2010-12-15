@@ -3,6 +3,7 @@ package org.mimp.screens;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.mapping.google.DrivingDirections;
@@ -23,12 +24,10 @@ import org.mimp.parser.gpx.GPXHandler;
 import org.mimp.parser.gpx.GPXHandlerImpl;
 import org.mimp.parser.gpx.GPXObject;
 import org.mimp.parser.gpx.GPXParser;
-import org.mimp.search.LocationSearchProvider;
 import org.mimp.views.ExtendedMapView;
 import org.xml.sax.InputSource;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,9 +36,9 @@ import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -48,6 +47,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -316,7 +316,7 @@ public class MapScreen extends MapActivity implements LocationListener,
                 android.R.drawable.ic_menu_revert);
         menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
                 android.R.drawable.ic_menu_search);
-        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_unload).setIcon(
+        menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_load).setIcon(
                 android.R.drawable.ic_menu_directions);
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
@@ -660,9 +660,31 @@ public class MapScreen extends MapActivity implements LocationListener,
     
     private void doSearchQuery(final Intent queryIntent, final String entryPoint) {
         System.out.println("SEARCH QUERY !!!!!!!!!!!!!!!!!!!!!!!!!");
-        Uri coords = queryIntent.getData();
-        System.out.println(coords);
-        //GeoPoint geoPoint = new GeoPoint((int)(coords[0]*1E6), (int)(coords[1]*1E6));
-        //mMapController.animateTo(geoPoint);
+        Bundle bundle = queryIntent.getExtras();
+        Set<String> keySet = bundle.keySet();
+
+        Log.d("content : ", keySet.toString());
+        System.out.println(bundle.get((String) keySet.toArray()[0]));
+        System.out.println(bundle.get((String) keySet.toArray()[1]));
+
+        List<Address> list = Locator.getLocations(getApplicationContext(), (String) bundle.get((String) keySet.toArray()[1]), 15);
+
+        if (list.get(0).getAddressLine(0) != null)        
+            System.out.println(list.get(0).getAddressLine(0) + " " + list.get(0).getAddressLine(0));
+        else 
+            System.out.println(list.get(0).getAddressLine(0));
+        
+        if (list.size() > 1) {
+            Toast toast = new Toast(getApplicationContext());
+            toast.setText(R.string.select);
+            toast.show();
+            throw new UnsupportedOperationException(); 
+        }
+        else {
+            double [] coords = {list.get(0).getLatitude(),list.get(0).getLongitude()};
+            GeoPoint geoPoint = new GeoPoint((int)(coords[0]*1E6),(int)(coords[1]*1E6));
+            mMapController.setZoom(19);
+            mMapController.animateTo(geoPoint);
+        }
     }
 }

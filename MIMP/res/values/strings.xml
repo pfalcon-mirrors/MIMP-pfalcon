@@ -12,6 +12,7 @@
     <string name="none">None</string>
     <string name="error">Error</string>
     <string name="search">Search</string>
+    <string name="select">Select a location from the list</string>
     
     <string name="map_menu_search">Search</string>
     <string name="map_menu_position">My position</string>
