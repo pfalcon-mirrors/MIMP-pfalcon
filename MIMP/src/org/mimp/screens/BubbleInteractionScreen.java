@@ -47,13 +47,13 @@ public class BubbleInteractionScreen extends Activity implements
 
     @Override
     public void onClick(View v) {
-        System.out.println(">>>>>>>>>>>>>>> " + v);
         switch (v.getId()) {
             case R.id.bubble_interactions_header_map:
                 finish();
                 break;
             case R.id.bubble_interactions_header_directions:
                 getDirections();
+                break;
             default:
                 break;
         }

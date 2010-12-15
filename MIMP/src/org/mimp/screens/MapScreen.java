@@ -669,8 +669,8 @@ public class MapScreen extends MapActivity implements LocationListener,
 
         List<Address> list = Locator.getLocations(getApplicationContext(), (String) bundle.get((String) keySet.toArray()[1]), 15);
 
-        if (list.get(0).getAddressLine(0) != null)        
-            System.out.println(list.get(0).getAddressLine(0) + " " + list.get(0).getAddressLine(0));
+        if (list.get(0).getAddressLine(1) != null)        
+            System.out.println(list.get(0).getAddressLine(0) + " " + list.get(0).getAddressLine(1));
         else 
             System.out.println(list.get(0).getAddressLine(0));
         
