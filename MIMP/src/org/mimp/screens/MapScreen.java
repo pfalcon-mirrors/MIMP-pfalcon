@@ -20,9 +20,9 @@ import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
 import org.mimp.globals.S;
 import org.mimp.parser.GeoPointer;
+import org.mimp.parser.ParsedObject;
 import org.mimp.parser.gpx.GPXHandler;
 import org.mimp.parser.gpx.GPXHandlerImpl;
-import org.mimp.parser.gpx.GPXObject;
 import org.mimp.parser.gpx.GPXParser;
 import org.mimp.views.ExtendedMapView;
 import org.xml.sax.InputSource;
@@ -37,7 +37,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -53,7 +52,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView.LayoutParams;
-import com.google.android.maps.Overlay;
 
 public class MapScreen extends MapActivity implements LocationListener,
         IDirectionsListener {
@@ -66,7 +64,6 @@ public class MapScreen extends MapActivity implements LocationListener,
     private WindowManager mWindowManager;
     private Display mDisplay;
     private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
-    private Locator mLocator;
     private boolean mTrackLoaded;
 
     /*****************************************************************************
@@ -101,7 +98,6 @@ public class MapScreen extends MapActivity implements LocationListener,
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        mLocator = new Locator(this, mMapView);
         mDirectionsGoogleKML = (DrivingDirectionsGoogleKML) DrivingDirectionsFactory
                 .createDrivingDirections();
         mTrackLoaded = false;
@@ -138,6 +134,12 @@ public class MapScreen extends MapActivity implements LocationListener,
             else if (resultCode == S.BubbleInteractionScreen_WAYPOINT) {
                 int[] coords = data.getIntArrayExtra("coords");
                 addWaypoint(new GeoPoint(coords[0], coords[1]));
+            }
+        }
+        else if (requestCode == S.TracksScreen_RQC) {
+            if (resultCode == S.TracksScreen_LOADTRACK) {
+                File file = (File) data.getSerializableExtra("file");
+                loadTracksFile(file);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -259,7 +261,7 @@ public class MapScreen extends MapActivity implements LocationListener,
     }
     
     private void showTracks() {
-        startActivity(new Intent(MapScreen.this, TracksScreen.class));
+        startActivityForResult(new Intent(MapScreen.this, TracksScreen.class),S.TracksScreen_RQC);
     }    
 
     private void showInfo() {
@@ -318,6 +320,8 @@ public class MapScreen extends MapActivity implements LocationListener,
                 android.R.drawable.ic_menu_search);
         menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_load).setIcon(
                 android.R.drawable.ic_menu_directions);
+        menu.add(2, S.CLEAR, 0, R.string.clear).setIcon(
+                android.R.drawable.ic_menu_revert);
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
         return true;
@@ -362,31 +366,29 @@ public class MapScreen extends MapActivity implements LocationListener,
             case S.LOADTRKFILE:
                 showTracks();
                 return true;
+            case S.CLEAR:
+                removeOverlays();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadTracksFile() { // TODO get rid of this ugly thing with
+    private void loadTracksFile(File trackfile) { // TODO get rid of this ugly thing with
                                     // selection screen
         try {
-            File root = Environment.getExternalStorageDirectory();
-            String filename = root.getAbsolutePath() + File.separator;
-            filename += "Tracks" + File.separator;
-            filename += "track.gpx";
-            System.out.println(filename);
-            FileInputStream fis = new FileInputStream(new File(filename));
+            FileInputStream fis = new FileInputStream(trackfile);
             InputSource is = new InputSource(fis);
             GPXHandler handler = new GPXHandlerImpl();
             GPXParser parser = new GPXParser(handler, null);
             parser.parse(is);
-            GPXObject gpxObject = handler.getGPXObject();
-            System.out.println(gpxObject);
+            ParsedObject parsedObject = handler.getGPXObject();
+            System.out.println(parsedObject);
 
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
 
-            Vector<GeoPointer> geo = gpxObject.getTrack().getGeoPoints();
-            List<Overlay> overlays = mMapView.getOverlays();
+            Vector<GeoPointer> geo = parsedObject.getGeoPoints();
+            OverlayGroup overlays = mMapView.getOverlayGroup();
 
             LineMapOverlay lineMapOverlay = new LineMapOverlay();
             lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
@@ -401,7 +403,6 @@ public class MapScreen extends MapActivity implements LocationListener,
                     getApplicationContext());
             overlays.add(endPoint);
 
-            setTrackLoaded(true);
             mMapView.invalidate();
         }
         catch (Exception e) {
@@ -409,14 +410,9 @@ public class MapScreen extends MapActivity implements LocationListener,
         }
     }
 
-    private void unloadTracks() {
-        List<Overlay> overlays = mMapView.getOverlays();
-        int size = overlays.size();
-        for (int i = 1; i < size; i++) {
-            overlays.remove(1);
-        }
-        setTrackLoaded(false);
-        mMapView.invalidate();
+    private void removeOverlays() {
+        mMapView.unloadTracks();
+        mMapView.removeBubble();
     }
 
     public boolean isTrackLoaded() {

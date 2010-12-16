@@ -27,13 +27,14 @@ public class S {
     public static final int MODE = 200005;
     public static final int SEARCH = 200006;
     public static final int LOADTRKFILE = 200007;
+    public static final int CLEAR = 200008;
 
     /**
      * RequestCodes
      */
 
     public static final int BubbleInteractionScreen_RQC = 1;
-    public static final int Search_RQC = 2;
+    public static final int TracksScreen_RQC = 2;
 
     /**
      * ResultCodes = RequestCode + 100 to RequestCode + 199
@@ -41,7 +42,7 @@ public class S {
 
     public static final int BubbleInteractionScreen_DIRECTIONS = 100;
     public static final int BubbleInteractionScreen_WAYPOINT = 101;
-
+    public static final int TracksScreen_LOADTRACK = 200;
     
     
     /**

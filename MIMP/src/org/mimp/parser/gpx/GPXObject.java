@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.mimp.parser.GeoPointer;
 import org.mimp.parser.ParsedObject;
 import org.mimp.parser.PointOfInterest;
 
@@ -156,6 +157,19 @@ public class GPXObject implements Serializable, ParsedObject {
         return points;
     }
 
+    @Override
+    public Vector<GeoPointer> getGeoPoints() {
+        if (track != null) {
+            return track.getGeoPoints();
+        }
+        else if (route != null) {
+            return route.getGeoPointers();
+        }
+        else {
+            return null;
+        }
+    }
+    
     public void addGpxInfoDescr(String value, String data) {
         gpxInfoDescr.put(value, data);
     }

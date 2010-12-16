@@ -89,7 +89,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
 
     /*****************************************************************************
      * 
-     * Drawing methods
+     * Drawing methods + Overlays
      * 
      *****************************************************************************/
 
@@ -129,7 +129,31 @@ public class ExtendedMapView extends MapView implements SensorListener {
     public OverlayGroup getOverlayGroup() {
         return mOverlayGroup;
     }
-
+    
+    public void removeBubble() {
+        getOverlays().remove(mBubbleOverlay);
+        invalidate();
+    }
+    
+    public void unloadTracks() {
+        mOverlayGroup.clear();
+        invalidate();
+    }
+    
+    public void setBubbleLocation(Address addresses, GeoPoint p) {
+        if (mBubbleOverlay != null) {
+            getOverlays().remove(mBubbleOverlay);
+            invalidate();
+        }
+        Vector<String> address = new Vector<String>();
+        for (int i = 0; i < addresses.getMaxAddressLineIndex(); i++)
+            address.add(addresses.getAddressLine(i).trim());
+        mBubbleOverlay = new BubbleOverlay(address, p,
+                mContext);
+        getOverlays().add(mBubbleOverlay);
+        invalidate();
+    }
+    
     /*****************************************************************************
      * 
      * Sensor handling
@@ -233,24 +257,5 @@ public class ExtendedMapView extends MapView implements SensorListener {
             return true;
         }
         return false;
-    }
-
-    public void removeBubble() {
-        getOverlays().remove(mBubbleOverlay);
-        invalidate();
-    }
-    
-    public void setBubbleLocation(Address addresses, GeoPoint p) {
-        if (mBubbleOverlay != null) {
-            getOverlays().remove(mBubbleOverlay);
-            invalidate();
-        }
-        Vector<String> address = new Vector<String>();
-        for (int i = 0; i < addresses.getMaxAddressLineIndex(); i++)
-            address.add(addresses.getAddressLine(i).trim());
-        mBubbleOverlay = new BubbleOverlay(address, p,
-                mContext);
-        getOverlays().add(mBubbleOverlay);
-        invalidate();
     }
 }

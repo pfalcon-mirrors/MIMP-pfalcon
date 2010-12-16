@@ -5,11 +5,10 @@ import java.io.File;
 import org.mimp.R;
 import org.mimp.adapters.TrackListAdapter;
 import org.mimp.globals.S;
-import org.mimp.parser.ParsedFile;
 import org.mimp.parser.ParsedFileFactory;
-import org.mimp.parser.gpx.GPXFile;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -26,6 +25,7 @@ public class TracksScreen extends Activity implements OnItemClickListener {
     private TrackListAdapter mTrackListAdapter;
     private File mExtFolder = Environment.getExternalStorageDirectory();
     private File mBaseFolder;
+    private File[] files;
 
     /*****************************************************************************
      * 
@@ -66,7 +66,8 @@ public class TracksScreen extends Activity implements OnItemClickListener {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        
+        mTrackListAdapter.clear();
+        fetchFiles();
         return super.onOptionsItemSelected(item);
     }
 
@@ -74,9 +75,13 @@ public class TracksScreen extends Activity implements OnItemClickListener {
         finish();
     }
 
+    //TODO: return ParsedObject and not File
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-
+        Intent intent = new Intent();
+        intent.putExtra("file", files[arg2]);
+        setResult(S.TracksScreen_LOADTRACK, intent);
+        finish();
     }
 
     /*****************************************************************************
@@ -89,7 +94,7 @@ public class TracksScreen extends Activity implements OnItemClickListener {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                File[] files = mBaseFolder.listFiles();
+                files = mBaseFolder.listFiles();
                 for (int i = 0; i < files.length; i++) {
                     try {
                         System.out.println(">>>>>>>>>>>>>>>> " + files[i].getAbsolutePath());

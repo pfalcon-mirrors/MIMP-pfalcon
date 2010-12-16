@@ -13,6 +13,7 @@
     <string name="error">Error</string>
     <string name="search">Search</string>
     <string name="select">Select a location from the list</string>
+    <string name="clear">Clear</string>
     
     <string name="map_menu_search">Search</string>
     <string name="map_menu_position">My position</string>
@@ -21,8 +22,7 @@
     <string name="map_menu_infos">Info</string>
     <string name="map_menu_perspective">Perspective</string>
     <string name="map_menu_settings">Preferences</string>
-    <string name="map_menu_load">Un/Load GPX/KML File</string>
-    <string name="map_menu_unload">Unload GPX/KML File</string>
+    <string name="map_menu_load">Load GPX/KML File</string>
 
     <string name="tracks_menu_refresh">Refresh</string>
 

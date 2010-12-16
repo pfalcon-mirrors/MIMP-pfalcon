@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.mimp.R;
 import org.mimp.parser.ParsedFile;
-import org.mimp.parser.gpx.GPXFile;
 
 import android.content.Context;
 import android.os.Handler;
@@ -36,6 +35,10 @@ public class TrackListAdapter extends BaseAdapter {
         System.out.println(">>>>>>>>>>>>>>>> " + mParsedFiles);
     }
 
+    public void clear() {
+        mParsedFiles = null;
+    }
+    
     @Override
     public int getCount() {
         if (mParsedFiles == null)
