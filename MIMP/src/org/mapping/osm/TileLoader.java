@@ -43,7 +43,6 @@ public class TileLoader implements Runnable {
                 if (tiles.size() > 30) {
                     tiles = new HashMap<Long, Tile>(temp);
                     temp = new HashMap<Long, Tile>();
-                    System.out.println("more than 30 tiles .... cleaning");
                 }
                 Tile t;
                 synchronized (list) {
@@ -66,7 +65,6 @@ public class TileLoader implements Runnable {
     }
 
     public void onThreadOver() {
-        System.out.println("Thread draws Overlays");
         view.drawOverlays();
     }
 
@@ -76,7 +74,6 @@ public class TileLoader implements Runnable {
                 if (tiles.size() > 30) {
                     tiles = new HashMap<Long, Tile>(temp);
                     temp = new HashMap<Long, Tile>();
-                    System.out.println("more than 30 tiles .... cleaning");
                 }
                 Tile t;
                 synchronized (list) {

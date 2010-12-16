@@ -37,7 +37,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -111,7 +110,6 @@ public class MapScreen extends MapActivity implements LocationListener,
     @Override
     public void onNewIntent(final Intent newIntent) {  
         super.onNewIntent(newIntent);
-        System.out.println("NEW INTENT !!!!!!!!!!!!!!!!!!!!!!!!!");
         final String queryAction = newIntent.getAction();     
         if (Intent.ACTION_SEARCH.equals(queryAction)) {
             doSearchQuery(newIntent, "onNewIntent()");
@@ -382,7 +380,6 @@ public class MapScreen extends MapActivity implements LocationListener,
             GPXParser parser = new GPXParser(handler, null);
             parser.parse(is);
             ParsedObject parsedObject = handler.getGPXObject();
-            System.out.println(parsedObject);
 
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
@@ -649,27 +646,14 @@ public class MapScreen extends MapActivity implements LocationListener,
     
     @Override
     public boolean onSearchRequested() {
-        System.out.println("SEARCH !!!!!!!!!!!!!!!!!!!!!!!!!");
         startSearch(null, false, null, false);
         return true;
     }
     
     private void doSearchQuery(final Intent queryIntent, final String entryPoint) {
-        System.out.println("SEARCH QUERY !!!!!!!!!!!!!!!!!!!!!!!!!");
         Bundle bundle = queryIntent.getExtras();
         Set<String> keySet = bundle.keySet();
-
-        Log.d("content : ", keySet.toString());
-        System.out.println(bundle.get((String) keySet.toArray()[0]));
-        System.out.println(bundle.get((String) keySet.toArray()[1]));
-
         List<Address> list = Locator.getLocations(getApplicationContext(), (String) bundle.get((String) keySet.toArray()[1]), 15);
-
-        if (list.get(0).getAddressLine(1) != null)        
-            System.out.println(list.get(0).getAddressLine(0) + " " + list.get(0).getAddressLine(1));
-        else 
-            System.out.println(list.get(0).getAddressLine(0));
-        
         if (list.size() > 1) {
             Toast toast = new Toast(getApplicationContext());
             toast.setText(R.string.select);

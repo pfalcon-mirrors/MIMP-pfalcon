@@ -61,7 +61,6 @@ public class BubbleInteractionScreen extends Activity implements
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        System.out.println(">>>>>>>>>>>>>>> " + arg1);
         switch (arg2) {
             case 1:
                 addWaypoint();

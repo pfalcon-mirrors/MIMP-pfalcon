@@ -32,7 +32,6 @@ public class TrackListAdapter extends BaseAdapter {
             mParsedFiles = new ArrayList<ParsedFile>();
         mParsedFiles.add(parsedFile);
         handler.sendEmptyMessage(0);
-        System.out.println(">>>>>>>>>>>>>>>> " + mParsedFiles);
     }
 
     public void clear() {

@@ -56,14 +56,10 @@ public class BubbleOverlay extends Overlay {
      * beware :D
      */
     private void generateWindowDimensions() {
-        System.out.println("\t\tSize = " + mainFontSize);
-        System.out.println("\t\tmAddress.size() = " + mAddress.size());
         if (mAddress.size() > 0) {
             Rect rect = new Rect();
             getMainTextPaint().getTextBounds(mAddress.get(0), 0,
                     mAddress.get(0).length(), rect);
-            System.out.println("\t\tTitle dimensions = " + rect.width() + " "
-                    + rect.height());
             /**
              * if the 1st line is the longest
              */
@@ -72,8 +68,6 @@ public class BubbleOverlay extends Overlay {
             for (int i = 1; i < mAddress.size(); i++) {
                 getTextPaint().getTextBounds(mAddress.get(i), 0,
                         mAddress.get(i).length(), rect);
-                System.out.println("\t\tLine " + i + " dimensions = "
-                        + rect.width() + " " + rect.height());
                 /**
                  * if it is another one
                  */
@@ -95,8 +89,6 @@ public class BubbleOverlay extends Overlay {
              */
             INFO_WINDOW_HEIGHT += TEXT_OFFSET_Y * 2;
         }
-        System.out.println("\t\tBubble dimensions = " + INFO_WINDOW_WIDTH + " "
-                + INFO_WINDOW_HEIGHT);
     }
 
     @Override

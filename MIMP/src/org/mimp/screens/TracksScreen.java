@@ -97,7 +97,6 @@ public class TracksScreen extends Activity implements OnItemClickListener {
                 files = mBaseFolder.listFiles();
                 for (int i = 0; i < files.length; i++) {
                     try {
-                        System.out.println(">>>>>>>>>>>>>>>> " + files[i].getAbsolutePath());
                         mTrackListAdapter.addTrack(ParsedFileFactory.getParsedFile(files[i]));
                     }
                     catch (Exception e) {

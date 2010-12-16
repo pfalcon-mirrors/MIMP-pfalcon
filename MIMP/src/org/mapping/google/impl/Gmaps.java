@@ -18,7 +18,6 @@ public class Gmaps {
             cnx.connect();
             byte[] dat = NetUtil.download(cnx);
             String ss = new String(dat, "UTF-8");
-            System.out.println(ss);
             String l[] = ss.split("\n");
             if (l.length > 0) {
                 String[] s = l[0].split("\"");
