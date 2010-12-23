@@ -16,8 +16,8 @@ public class GPXFile implements ParsedFile {
     public GPXFile(String path) throws Exception {
         mPath = path;
         mFile = new File(path);
-        GPXHandlerImpl gpxHandlerImpl = new GPXHandlerImpl();
-        GPXParser gpxParser = new GPXParser(gpxHandlerImpl, null);
+        GPXHandlerImplLight gpxHandlerImpl = new GPXHandlerImplLight();
+        GPXParserLight gpxParser = new GPXParserLight(gpxHandlerImpl, null);
         FileInputStream byteStream = null;
         byteStream = new FileInputStream(path);
         InputSource inputSource = new InputSource(byteStream);

@@ -20,15 +20,16 @@ public class GPXObject implements Serializable, ParsedObject {
     private String name = "";
     private String descr = "";
     private String author = "";
-    private String email = "";
     private String copyright = "";
-    private String year = "";
+    private String link = "";
+    private String email = "";
+    private String date = "";
     private float minLat = 0;
     private float minLon = 0;
     private float maxLat = 0;
     private float maxLon = 0;
     private Vector<PointOfInterest> points = new Vector<PointOfInterest>();
-
+    
     private Hashtable<String, String> gpxInfoDescr = new Hashtable<String, String>();
     private Hashtable<String, String> gpxInfoName = new Hashtable<String, String>();
 
@@ -56,7 +57,7 @@ public class GPXObject implements Serializable, ParsedObject {
         representation.append(ENDLINE);
         representation.append(copyright);
         representation.append(ENDLINE);
-        representation.append(year);
+        representation.append(date);
         representation.append(ENDLINE);
 
         return representation.toString();
@@ -102,12 +103,20 @@ public class GPXObject implements Serializable, ParsedObject {
         this.copyright = copyright;
     }
 
-    public String getYear() {
-        return year;
+    public void setLink(String link) {
+        this.link = link;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public String getLink() {
+        return link;
+    }
+    
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public float getMinLat() {

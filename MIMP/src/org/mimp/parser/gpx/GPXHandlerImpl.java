@@ -354,10 +354,10 @@ public class GPXHandlerImpl implements GPXHandler {
             throws SAXException {
         if (inCopyright) {
             if (data == null) {
-                gpxa.setYear("");
+                gpxa.setDate("");
             }
             else {
-                gpxa.setYear(data);
+                gpxa.setDate(data);
             }
         }
     }

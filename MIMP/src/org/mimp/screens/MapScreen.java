@@ -381,6 +381,7 @@ public class MapScreen extends MapActivity implements LocationListener,
             parser.parse(is);
             ParsedObject parsedObject = handler.getGPXObject();
 
+            mMapView.unloadTracks();
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
 
@@ -401,6 +402,7 @@ public class MapScreen extends MapActivity implements LocationListener,
             overlays.add(endPoint);
 
             mMapView.invalidate();
+            mMapController.animateTo(geo.get(0));
         }
         catch (Exception e) {
             e.printStackTrace();
