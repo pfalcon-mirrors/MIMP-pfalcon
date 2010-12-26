@@ -19,11 +19,11 @@ import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
 import org.mimp.globals.S;
-import org.mimp.sax.parser.GeoPointer;
-import org.mimp.sax.parser.ParsedObject;
-import org.mimp.sax.parser.gpx.GPXHandler;
-import org.mimp.sax.parser.gpx.GPXHandlerImpl;
-import org.mimp.sax.parser.gpx.GPXParser;
+import org.mimp.sax.GeoPointer;
+import org.mimp.sax.ParsedObject;
+import org.mimp.sax.gpx.GPXHandler;
+import org.mimp.sax.gpx.GPXHandlerImpl;
+import org.mimp.sax.gpx.GPXParser;
 import org.mimp.views.ExtendedMapView;
 import org.xml.sax.InputSource;
 

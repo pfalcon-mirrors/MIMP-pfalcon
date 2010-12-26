@@ -3,7 +3,7 @@ package org.mimp.adapters;
 import java.util.ArrayList;
 
 import org.mimp.R;
-import org.mimp.sax.parser.ParsedFile;
+import org.mimp.sax.ParsedFile;
 
 import android.content.Context;
 import android.os.Handler;

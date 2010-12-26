@@ -5,7 +5,7 @@ import java.io.File;
 import org.mimp.R;
 import org.mimp.adapters.TrackListAdapter;
 import org.mimp.globals.S;
-import org.mimp.sax.parser.ParsedFileFactory;
+import org.mimp.sax.ParsedFileFactory;
 
 import android.app.Activity;
 import android.content.Intent;
