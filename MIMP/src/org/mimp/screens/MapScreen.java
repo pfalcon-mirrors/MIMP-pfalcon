@@ -19,11 +19,11 @@ import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
 import org.mimp.globals.S;
-import org.mimp.parser.GeoPointer;
-import org.mimp.parser.ParsedObject;
-import org.mimp.parser.gpx.GPXHandler;
-import org.mimp.parser.gpx.GPXHandlerImpl;
-import org.mimp.parser.gpx.GPXParser;
+import org.mimp.sax.parser.GeoPointer;
+import org.mimp.sax.parser.ParsedObject;
+import org.mimp.sax.parser.gpx.GPXHandler;
+import org.mimp.sax.parser.gpx.GPXHandlerImpl;
+import org.mimp.sax.parser.gpx.GPXParser;
 import org.mimp.views.ExtendedMapView;
 import org.xml.sax.InputSource;
 
@@ -379,7 +379,7 @@ public class MapScreen extends MapActivity implements LocationListener,
             GPXHandler handler = new GPXHandlerImpl();
             GPXParser parser = new GPXParser(handler, null);
             parser.parse(is);
-            ParsedObject parsedObject = handler.getGPXObject();
+            ParsedObject parsedObject = (ParsedObject) handler.getGPXObject();
 
             mMapView.unloadTracks();
             mWindowManager = getWindowManager();
