@@ -2,7 +2,7 @@ package org.mimp.dom.gpx;
 
 public class PersonType {
 
-    protected String name;
+    protected String name = "";
     protected EmailType email;
     protected LinkType link;
 
@@ -24,7 +24,10 @@ public class PersonType {
     }
 
     public EmailType getEmail() {
-        return email;
+        if (email == null) {
+            email = new EmailType();
+        }
+        return this.email;
     }
 
     public void setEmail(EmailType value) {
@@ -32,7 +35,10 @@ public class PersonType {
     }
 
     public LinkType getLink() {
-        return link;
+        if (link == null) {
+            link = new LinkType();
+        }
+        return this.link;
     }
 
     public void setLink(LinkType value) {

@@ -1,7 +1,6 @@
 package org.mimp.screens;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -18,14 +17,9 @@ import org.mimp.displayables.LineMapOverlay;
 import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
+import org.mimp.dom.GeoPointer;
 import org.mimp.globals.S;
-import org.mimp.sax.GeoPointer;
-import org.mimp.sax.ParsedObject;
-import org.mimp.sax.gpx.GPXHandler;
-import org.mimp.sax.gpx.GPXHandlerImpl;
-import org.mimp.sax.gpx.GPXParser;
 import org.mimp.views.ExtendedMapView;
-import org.xml.sax.InputSource;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -85,6 +79,7 @@ public class MapScreen extends MapActivity implements LocationListener,
          * setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
          */
         setContentView(R.layout.map);
+        
         mMapView = (ExtendedMapView) findViewById(R.id.mapView);
         mMapController = mMapView.getController();
 
@@ -374,16 +369,23 @@ public class MapScreen extends MapActivity implements LocationListener,
     private void loadTracksFile(File trackfile) { // TODO get rid of this ugly thing with
                                     // selection screen
         try {
-            FileInputStream fis = new FileInputStream(trackfile);
-            InputSource is = new InputSource(fis);
-            GPXHandler handler = new GPXHandlerImpl();
-            GPXParser parser = new GPXParser(handler, null);
-            parser.parse(is);
-            ParsedObject parsedObject = (ParsedObject) handler.getGPXObject();
-
-            mMapView.unloadTracks();
-            mWindowManager = getWindowManager();
-            mDisplay = mWindowManager.getDefaultDisplay();
+            /*
+        File mExtFolder = Environment.getExternalStorageDirectory();
+        String path = mExtFolder.getAbsolutePath() + File.separator + "Tracks" + File.separator;
+        File fXmlFile = new File(path + "gpx.xml");
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = null;
+        Document doc = null;
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+            doc = dBuilder.parse(fXmlFile);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        GpxScanner scanner = new GpxScanner(doc);
+        scanner.visitDocument();
+        GpxType gpxType = (GpxType) scanner.getParsedObject();
 
             Vector<GeoPointer> geo = parsedObject.getGeoPoints();
             OverlayGroup overlays = mMapView.getOverlayGroup();
@@ -403,6 +405,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
             mMapView.invalidate();
             mMapController.animateTo(geo.get(0));
+            */
         }
         catch (Exception e) {
             e.printStackTrace();

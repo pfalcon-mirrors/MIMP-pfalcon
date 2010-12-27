@@ -2,9 +2,9 @@ package org.mimp.dom.gpx;
 
 public class LinkType {
 
-    protected String text;
-    protected String type;
-    protected String href;
+    protected String text = "";
+    protected String type = "";
+    protected String href = "";
 
     public LinkType() {
     }

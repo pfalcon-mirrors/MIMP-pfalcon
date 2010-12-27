@@ -6,12 +6,12 @@ import java.util.List;
 public class TrksegType {
 
     protected List<WptType> trkpt;
-    protected ExtensionsType extensions;
+    protected String extensions;
 
     public TrksegType() {
     }
 
-    public TrksegType(List<WptType> trkpt, ExtensionsType extensions) {
+    public TrksegType(List<WptType> trkpt, String extensions) {
         this.trkpt = trkpt;
         this.extensions = extensions;
     }
@@ -22,12 +22,16 @@ public class TrksegType {
         }
         return this.trkpt;
     }
+    
+    public WptType getLastTrkpt() {
+        return this.trkpt.get(trkpt.size()-1);
+    }
 
-    public ExtensionsType getExtensions() {
+    public String getExtensions() {
         return extensions;
     }
 
-    public void setExtensions(ExtensionsType value) {
+    public void setExtensions(String value) {
         this.extensions = value;
     }
 }

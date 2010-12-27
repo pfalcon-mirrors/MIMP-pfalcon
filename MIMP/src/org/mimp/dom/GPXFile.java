@@ -1,19 +1,19 @@
-package org.mimp.dom.gpx;
+package org.mimp.dom;
 
 import java.io.File;
 
-import org.mimp.dom.ParsedFile;
-import org.mimp.dom.ParsedObject;
-
+import org.mimp.dom.gpx.GpxType;
 
 public class GPXFile implements ParsedFile {
 
     private String mPath = "";
     private File mFile;
-    private GPXObject gpxObject = null;
+    private GpxType mGpxType = null;
 
-    public GPXFile(String path) throws Exception {
-
+    protected GPXFile(String path, GpxType gpxType) {
+        mPath = path;
+        mGpxType = gpxType;
+        mFile = new File(path);
     }
 
     public String getPath() {
@@ -29,6 +29,6 @@ public class GPXFile implements ParsedFile {
     }
 
     public ParsedObject getParsedObject() {
-        return (ParsedObject) gpxObject;
+        return (ParsedObject) mGpxType;
     }
 }

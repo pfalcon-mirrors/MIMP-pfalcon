@@ -4,8 +4,9 @@ import java.io.File;
 
 import org.mimp.R;
 import org.mimp.adapters.TrackListAdapter;
+import org.mimp.dom.ParsedFile;
+import org.mimp.dom.ParsedFileFactory;
 import org.mimp.globals.S;
-import org.mimp.sax.ParsedFileFactory;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -94,10 +95,13 @@ public class TracksScreen extends Activity implements OnItemClickListener {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                ParsedFile parsedFile;
                 files = mBaseFolder.listFiles();
                 for (int i = 0; i < files.length; i++) {
                     try {
-                        mTrackListAdapter.addTrack(ParsedFileFactory.getParsedFile(files[i]));
+                        parsedFile = ParsedFileFactory.getParsedFile(files[i]);
+                        if (parsedFile != null)
+                            mTrackListAdapter.addTrack(parsedFile);
                     }
                     catch (Exception e) {
                         e.printStackTrace();

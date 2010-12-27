@@ -13,7 +13,7 @@ public class RteType {
     protected List<LinkType> link;
     protected BigInteger number;
     protected String type;
-    protected ExtensionsType extensions;
+    protected String extensions;
     protected List<WptType> rtept;
 
     public String getName() {
@@ -54,6 +54,10 @@ public class RteType {
         }
         return this.link;
     }
+    
+    public LinkType getLastLink() {
+        return link.get(link.size()-1);
+    }
 
     public BigInteger getNumber() {
         return number;
@@ -71,11 +75,11 @@ public class RteType {
         this.type = value;
     }
 
-    public ExtensionsType getExtensions() {
+    public String getExtensions() {
         return extensions;
     }
 
-    public void setExtensions(ExtensionsType value) {
+    public void setExtensions(String value) {
         this.extensions = value;
     }
 
@@ -86,4 +90,7 @@ public class RteType {
         return this.rtept;
     }
 
+    public WptType getLastRtept() {
+        return this.rtept.get(rtept.size()-1);
+    }
 }

@@ -24,15 +24,15 @@ public class WptType {
     protected BigDecimal vdop;
     protected BigDecimal pdop;
     protected BigDecimal ageofdgpsdata;
-    protected Integer dgpsid;
-    protected ExtensionsType extensions;
+    protected String dgpsid;
+    protected String extensions;
     protected BigDecimal lat;
     protected BigDecimal lon;
 
     public WptType() {
     }
 
-    public WptType(BigDecimal ele, String time, BigDecimal magvar, BigDecimal geoidheight, String name, String cmt, String desc, String src, List<LinkType> link, String sym, String type, String fix, BigInteger sat, BigDecimal hdop, BigDecimal vdop, BigDecimal pdop, BigDecimal ageofdgpsdata, Integer dgpsid, ExtensionsType extensions, BigDecimal lat, BigDecimal lon) {
+    public WptType(BigDecimal ele, String time, BigDecimal magvar, BigDecimal geoidheight, String name, String cmt, String desc, String src, List<LinkType> link, String sym, String type, String fix, BigInteger sat, BigDecimal hdop, BigDecimal vdop, BigDecimal pdop, BigDecimal ageofdgpsdata, String dgpsid, String extensions, BigDecimal lat, BigDecimal lon) {
         this.ele = ele;
         this.time = time;
         this.magvar = magvar;
@@ -126,6 +126,10 @@ public class WptType {
         }
         return this.link;
     }
+    
+    public LinkType getLastLink() {
+        return link.get(link.size()-1);
+    }
 
     public String getSym() {
         return sym;
@@ -191,19 +195,19 @@ public class WptType {
         this.ageofdgpsdata = value;
     }
 
-    public Integer getDgpsid() {
+    public String getDgpsid() {
         return dgpsid;
     }
 
-    public void setDgpsid(Integer value) {
+    public void setDgpsid(String value) {
         this.dgpsid = value;
     }
 
-    public ExtensionsType getExtensions() {
+    public String getExtensions() {
         return extensions;
     }
 
-    public void setExtensions(ExtensionsType value) {
+    public void setExtensions(String value) {
         this.extensions = value;
     }
 

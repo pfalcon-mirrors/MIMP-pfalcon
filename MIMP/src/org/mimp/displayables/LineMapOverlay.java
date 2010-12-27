@@ -3,7 +3,7 @@ package org.mimp.displayables;
 import java.util.List;
 import java.util.Vector;
 
-import org.mimp.sax.GeoPointer;
+import org.mimp.dom.GeoPointer;
 
 import android.content.Context;
 import android.graphics.Canvas;

@@ -2,21 +2,25 @@ package org.mimp.dom.gpx;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
-public class GpxType {
+import org.mimp.dom.GeoPointer;
+import org.mimp.dom.ParsedObject;
+
+public class GpxType implements ParsedObject {
 
     protected MetadataType metadata;
     protected List<WptType> wpt;
     protected List<RteType> rte;
     protected List<TrkType> trk;
-    protected ExtensionsType extensions;
+    protected String extensions;
     protected String version;
     protected String creator;
 
     public GpxType() {
     }
 
-    public GpxType(MetadataType metadata, List<WptType> wpt, List<RteType> rte, List<TrkType> trk, ExtensionsType extensions, String version, String creator) {
+    public GpxType(MetadataType metadata, List<WptType> wpt, List<RteType> rte, List<TrkType> trk, String extensions, String version, String creator) {
         this.metadata = metadata;
         this.wpt = wpt;
         this.rte = rte;
@@ -27,11 +31,10 @@ public class GpxType {
     }
 
     public MetadataType getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(MetadataType value) {
-        this.metadata = value;
+        if (metadata == null) {
+            metadata = new MetadataType();
+        }
+        return this.metadata;
     }
 
     public List<WptType> getWpt() {
@@ -40,7 +43,11 @@ public class GpxType {
         }
         return this.wpt;
     }
-
+    
+    public WptType getLastWpt() {
+        return this.wpt.get(wpt.size()-1);
+    }
+    
     public List<RteType> getRte() {
         if (rte == null) {
             rte = new ArrayList<RteType>();
@@ -48,18 +55,26 @@ public class GpxType {
         return this.rte;
     }
 
+    public RteType getLastRte() {
+        return this.rte.get(rte.size()-1);
+    }
+    
     public List<TrkType> getTrk() {
         if (trk == null) {
             trk = new ArrayList<TrkType>();
         }
         return this.trk;
     }
+    
+    public TrkType getLastTrk() {
+        return this.trk.get(trk.size()-1);
+    }
 
-    public ExtensionsType getExtensions() {
+    public String getExtensions() {
         return extensions;
     }
 
-    public void setExtensions(ExtensionsType value) {
+    public void setExtensions(String value) {
         this.extensions = value;
     }
 
@@ -81,5 +96,36 @@ public class GpxType {
 
     public void setCreator(String value) {
         this.creator = value;
+    }
+    
+    public Vector<GeoPointer> getPoints() {
+        if (rte != null) {
+            return null;
+        }
+        else if (trk != null) {
+            return null;
+        }
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        if (metadata == null) {
+            return "";
+        }
+        return metadata.getName();
+    }
+
+    @Override
+    public String getDescr() {
+        if (metadata == null) {
+            return "";
+        }
+        return metadata.getDesc();
+    }
+
+    @Override
+    public List<WptType> getPOIs() {
+        return wpt;
     }
 }

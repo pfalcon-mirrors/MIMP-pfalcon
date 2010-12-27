@@ -3,9 +3,9 @@ package org.mimp.dom.gpx;
 
 public class CopyrightType {
 
-    protected String year;
-    protected String license;
-    protected String author;
+    protected String year = "";
+    protected String license = "";
+    protected String author = "";
 
     public CopyrightType() {
     }

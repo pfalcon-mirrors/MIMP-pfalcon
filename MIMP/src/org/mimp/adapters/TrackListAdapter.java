@@ -3,7 +3,7 @@ package org.mimp.adapters;
 import java.util.ArrayList;
 
 import org.mimp.R;
-import org.mimp.sax.ParsedFile;
+import org.mimp.dom.ParsedFile;
 
 import android.content.Context;
 import android.os.Handler;
@@ -74,8 +74,8 @@ public class TrackListAdapter extends BaseAdapter {
                 .getExtention());
         trackListBodyAdapter.title.setText(mParsedFiles.get(position)
                 .getParsedObject().getName());
-        trackListBodyAdapter.name
-                .setText(mParsedFiles.get(position).getFileName());
+        trackListBodyAdapter.name.setText(mParsedFiles.get(position)
+                .getFileName());
         trackListBodyAdapter.descr.setText(mParsedFiles.get(position)
                 .getParsedObject().getDescr());
 

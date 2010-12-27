@@ -1,5 +1,15 @@
 package org.mimp.dom.gpx.scanner;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import org.mimp.dom.ParsedObject;
+import org.mimp.dom.gpx.GpxType;
+import org.mimp.dom.gpx.RteType;
+import org.mimp.dom.gpx.TrkType;
+import org.mimp.dom.gpx.TrksegType;
+import org.mimp.dom.gpx.WptType;
+
 /**
  *
  * @author hellhand
@@ -9,7 +19,15 @@ public class GpxScanner {
      * org.w3c.dom.Document document
      */
     org.w3c.dom.Document document;
+    GpxType gpxType;
 
+    /**
+     * Create new GpxScanner.
+     */
+    public GpxScanner() {
+        
+    }
+    
     /**
      * Create new GpxScanner with org.w3c.dom.Document.
      */
@@ -17,6 +35,20 @@ public class GpxScanner {
         this.document = document;
     }
 
+    /**
+     * Set org.w3c.dom.Document to GpxScanner
+     */
+    public void setDocument(org.w3c.dom.Document document) {
+        this.document = document;
+    }
+    
+    /**
+     * Get the the created object
+     */
+    public ParsedObject getParsedObject() {
+        return gpxType;
+    }
+    
     /**
      * Scan through org.w3c.dom.Document document.
      */
@@ -131,7 +163,7 @@ public class GpxScanner {
             visitElement_trkpt(element);
         }
     }
-
+    
     /**
      * Scan through org.w3c.dom.Element named gpx.
      */
@@ -139,16 +171,19 @@ public class GpxScanner {
         // <gpx>
         // element.getValue();
         // element.getValue();
+        gpxType = new GpxType();
         org.w3c.dom.NamedNodeMap attrs = element.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("creator")) {
                 // <gpx creator="???">
                 // attr.getValue();
+                gpxType.setCreator(attr.getValue());
             }
             if (attr.getName().equals("version")) {
                 // <gpx version="???">
                 // attr.getValue();
+                gpxType.setVersion(attr.getValue());
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -243,24 +278,27 @@ public class GpxScanner {
         // <name>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if("metadata".equals(parentNode)) {
+            gpxType.getMetadata().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("author".equals(parentNode)) {
+            gpxType.getMetadata().getAuthor().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setName(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setName(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -271,24 +309,24 @@ public class GpxScanner {
         // <desc>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if("metadata".equals(parentNode)) {
+            gpxType.getMetadata().setDesc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().setDesc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setDesc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setDesc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setDesc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setDesc(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -339,26 +377,12 @@ public class GpxScanner {
             if (attr.getName().equals("domain")) {
                 // <email domain="???">
                 // attr.getValue();
+                gpxType.getMetadata().getAuthor().getEmail().setDomain(attr.getValue());
             }
             if (attr.getName().equals("id")) {
                 // <email id="???">
                 // attr.getValue();
-            }
-        }
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
+                gpxType.getMetadata().getAuthor().getEmail().setId(attr.getValue());
             }
         }
     }
@@ -370,12 +394,34 @@ public class GpxScanner {
         // <link>
         // element.getValue();
         // element.getValue();
+        String parentNode = element.getParentNode().getNodeName();
         org.w3c.dom.NamedNodeMap attrs = element.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("href")) {
                 // <link href="???">
                 // attr.getValue();
+                if ("metadata".equals(parentNode)) {
+                    gpxType.getMetadata().getLink().setHref(attr.getValue());
+                }
+                if ("author".equals(parentNode)) {
+                    gpxType.getMetadata().getAuthor().getLink().setHref(attr.getValue());
+                }
+                if ("wpt".equals(parentNode)) {
+                    gpxType.getLastWpt().getLastLink().setHref(attr.getValue());
+                }
+                if ("rte".equals(parentNode)) {
+                    gpxType.getLastRte().getLastLink().setHref(attr.getValue());
+                }
+                if ("rtept".equals(parentNode)) {
+                    gpxType.getLastRte().getLastRtept().getLastLink().setHref(attr.getValue());
+                }
+                if ("trk".equals(parentNode)) {
+                    gpxType.getLastTrk().getLastLink().setHref(attr.getValue());
+                }
+                if ("trkpt".equals(parentNode)) {
+                    gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().getLastLink().setHref(attr.getValue());
+                }
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -409,24 +455,27 @@ public class GpxScanner {
         // <text>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getParentNode().getNodeName();
+        if ("metadata".equals(parentNode)) {
+            gpxType.getMetadata().getLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("author".equals(parentNode)) {
+            gpxType.getMetadata().getAuthor().getLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().getLastLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().getLastLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().getLastLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().getLastLink().setText(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().getLastLink().setText(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -437,24 +486,27 @@ public class GpxScanner {
         // <type>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("metadata".equals(parentNode)) {
+            gpxType.getMetadata().getLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("author".equals(parentNode)) {
+            gpxType.getMetadata().getAuthor().getLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().getLastLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().getLastLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().getLastLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().getLastLink().setType(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().getLastLink().setType(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -471,6 +523,7 @@ public class GpxScanner {
             if (attr.getName().equals("author")) {
                 // <copyright author="???">
                 // attr.getValue();
+                gpxType.getMetadata().getCopyright().setAuthor(attr.getValue());
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -504,24 +557,9 @@ public class GpxScanner {
         // <year>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("copyright".equals(parentNode)) {
+            gpxType.getMetadata().getCopyright().setYear(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -532,24 +570,9 @@ public class GpxScanner {
         // <license>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("copyright".equals(parentNode)) {
+            gpxType.getMetadata().getCopyright().setLicense(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -560,24 +583,18 @@ public class GpxScanner {
         // <time>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if("metadata".equals(parentNode)) {
+            gpxType.getMetadata().setTime(element.getChildNodes().item(0).getNodeValue());
+        }
+        if("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().setTime(element.getChildNodes().item(0).getNodeValue());
+        }
+        if("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setTime(element.getChildNodes().item(0).getNodeValue());
+        }
+        if("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setTime(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -588,24 +605,9 @@ public class GpxScanner {
         // <keywords>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if("metadata".equals(parentNode)) {
+            gpxType.getMetadata().setKeywords(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -622,34 +624,22 @@ public class GpxScanner {
             if (attr.getName().equals("maxlon")) {
                 // <bounds maxlon="???">
                 // attr.getValue();
+                gpxType.getMetadata().getBounds().setMaxlon(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("maxlat")) {
                 // <bounds maxlat="???">
                 // attr.getValue();
+                gpxType.getMetadata().getBounds().setMaxlat(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("minlon")) {
                 // <bounds minlon="???">
                 // attr.getValue();
+                gpxType.getMetadata().getBounds().setMinlon(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("minlat")) {
                 // <bounds minlat="???">
                 // attr.getValue();
-            }
-        }
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
+                gpxType.getMetadata().getBounds().setMinlat(new BigDecimal(attr.getValue()));
             }
         }
     }
@@ -661,24 +651,30 @@ public class GpxScanner {
         // <extensions>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("gpx".equals(parentNode)) {
+            gpxType.setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("metadata".equals(parentNode)) {
+            gpxType.getMetadata().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("wpt".equals(parentNode)) {
+            gpxType.getLastWpt().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkseg".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().setExtensions(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setExtensions(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -689,16 +685,19 @@ public class GpxScanner {
         // <wpt>
         // element.getValue();
         // element.getValue();
+        gpxType.getWpt().add(new WptType());
         org.w3c.dom.NamedNodeMap attrs = element.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("lon")) {
                 // <wpt lon="???">
                 // attr.getValue();
+                gpxType.getLastWpt().setLon(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("lat")) {
                 // <wpt lat="???">
                 // attr.getValue();
+                gpxType.getLastWpt().setLat(new BigDecimal(attr.getValue()));
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -783,24 +782,15 @@ public class GpxScanner {
         // <ele>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setEle(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setEle(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setEle(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -811,24 +801,15 @@ public class GpxScanner {
         // <magvar>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setMagvar(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setMagvar(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setMagvar(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -839,24 +820,15 @@ public class GpxScanner {
         // <geoidheight>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setGeoidheight(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        } 
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setGeoidheight(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setGeoidheight(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -867,24 +839,21 @@ public class GpxScanner {
         // <cmt>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setCmt(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setCmt(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setCmt(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setCmt(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setCmt(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -895,24 +864,21 @@ public class GpxScanner {
         // <src>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setSrc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setSrc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setSrc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setSrc(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setSrc(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -923,24 +889,15 @@ public class GpxScanner {
         // <sym>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setSym(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setSym(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setSym(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -951,24 +908,15 @@ public class GpxScanner {
         // <fix>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setFix(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setFix(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setFix(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -979,24 +927,15 @@ public class GpxScanner {
         // <sat>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setSat(new BigInteger(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setSat(new BigInteger(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setSat(new BigInteger(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1007,24 +946,15 @@ public class GpxScanner {
         // <hdop>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setHdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setHdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setHdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1035,24 +965,15 @@ public class GpxScanner {
         // <vdop>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setVdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setVdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setVdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1063,24 +984,15 @@ public class GpxScanner {
         // <pdop>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setPdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setPdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setPdop(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1091,24 +1003,15 @@ public class GpxScanner {
         // <ageofdgpsdata>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setAgeofdgpsdata(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setAgeofdgpsdata(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setAgeofdgpsdata(new BigDecimal(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1119,24 +1022,15 @@ public class GpxScanner {
         // <dgpsid>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("wp".equals(parentNode)) {
+            gpxType.getLastWpt().setDgpsid(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("rtept".equals(parentNode)) {
+            gpxType.getLastRte().getLastRtept().setDgpsid(element.getChildNodes().item(0).getNodeValue());
+        }
+        if ("trkpt".equals(parentNode)) {
+            gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setDgpsid(element.getChildNodes().item(0).getNodeValue());
         }
     }
 
@@ -1147,6 +1041,7 @@ public class GpxScanner {
         // <rte>
         // element.getValue();
         // element.getValue();
+        gpxType.getRte().add(new RteType());
         org.w3c.dom.NodeList nodes = element.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             org.w3c.dom.Node node = nodes.item(i);
@@ -1199,24 +1094,12 @@ public class GpxScanner {
         // <number>
         // element.getValue();
         // element.getValue();
-        org.w3c.dom.NodeList nodes = element.getChildNodes();
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            switch (node.getNodeType()) {
-                case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                    // ((org.w3c.dom.CDATASection)node).getData();
-                    break;
-                case org.w3c.dom.Node.ELEMENT_NODE:
-                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
-                    break;
-                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                    // ((org.w3c.dom.ProcessingInstruction)node).getTarget();
-                    // ((org.w3c.dom.ProcessingInstruction)node).getData();
-                    break;
-                case org.w3c.dom.Node.TEXT_NODE:
-                    // ((org.w3c.dom.Text)node).getData();
-                    break;
-            }
+        String parentNode = element.getParentNode().getNodeName();
+        if ("rte".equals(parentNode)) {
+            gpxType.getLastRte().setNumber(new BigInteger(element.getChildNodes().item(0).getNodeValue()));
+        }
+        if ("trk".equals(parentNode)) {
+            gpxType.getLastTrk().setNumber(new BigInteger(element.getChildNodes().item(0).getNodeValue()));
         }
     }
 
@@ -1227,16 +1110,19 @@ public class GpxScanner {
         // <rtept>
         // element.getValue();
         // element.getValue();
+        gpxType.getLastRte().getRtept().add(new WptType());
         org.w3c.dom.NamedNodeMap attrs = element.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("lon")) {
                 // <rtept lon="???">
                 // attr.getValue();
+                gpxType.getLastRte().getLastRtept().setLon(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("lat")) {
                 // <rtept lat="???">
                 // attr.getValue();
+                gpxType.getLastRte().getLastRtept().setLat(new BigDecimal(attr.getValue()));
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -1321,6 +1207,7 @@ public class GpxScanner {
         // <trk>
         // element.getValue();
         // element.getValue();
+        gpxType.getTrk().add(new TrkType());
         org.w3c.dom.NodeList nodes = element.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             org.w3c.dom.Node node = nodes.item(i);
@@ -1373,6 +1260,7 @@ public class GpxScanner {
         // <trkseg>
         // element.getValue();
         // element.getValue();
+        gpxType.getLastTrk().getTrkseg().add(new TrksegType());
         org.w3c.dom.NodeList nodes = element.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             org.w3c.dom.Node node = nodes.item(i);
@@ -1404,16 +1292,19 @@ public class GpxScanner {
         // <trkpt>
         // element.getValue();
         // element.getValue();
+        gpxType.getLastTrk().getLastTrkseg().getTrkpt().add(new WptType());
         org.w3c.dom.NamedNodeMap attrs = element.getAttributes();
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("lon")) {
                 // <trkpt lon="???">
                 // attr.getValue();
+                gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setLon(new BigDecimal(attr.getValue()));
             }
             if (attr.getName().equals("lat")) {
                 // <trkpt lat="???">
                 // attr.getValue();
+                gpxType.getLastTrk().getLastTrkseg().getLastTrkpt().setLat(new BigDecimal(attr.getValue()));
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
@@ -1490,5 +1381,4 @@ public class GpxScanner {
             }
         }
     }
-
 }

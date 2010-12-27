@@ -13,13 +13,13 @@ public class TrkType {
     protected List<LinkType> link;
     protected BigInteger number;
     protected String type;
-    protected ExtensionsType extensions;
+    protected String extensions;
     protected List<TrksegType> trkseg;
 
     public TrkType() {
     }
 
-    public TrkType(String name, String cmt, String desc, String src, List<LinkType> link, BigInteger number, String type, ExtensionsType extensions, List<TrksegType> trkseg) {
+    public TrkType(String name, String cmt, String desc, String src, List<LinkType> link, BigInteger number, String type, String extensions, List<TrksegType> trkseg) {
         this.name = name;
         this.cmt = cmt;
         this.desc = desc;
@@ -70,6 +70,10 @@ public class TrkType {
         return this.link;
     }
 
+    public LinkType getLastLink() {
+        return link.get(link.size()-1);
+    }
+    
     public BigInteger getNumber() {
         return number;
     }
@@ -86,11 +90,11 @@ public class TrkType {
         this.type = value;
     }
 
-    public ExtensionsType getExtensions() {
+    public String getExtensions() {
         return extensions;
     }
 
-    public void setExtensions(ExtensionsType value) {
+    public void setExtensions(String value) {
         this.extensions = value;
     }
 
@@ -99,5 +103,9 @@ public class TrkType {
             trkseg = new ArrayList<TrksegType>();
         }
         return this.trkseg;
+    }
+    
+    public TrksegType getLastTrkseg() {
+        return this.trkseg.get(trkseg.size()-1);
     }
 }

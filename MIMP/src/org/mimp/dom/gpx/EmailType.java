@@ -2,8 +2,8 @@ package org.mimp.dom.gpx;
 
 public class EmailType {
 
-    protected String id;
-    protected String domain;
+    protected String id = "";
+    protected String domain = "";
 
     public EmailType() {
     }
