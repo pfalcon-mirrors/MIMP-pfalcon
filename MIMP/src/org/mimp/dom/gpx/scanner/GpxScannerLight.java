@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 import org.mimp.dom.ParsedObject;
 import org.mimp.dom.gpx.GpxType;
-import org.w3c.dom.Node;
 
 /**
  *
