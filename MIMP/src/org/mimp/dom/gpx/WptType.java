@@ -1,12 +1,17 @@
 package org.mimp.dom.gpx;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WptType {
+public class WptType implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     protected BigDecimal ele;
     protected String time;
     protected BigDecimal magvar;
@@ -214,6 +219,10 @@ public class WptType {
     public BigDecimal getLat() {
         return lat;
     }
+    
+    public int getLatE6() {
+        return (int)(lat.doubleValue()*1E6);
+    }
 
     public void setLat(BigDecimal value) {
         this.lat = value;
@@ -223,8 +232,11 @@ public class WptType {
         return lon;
     }
 
+    public int getLonE6() {
+        return (int)(lon.doubleValue()*1E6);
+    }
+    
     public void setLon(BigDecimal value) {
         this.lon = value;
     }
-
 }

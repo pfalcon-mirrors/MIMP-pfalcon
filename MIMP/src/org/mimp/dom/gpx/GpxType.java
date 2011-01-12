@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.mimp.dom.GeoPointer;
 import org.mimp.dom.ParsedObject;
+
+import com.google.android.maps.GeoPoint;
 
 public class GpxType implements ParsedObject {
 
@@ -98,12 +99,12 @@ public class GpxType implements ParsedObject {
         this.creator = value;
     }
     
-    public Vector<GeoPointer> getPoints() {
+    public Vector<GeoPoint> getPoints() {
         if (rte != null) {
-            return null;
+            return rte.get(0).getPoints();
         }
         else if (trk != null) {
-            return null;
+            return trk.get(0).getPoints();
         }
         return null;
     }

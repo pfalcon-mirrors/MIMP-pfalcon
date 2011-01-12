@@ -18,6 +18,9 @@ import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
 import org.mimp.dom.GeoPointer;
+import org.mimp.dom.ParsedFile;
+import org.mimp.dom.ParsedFileFactory;
+import org.mimp.dom.ParsedObject;
 import org.mimp.globals.S;
 import org.mimp.views.ExtendedMapView;
 
@@ -366,29 +369,19 @@ public class MapScreen extends MapActivity implements LocationListener,
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadTracksFile(File trackfile) { // TODO get rid of this ugly thing with
-                                    // selection screen
+    private void loadTracksFile(File trackfile) { 
         try {
-            /*
-        File mExtFolder = Environment.getExternalStorageDirectory();
-        String path = mExtFolder.getAbsolutePath() + File.separator + "Tracks" + File.separator;
-        File fXmlFile = new File(path + "gpx.xml");
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = null;
-        Document doc = null;
-        try {
-            dBuilder = dbFactory.newDocumentBuilder();
-            doc = dBuilder.parse(fXmlFile);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-        GpxScanner scanner = new GpxScanner(doc);
-        scanner.visitDocument();
-        GpxType gpxType = (GpxType) scanner.getParsedObject();
-
-            Vector<GeoPointer> geo = parsedObject.getGeoPoints();
+            System.out.println("file : " + trackfile);
+            ParsedFile parsedFile;
+            parsedFile = ParsedFileFactory.getParsedFile(trackfile);
+            ParsedObject parsedObject = parsedFile.getParsedObject();
+            Vector<GeoPoint> geo = parsedObject.getPoints();
+            //TODO: better
+            if (geo == null)
+                return;
             OverlayGroup overlays = mMapView.getOverlayGroup();
+            mWindowManager = getWindowManager();
+            mDisplay = mWindowManager.getDefaultDisplay();
 
             LineMapOverlay lineMapOverlay = new LineMapOverlay();
             lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
@@ -405,7 +398,6 @@ public class MapScreen extends MapActivity implements LocationListener,
 
             mMapView.invalidate();
             mMapController.animateTo(geo.get(0));
-            */
         }
         catch (Exception e) {
             e.printStackTrace();

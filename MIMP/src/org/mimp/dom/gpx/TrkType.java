@@ -3,6 +3,9 @@ package org.mimp.dom.gpx;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
+import com.google.android.maps.GeoPoint;
 
 public class TrkType {
 
@@ -107,5 +110,9 @@ public class TrkType {
     
     public TrksegType getLastTrkseg() {
         return this.trkseg.get(trkseg.size()-1);
+    }
+
+    public Vector<GeoPoint> getPoints() {
+        return trkseg.get(0).getPoints();
     }
 }

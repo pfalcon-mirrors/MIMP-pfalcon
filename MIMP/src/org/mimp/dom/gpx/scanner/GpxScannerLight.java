@@ -227,9 +227,7 @@ public class GpxScannerLight {
      */
     void visitElement_text(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getParentNode().getNodeName();
-        System.out.println(">>>>>>>>>>>>>> parent parent node : " + parentNode + " => " + element.getParentNode().getNodeValue());
         if ("metadata".equals(parentNode)) {
-            System.out.println(">>>>>>>>>>>>>> parent parent node : " + parentNode + " node : " + element.getNodeName() + " => " + element.getChildNodes().item(0).getNodeValue());
             gpxType.getMetadata().getLink().setText(element.getChildNodes().item(0).getNodeValue());
         }
         if ("author".equals(parentNode)) {

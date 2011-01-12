@@ -3,6 +3,9 @@ package org.mimp.dom.gpx;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
+import com.google.android.maps.GeoPoint;
 
 public class RteType {
 
@@ -92,5 +95,17 @@ public class RteType {
 
     public WptType getLastRtept() {
         return this.rtept.get(rtept.size()-1);
+    }
+
+    public Vector<GeoPoint> getPoints() {
+        if (rtept == null) {
+            rtept = new ArrayList<WptType>();
+        }
+        Vector<GeoPoint> points = new Vector<GeoPoint>();
+        for (WptType point : rtept)
+        {
+            points.add(new GeoPoint(point.getLatE6(),point.getLonE6()));
+        }
+        return points;
     }
 }
