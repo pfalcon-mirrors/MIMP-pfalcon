@@ -9,6 +9,8 @@ import org.mimp.dom.gpx.GpxType;
 import org.mimp.dom.gpx.scanner.GpxScanner;
 import org.mimp.dom.gpx.scanner.GpxScannerLight;
 import org.mimp.dom.kml.KmlType;
+import org.mimp.dom.kml.scanner.KmlScanner;
+import org.mimp.dom.kml.scanner.KmlScannerLight;
 import org.w3c.dom.Document;
 
 public class ParsedFileFactory {
@@ -33,15 +35,12 @@ public class ParsedFileFactory {
                 mParsedFile = (ParsedFile) new GPXFile(file.getAbsolutePath(), gpxType);
             }
             else if (mExtention.equalsIgnoreCase("kml")) {
-                /*
                 if (dBuilder == null)
                     dBuilder = dbFactory.newDocumentBuilder();
                 doc = dBuilder.parse(file);
                 KmlScanner scanner = new KmlScanner(doc);
                 scanner.visitDocument();
                 KmlType kmlType = (KmlType) scanner.getParsedObject();
-                 */
-                KmlType kmlType = new KmlType();
                 mParsedFile = (ParsedFile) new KMLFile(file.getAbsolutePath(), kmlType);
             }
         } catch (Exception e) {
@@ -66,15 +65,12 @@ public class ParsedFileFactory {
                 mParsedFile = (ParsedFile) new GPXFile(file.getAbsolutePath(), gpxType);
             }
             else if (mExtention.equalsIgnoreCase("kml")) {
-                /*
                 if (dBuilder == null)
                     dBuilder = dbFactory.newDocumentBuilder();
                 doc = dBuilder.parse(file);
                 KmlScannerLight scanner = new KmlScannerLight(doc);
                 scanner.visitDocument();
                 KmlType kmlType = (KmlType) scanner.getParsedObject();
-                 */
-                KmlType kmlType = new KmlType();
                 mParsedFile = (ParsedFile) new KMLFile(file.getAbsolutePath(), kmlType);
             }
         } catch (Exception e) {

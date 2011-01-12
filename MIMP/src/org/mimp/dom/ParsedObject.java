@@ -5,10 +5,12 @@ import java.util.Vector;
 
 import org.mimp.dom.gpx.WptType;
 
+import com.google.android.maps.GeoPoint;
+
 public interface ParsedObject {
 
     String getName();
     String getDescr();
-    Vector<GeoPointer> getPoints();
+    Vector<GeoPoint> getPoints();
     List<WptType> getPOIs();
 }

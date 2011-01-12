@@ -29,6 +29,6 @@ public class GPXFile implements ParsedFile {
     }
 
     public ParsedObject getParsedObject() {
-        return (ParsedObject) mGpxType;
+        return mGpxType;
     }
 }

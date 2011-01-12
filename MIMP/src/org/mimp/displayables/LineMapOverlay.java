@@ -3,8 +3,6 @@ package org.mimp.displayables;
 import java.util.List;
 import java.util.Vector;
 
-import org.mimp.dom.GeoPointer;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -42,6 +40,7 @@ public class LineMapOverlay extends Overlay {
         this.pathPaint.setAntiAlias(false);
         this.pathPaint.setStrokeWidth(4);
         this.pathPaint.setARGB(200, 100, 170, 240);
+        this.pathPaint.setStyle(Paint.Style.STROKE);
     }
 
     /**
@@ -56,12 +55,9 @@ public class LineMapOverlay extends Overlay {
         this.geoPoints = new Vector<GeoPoint>(geoPoints);
     }
 
-    public void setLineMapOverlay(Context context,
-            Vector<GeoPointer> geoPoints, int height, int width) {
-        this.geoPoints = new Vector<GeoPoint>();
-        for (int i = 0; i < geoPoints.size(); i++) {
-            this.geoPoints.add(geoPoints.get(i));
-        }
+    public void setLineMapOverlay(Context context, Vector<GeoPoint> geoPoints,
+            int height, int width) {
+        this.geoPoints = geoPoints;
     }
 
     /*****************************************************************************
@@ -84,7 +80,6 @@ public class LineMapOverlay extends Overlay {
             projection.toPixels(geoPoints.get(i), screenPointb);
             thePath.lineTo(screenPointb.x, screenPointb.y);
         }
-        this.pathPaint.setStyle(Paint.Style.STROKE);
         canvas.drawPath(thePath, pathPaint);
     }
 

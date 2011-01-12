@@ -15,7 +15,7 @@ public class TrackEndPoint extends MapPointOverlay {
         setHeight(SIZE.BIG);
         setCorePaint(getCorePaint());
     }
-
+    
     @Override
     public boolean onTap(GeoPoint p, MapView mapView) {
         if (isTapOnElement(p, mapView)) {

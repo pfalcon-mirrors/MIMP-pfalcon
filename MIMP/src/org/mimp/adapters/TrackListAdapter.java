@@ -69,6 +69,9 @@ public class TrackListAdapter extends BaseAdapter {
             trackListBodyAdapter.descr = (TextView) convertView
                     .findViewById(R.id.track_list_body_descr);
         }
+        else {
+            trackListBodyAdapter = (TrackListBodyAdapter) convertView.getTag();
+        }
 
         trackListBodyAdapter.type.setText(mParsedFiles.get(position)
                 .getExtention());

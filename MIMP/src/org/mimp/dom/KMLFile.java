@@ -8,7 +8,7 @@ public class KMLFile implements ParsedFile {
 
     private String mPath = "";
     private File mFile;
-    private KmlType mKmlType;
+    private KmlType mKmlType = null;
 
     protected KMLFile(String path, KmlType kmlType) {
         mPath = path;
