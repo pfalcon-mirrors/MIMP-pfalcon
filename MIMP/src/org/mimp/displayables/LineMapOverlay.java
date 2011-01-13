@@ -3,8 +3,12 @@ package org.mimp.displayables;
 import java.util.List;
 import java.util.Vector;
 
+import org.mimp.globals.S;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -28,6 +32,10 @@ public class LineMapOverlay extends Overlay {
     private Paint pathPaint = new Paint();
     private Projection projection;
     private Path thePath = null;
+    private int innerColor;
+    private int outerColor;
+    private Context mContext;
+    private boolean showOuter;
 
     /*****************************************************************************
      * 
@@ -37,7 +45,7 @@ public class LineMapOverlay extends Overlay {
 
     public LineMapOverlay() {
         this.pathPaint = new Paint();
-        this.pathPaint.setAntiAlias(false);
+        this.pathPaint.setAntiAlias(true);
         this.pathPaint.setStrokeWidth(4);
         this.pathPaint.setARGB(200, 100, 170, 240);
         this.pathPaint.setStyle(Paint.Style.STROKE);
@@ -52,11 +60,13 @@ public class LineMapOverlay extends Overlay {
      */
     public void setLineMapOverlay(Context context, List<GeoPoint> geoPoints,
             int height, int width) {
+        this.mContext = context;
         this.geoPoints = new Vector<GeoPoint>(geoPoints);
     }
 
     public void setLineMapOverlay(Context context, Vector<GeoPoint> geoPoints,
             int height, int width) {
+        this.mContext = context;
         this.geoPoints = geoPoints;
     }
 
@@ -72,6 +82,11 @@ public class LineMapOverlay extends Overlay {
         if (shadow) {
             return;
         }
+        SharedPreferences settings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
+        innerColor = settings.getInt("inner_color", -932926736);
+        outerColor = settings.getInt("outer_color", -932926736);
+        showOuter = settings.getBoolean("enable_track_outer_color", false);
+        
         thePath = new Path();
         projection = mapView.getProjection();
         projection.toPixels(geoPoints.get(0), screenPointa);
@@ -80,7 +95,16 @@ public class LineMapOverlay extends Overlay {
             projection.toPixels(geoPoints.get(i), screenPointb);
             thePath.lineTo(screenPointb.x, screenPointb.y);
         }
-        canvas.drawPath(thePath, pathPaint);
+        
+        if (showOuter) {
+            this.pathPaint.setARGB(Color.alpha(outerColor), Color.red(outerColor), Color.green(outerColor), Color.blue(outerColor));
+            this.pathPaint.setStrokeWidth(10);
+            canvas.drawPath(thePath, pathPaint);
+        }
+        
+        this.pathPaint.setARGB(Color.alpha(innerColor), Color.red(innerColor), Color.green(innerColor), Color.blue(innerColor));
+        this.pathPaint.setStrokeWidth(4);
+        canvas.drawPath(thePath, pathPaint);    
     }
 
     public void draw(Canvas canvas, MapView mapView, boolean shadow, int x,

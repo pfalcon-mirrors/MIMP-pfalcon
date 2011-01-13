@@ -26,6 +26,7 @@ public class SettingsScreen extends PreferenceActivity implements OnPreferenceCl
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        getPreferenceManager().setSharedPreferencesName(S.PREFS_NAME);
         showSettingsScreen();
     }
 
