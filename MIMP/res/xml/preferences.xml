@@ -30,15 +30,21 @@
                 android:title="@string/settings_gps_follow"
                 android:summary="@string/settings_summary_gps_follow" />
                     
-            <CheckBoxPreference
-                android:key="show_precision"
-                android:title="@string/settings_gps_precision"
-                android:summary="@string/settings_summary_gps_precision" />
         </PreferenceScreen>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/inline_preferences_other">
-        
+        <Preference 
+            android:key="track_inner_color"
+            android:title="@string/settings_color_inner"
+            android:summary="@string/settings_summary_color_inner"
+            android:selectable="true"/>
+
+        <Preference
+            android:key="track_outer_color"
+            android:title="@string/settings_color_outer"
+            android:summary="@string/settings_summary_color_outer"
+            android:selectable="true"/>
     </PreferenceCategory>
     
 </PreferenceScreen>
