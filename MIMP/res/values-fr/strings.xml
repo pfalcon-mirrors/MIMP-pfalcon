@@ -59,13 +59,14 @@
 
     <string name="settings_color_inner">Couleur interne</string>
     <string name="settings_color_outer">Couleur externe</string>
+    <string name="settings_enable_color_outer">Activer couleur externe</string>
 
     <string name="settings_summary_color_inner">Choisissez la couleur interne de vos tracés</string>
     <string name="settings_summary_color_outer">Choisissez la couleur externe de vos tracés</string>
 
     <string name="settings_bg_color_dialog">Pallete</string>
     <string name="settings_bg_color_confirm">Confirmer couleur</string>
-    <string name="settings_default_color_confirm">Garder couleur</string>
+    <string name="settings_default_color_confirm">Par defaut</string>
     
     <string name="bubble_interactions_add_wpt">Ajouter en tant que waypoint</string>
     

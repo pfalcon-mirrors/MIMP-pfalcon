@@ -29,7 +29,7 @@
                 android:key="follow_user"
                 android:title="@string/settings_gps_follow"
                 android:summary="@string/settings_summary_gps_follow" />
-                    
+                
         </PreferenceScreen>
     </PreferenceCategory>
 
@@ -37,14 +37,17 @@
         <Preference 
             android:key="track_inner_color"
             android:title="@string/settings_color_inner"
-            android:summary="@string/settings_summary_color_inner"
-            android:selectable="true"/>
+            android:summary="@string/settings_summary_color_inner" />
+
+        <CheckBoxPreference
+            android:key="enable_track_outer_color"
+            android:title="@string/settings_enable_color_outer" />
 
         <Preference
             android:key="track_outer_color"
             android:title="@string/settings_color_outer"
             android:summary="@string/settings_summary_color_outer"
-            android:selectable="true"/>
+            android:dependency="enable_track_outer_color" />
     </PreferenceCategory>
     
 </PreferenceScreen>

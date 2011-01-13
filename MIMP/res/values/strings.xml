@@ -59,13 +59,14 @@
         
     <string name="settings_color_inner">Inner color</string>
     <string name="settings_color_outer">Outer color</string>
+    <string name="settings_enable_color_outer">Enable outer color</string>
         
     <string name="settings_summary_color_inner">Select the inner color of your tracks</string>
     <string name="settings_summary_color_outer">Select the outer color of your tracks</string>
-        
+    
     <string name="settings_bg_color_dialog">Color picker</string>
     <string name="settings_bg_color_confirm">Confirm color</string>
-    <string name="settings_default_color_confirm">Keep color</string>
+    <string name="settings_default_color_confirm">Default color</string>
         
     <string name="bubble_interactions_add_wpt">Add as a waypoint</string>
     
