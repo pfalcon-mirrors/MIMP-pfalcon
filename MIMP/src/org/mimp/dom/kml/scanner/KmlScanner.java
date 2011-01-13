@@ -414,7 +414,6 @@ public class KmlScanner {
      * Scan through org.w3c.dom.Element named coordinates.
      */
     void visitElement_coordinates(org.w3c.dom.Element element) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>> Coordinates <<<<<<<<<<<<<<<<<<<<");
         String parentNode = element.getParentNode().getNodeName();
         String coordinates = element.getChildNodes().item(0).getNodeValue();
         if ("Point".equals(parentNode)) {            
@@ -429,9 +428,10 @@ public class KmlScanner {
             String[] pairs = coordinates.split(" |\\r?\\n");
             System.out.println("pairs : " + pairs.length);
             try {
-                for (int i = 1; i < pairs.length-1; i++) {
-                    System.out.println("\t group : " + i + " " + pairs[i]);
-                    String[] coord = pairs[i].split(",| |\\r?\\n");
+                for (int i = 0; i < pairs.length-1; i++) {
+                    String[] coord = pairs[i].split(",");
+                    if (coord.length == 1)
+                        continue;
                     CoordinatesType coords = new CoordinatesType(
                             new BigDecimal(coord[1].trim()),
                             new BigDecimal(coord[0].trim()),
@@ -441,7 +441,7 @@ public class KmlScanner {
             }
             catch (Exception e) {
                 e.printStackTrace();
-            }
+            }   
         }
     }
 
