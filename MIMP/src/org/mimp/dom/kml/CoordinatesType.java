@@ -16,7 +16,7 @@ public class CoordinatesType implements Serializable {
     public CoordinatesType() {
     }
 
-    public CoordinatesType(BigDecimal ele, BigDecimal lat, BigDecimal lon) {
+    public CoordinatesType(BigDecimal lat, BigDecimal lon, BigDecimal ele) {
         this.ele = ele;
         this.lat = lat;
         this.lon = lon;

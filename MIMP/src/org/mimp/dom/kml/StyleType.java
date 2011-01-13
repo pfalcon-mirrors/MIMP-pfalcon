@@ -25,6 +25,9 @@ public class StyleType {
     }
     
     public IconStyleType getIconstyle() {
+        if (iconstyle == null) {
+            this.iconstyle = new IconStyleType();
+        }
         return iconstyle;
     }
     
@@ -33,6 +36,9 @@ public class StyleType {
     }
     
     public LineStyleType getLinestyle() {
+        if (linestyle == null) {
+            this.linestyle = new LineStyleType();
+        }
         return linestyle;
     }
     

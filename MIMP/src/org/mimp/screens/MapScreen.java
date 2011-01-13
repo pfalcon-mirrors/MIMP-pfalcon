@@ -199,7 +199,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
     public void checkPerspective() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        boolean mode = settings.getBoolean("perspective", false);
+        boolean mode = settings.getBoolean("perspective", true);
         if (mode) {
             mMapView.setPerspective(true);
         }
@@ -369,7 +369,7 @@ public class MapScreen extends MapActivity implements LocationListener,
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadTracksFile(File trackfile) { 
+    private void loadTracksFile(File trackfile) {
         try {
             System.out.println("file : " + trackfile);
             ParsedFile parsedFile;

@@ -45,6 +45,9 @@ public class PlacemarkType {
     }
 
     public PointType getPoint() {
+        if (point == null) {
+            this.point = new PointType();
+        }
         return point;
     }
 
@@ -53,6 +56,9 @@ public class PlacemarkType {
     }
 
     public LineStringType getLine() {
+        if (line == null) {
+            this.line = new LineStringType();
+        }
         return line;
     }
 

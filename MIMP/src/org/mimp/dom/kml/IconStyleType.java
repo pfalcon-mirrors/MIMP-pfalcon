@@ -13,6 +13,9 @@ public class IconStyleType {
     }
 
     public IconType getIcon() {
+        if (icon == null) {
+            this.icon = new IconType();
+        }
         return icon;
     }
 

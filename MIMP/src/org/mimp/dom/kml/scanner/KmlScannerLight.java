@@ -110,6 +110,8 @@ public class KmlScannerLight {
      */
     void visitElement_name(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
+        if(element.getChildNodes().getLength() == 0)
+            return;
         if ("Document".equals(parentNode)) {
             kmlType.getDocument().setName(element.getChildNodes().item(0).getNodeValue());
         }
@@ -123,6 +125,8 @@ public class KmlScannerLight {
      */
     void visitElement_description(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
+        if(element.getChildNodes().getLength() == 0)
+            return;
         if ("Document".equals(parentNode)) {
             kmlType.getDocument().setDescription(element.getChildNodes().item(0).getNodeValue());
         }

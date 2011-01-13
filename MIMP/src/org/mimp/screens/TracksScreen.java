@@ -27,6 +27,7 @@ public class TracksScreen extends Activity implements OnItemClickListener {
     private File mExtFolder = Environment.getExternalStorageDirectory();
     private File mBaseFolder;
     private File[] files;
+    private Thread reader;
 
     /*****************************************************************************
      * 
@@ -81,6 +82,9 @@ public class TracksScreen extends Activity implements OnItemClickListener {
     public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         Intent intent = new Intent();
         intent.putExtra("file", files[arg2]);
+        if (reader != null) {
+            reader.interrupt();
+        }
         setResult(S.TracksScreen_LOADTRACK, intent);
         finish();
     }
@@ -92,11 +96,11 @@ public class TracksScreen extends Activity implements OnItemClickListener {
      *****************************************************************************/
 
     public void fetchFiles() {
-        new Thread(new Runnable() {
+        files = mBaseFolder.listFiles();
+        reader = new Thread(new Runnable() {
             @Override
             public void run() {
                 ParsedFile parsedFile;
-                files = mBaseFolder.listFiles();
                 for (int i = 0; i < files.length; i++) {
                     try {
                         parsedFile = ParsedFileFactory.getLightParsedFile(files[i]);
@@ -108,6 +112,7 @@ public class TracksScreen extends Activity implements OnItemClickListener {
                     }
                 }
             }
-        }).start();
+        });
+        reader.start();
     }
 }

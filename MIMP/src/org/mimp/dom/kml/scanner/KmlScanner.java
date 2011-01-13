@@ -167,6 +167,8 @@ public class KmlScanner {
      */
     void visitElement_name(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
+        if(element.getChildNodes().getLength() == 0)
+            return;
         if ("Document".equals(parentNode)) {
             kmlType.getDocument().setName(element.getChildNodes().item(0).getNodeValue());
         }
@@ -180,6 +182,8 @@ public class KmlScanner {
      */
     void visitElement_description(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
+        if(element.getChildNodes().getLength() == 0)
+            return;
         if ("Document".equals(parentNode)) {
             kmlType.getDocument().setDescription(element.getChildNodes().item(0).getNodeValue());
         }
@@ -270,6 +274,8 @@ public class KmlScanner {
      */
     void visitElement_href(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
+        if(element.getChildNodes().getLength() == 0)
+            return;
         if ("Icon".equals(parentNode)) {
             kmlType.getDocument().getLastStyle().getIconstyle().getIcon().setHref(element.getChildNodes().item(0).getNodeValue());
         }
@@ -306,7 +312,13 @@ public class KmlScanner {
     void visitElement_color(org.w3c.dom.Element element) {
         String parentNode = element.getParentNode().getNodeName();
         if ("LineStyle".equals(parentNode)) {
-            int color = Color.parseColor(element.getChildNodes().item(0).getNodeValue());
+            int color;
+            try {
+                color = Color.parseColor(element.getChildNodes().item(0).getNodeValue());
+            }
+            catch (Exception e) {
+                return;
+            }
             kmlType.getDocument().getLastStyle().getLinestyle().setColor(color);
         }
     }
@@ -400,20 +412,26 @@ public class KmlScanner {
         if ("Point".equals(parentNode)) {            
             String[] coord = coordinates.split(",");
             CoordinatesType coords = new CoordinatesType(
-                    new BigDecimal(coord[1]),
-                    new BigDecimal(coord[0]),
-                    new BigDecimal(coord[2]));
+                    new BigDecimal(coord[1].trim()),
+                    new BigDecimal(coord[0].trim()),
+                    new BigDecimal(coord[2].trim()));
             kmlType.getDocument().getLastPlacemark().getPoint().setCoordinates(coords);
         }
         if ("LineString".equals(parentNode)) {
-            String[] pairs = coordinates.split(" ");
-            for (int i = 0; i < pairs.length; i++) {
-                String[] coord = pairs[i].split(",");
-                CoordinatesType coords = new CoordinatesType(
-                        new BigDecimal(coord[1]),
-                        new BigDecimal(coord[0]),
-                        new BigDecimal(coord[2]));
-                kmlType.getDocument().getLastPlacemark().getLine().getCoordinates().add(coords);
+            String[] pairs = coordinates.split("\\r?\\n");
+            try {
+                for (int i = 1; i < pairs.length-1; i++) {
+                    System.out.println("\t group : " + i + " " + pairs[i]);
+                    String[] coord = pairs[i].split(",|\\r?\\n");
+                    CoordinatesType coords = new CoordinatesType(
+                            new BigDecimal(coord[1].trim()),
+                            new BigDecimal(coord[0].trim()),
+                            new BigDecimal(coord[2].trim()));
+                    kmlType.getDocument().getLastPlacemark().getLine().getCoordinates().add(coords);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -448,6 +466,7 @@ public class KmlScanner {
         for (int i = 0; i < attrs.getLength(); i++) {
             org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attrs.item(i);
             if (attr.getName().equals("name")) {
+                
             }
         }
         org.w3c.dom.NodeList nodes = element.getChildNodes();
