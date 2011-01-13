@@ -72,7 +72,6 @@ public class MapScreen extends MapActivity implements LocationListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         /**
          * Setting Defaults
          */
@@ -155,7 +154,6 @@ public class MapScreen extends MapActivity implements LocationListener,
         checkListener();
         checkTrack();
         checkPerspective();
-        checkFollow();
     }
 
     @Override
@@ -205,17 +203,6 @@ public class MapScreen extends MapActivity implements LocationListener,
         }
         else {
             mMapView.setPerspective(false);
-        }
-    }
-
-    private void checkFollow() {
-        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        boolean mode = settings.getBoolean("follow", false);
-        if (mode) {
-            enableFollow();
-        }
-        else {
-            disableFollow();
         }
     }
 
@@ -376,9 +363,6 @@ public class MapScreen extends MapActivity implements LocationListener,
             parsedFile = ParsedFileFactory.getParsedFile(trackfile);
             ParsedObject parsedObject = parsedFile.getParsedObject();
             Vector<GeoPoint> geo = parsedObject.getPoints();
-            //TODO: better
-            if (geo == null)
-                return;
             OverlayGroup overlays = mMapView.getOverlayGroup();
             mWindowManager = getWindowManager();
             mDisplay = mWindowManager.getDefaultDisplay();
@@ -499,23 +483,11 @@ public class MapScreen extends MapActivity implements LocationListener,
         return mMapView.getLocationOverlay().isCompassEnabled();
     }
 
-    private void disableFollow() {
-        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("follow", true);
-        editor.commit();
-    }
-
-    private void enableFollow() {
-        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("follow", false);
-        editor.commit();
-    }
-
     @Override
     public void onLocationChanged(Location location) {
-        if (location != null) {
+        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
+        boolean mode = settings.getBoolean("follow_user", false);
+        if (location != null && mode == true) {
             Double lat = location.getLatitude() * 1E6;
             Double lng = location.getLongitude() * 1E6;
 

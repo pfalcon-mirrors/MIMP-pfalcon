@@ -8,6 +8,7 @@ import org.mimp.dom.kml.DocumentType;
 import org.mimp.dom.kml.KmlType;
 import org.mimp.dom.kml.PlacemarkType;
 import org.mimp.dom.kml.StyleType;
+import org.w3c.dom.Element;
 
 import android.graphics.Color;
 
@@ -98,6 +99,9 @@ public class KmlScanner {
         if ((element != null) && element.getTagName().equals("tessellate")) {
             visitElement_tessellate(element);
         }
+        if ((element != null) && element.getTagName().equals("Folder")) {
+            visitElement_Folder(element);
+        }
     }
 
     /**
@@ -155,13 +159,16 @@ public class KmlScanner {
                     if (nodeElement.getTagName().equals("Placemark")) {
                         visitElement_Placemark(nodeElement);
                     }
+                    if (nodeElement.getTagName().equals("Folder")) {
+                        visitElement_Folder(nodeElement);
+                    }                    
                     break;
                 case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
                     break;
             }
         }
     }
-
+    
     /**
      * Scan through org.w3c.dom.Element named name.
      */
@@ -407,6 +414,7 @@ public class KmlScanner {
      * Scan through org.w3c.dom.Element named coordinates.
      */
     void visitElement_coordinates(org.w3c.dom.Element element) {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>> Coordinates <<<<<<<<<<<<<<<<<<<<");
         String parentNode = element.getParentNode().getNodeName();
         String coordinates = element.getChildNodes().item(0).getNodeValue();
         if ("Point".equals(parentNode)) {            
@@ -418,11 +426,12 @@ public class KmlScanner {
             kmlType.getDocument().getLastPlacemark().getPoint().setCoordinates(coords);
         }
         if ("LineString".equals(parentNode)) {
-            String[] pairs = coordinates.split("\\r?\\n");
+            String[] pairs = coordinates.split(" |\\r?\\n");
+            System.out.println("pairs : " + pairs.length);
             try {
                 for (int i = 1; i < pairs.length-1; i++) {
                     System.out.println("\t group : " + i + " " + pairs[i]);
-                    String[] coord = pairs[i].split(",|\\r?\\n");
+                    String[] coord = pairs[i].split(",| |\\r?\\n");
                     CoordinatesType coords = new CoordinatesType(
                             new BigDecimal(coord[1].trim()),
                             new BigDecimal(coord[0].trim()),
@@ -526,6 +535,28 @@ public class KmlScanner {
         String parentNode = element.getParentNode().getNodeName();
         if ("LineString".equals(parentNode)) {
             kmlType.getDocument().getLastPlacemark().getLine().setTesselate(Integer.parseInt(element.getChildNodes().item(0).getNodeValue()));
+        }
+    }
+    
+    private void visitElement_Folder(Element element) {
+        org.w3c.dom.NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            org.w3c.dom.Node node = nodes.item(i);
+            switch (node.getNodeType()) {
+                case org.w3c.dom.Node.CDATA_SECTION_NODE:
+                    break;
+                case org.w3c.dom.Node.ELEMENT_NODE:
+                    org.w3c.dom.Element nodeElement = (org.w3c.dom.Element) node;
+                    if (nodeElement.getTagName().equals("Placemark")) {
+                        visitElement_Placemark(nodeElement);
+                    }
+                    if (nodeElement.getTagName().equals("Folder")) {
+                        visitElement_Folder(nodeElement);
+                    }    
+                    break;
+                case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
+                    break;
+            }
         }
     }
 }
