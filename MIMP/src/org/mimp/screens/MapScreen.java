@@ -297,13 +297,13 @@ public class MapScreen extends MapActivity implements LocationListener,
                 android.R.drawable.ic_menu_mapmode);
         menu.add(2, S.SET, 0, R.string.map_menu_settings).setIcon(
                 android.R.drawable.ic_menu_preferences);
-        menu.add(2, S.MODE, 0, R.string.map_menu_perspective).setIcon(
+        menu.add(2, S.CLEAR, 0, R.string.clear).setIcon(
                 android.R.drawable.ic_menu_revert);
         menu.add(2, S.SEARCH, 0, R.string.map_menu_search).setIcon(
                 android.R.drawable.ic_menu_search);
         menu.add(2, S.LOADTRKFILE, 0, R.string.map_menu_load).setIcon(
                 android.R.drawable.ic_menu_directions);
-        menu.add(2, S.CLEAR, 0, R.string.clear).setIcon(
+        menu.add(2, S.MODE, 0, R.string.map_menu_perspective).setIcon(
                 android.R.drawable.ic_menu_revert);
         menu.add(1, S.INFO, 0, R.string.map_menu_infos).setIcon(
                 android.R.drawable.ic_menu_info_details);
@@ -358,9 +358,8 @@ public class MapScreen extends MapActivity implements LocationListener,
 
     private void loadTracksFile(File trackfile) {
         try {
-            System.out.println("file : " + trackfile);
-            ParsedFile parsedFile;
-            parsedFile = ParsedFileFactory.getParsedFile(trackfile);
+            mMapView.unloadTracks();
+            ParsedFile parsedFile = ParsedFileFactory.getParsedFile(trackfile);
             ParsedObject parsedObject = parsedFile.getParsedObject();
             Vector<GeoPoint> geo = parsedObject.getPoints();
             OverlayGroup overlays = mMapView.getOverlayGroup();
