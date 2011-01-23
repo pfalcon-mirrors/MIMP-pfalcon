@@ -1,4 +1,4 @@
-package org.mapping.google;
+package org.mimp.directions;
 
 import java.util.Vector;
 

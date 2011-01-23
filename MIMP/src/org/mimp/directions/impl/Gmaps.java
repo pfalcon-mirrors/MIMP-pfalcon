@@ -1,4 +1,4 @@
-package org.mapping.google.impl;
+package org.mimp.directions.impl;
 
 import java.net.URL;
 import java.net.URLConnection;

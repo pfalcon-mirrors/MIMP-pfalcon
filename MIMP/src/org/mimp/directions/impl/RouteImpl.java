@@ -1,10 +1,10 @@
-package org.mapping.google.impl;
+package org.mimp.directions.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mapping.google.Placemark;
-import org.mapping.google.Route;
+import org.mimp.directions.Placemark;
+import org.mimp.directions.Route;
 
 import com.google.android.maps.GeoPoint;
 

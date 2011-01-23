@@ -1,6 +1,6 @@
-package org.mapping.google;
+package org.mimp.directions;
 
-import org.mapping.google.impl.DrivingDirectionsGoogleKML;
+import org.mimp.directions.impl.DrivingDirectionsGoogleKML;
 
 public class DrivingDirectionsFactory {
     public static DrivingDirections createDrivingDirections() {

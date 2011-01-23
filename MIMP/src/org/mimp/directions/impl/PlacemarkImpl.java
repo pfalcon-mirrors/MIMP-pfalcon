@@ -1,6 +1,6 @@
-package org.mapping.google.impl;
+package org.mimp.directions.impl;
 
-import org.mapping.google.Placemark;
+import org.mimp.directions.Placemark;
 
 import com.google.android.maps.GeoPoint;
 

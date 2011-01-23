@@ -1,4 +1,4 @@
-package org.mapping.google.impl;
+package org.mimp.directions.impl;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -10,8 +10,8 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.mapping.google.DrivingDirections;
-import org.mapping.google.Placemark;
+import org.mimp.directions.DrivingDirections;
+import org.mimp.directions.Placemark;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

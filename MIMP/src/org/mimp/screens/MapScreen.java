@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.mapping.google.DrivingDirections;
-import org.mapping.google.DrivingDirections.IDirectionsListener;
-import org.mapping.google.DrivingDirections.Mode;
-import org.mapping.google.DrivingDirectionsFactory;
-import org.mapping.google.Route;
-import org.mapping.google.impl.DrivingDirectionsGoogleKML;
-import org.mapping.google.impl.Locator;
 import org.mimp.R;
+import org.mimp.directions.DrivingDirections;
+import org.mimp.directions.DrivingDirectionsFactory;
+import org.mimp.directions.Route;
+import org.mimp.directions.DrivingDirections.IDirectionsListener;
+import org.mimp.directions.DrivingDirections.Mode;
+import org.mimp.directions.impl.DrivingDirectionsGoogleKML;
+import org.mimp.directions.impl.Locator;
 import org.mimp.displayables.LineMapOverlay;
 import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
@@ -100,7 +100,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
         /**
          * Setting preferences or previous status
-         */
+         */        
         doChecks();
     }
 
@@ -245,7 +245,7 @@ public class MapScreen extends MapActivity implements LocationListener,
     
     private void showTracks() {
         startActivityForResult(new Intent(MapScreen.this, TracksScreen.class),S.TracksScreen_RQC);
-    }    
+    }
 
     private void showInfo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -368,7 +368,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
             LineMapOverlay lineMapOverlay = new LineMapOverlay();
             lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
-                    mDisplay.getHeight(), mDisplay.getHeight());
+                    mDisplay.getHeight(), mDisplay.getWidth());
             overlays.add(lineMapOverlay);
 
             TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
@@ -587,7 +587,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
         LineMapOverlay lineMapOverlay = new LineMapOverlay();
         lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
-                mDisplay.getHeight(), mDisplay.getHeight());
+                mDisplay.getHeight(), mDisplay.getWidth());
         overlays.add(lineMapOverlay);
 
         TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),

@@ -18,7 +18,7 @@ package org.mimp.search;
 
 import java.util.List;
 
-import org.mapping.google.impl.Locator;
+import org.mimp.directions.impl.Locator;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;

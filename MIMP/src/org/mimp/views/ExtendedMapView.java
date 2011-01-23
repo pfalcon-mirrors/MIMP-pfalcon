@@ -181,7 +181,6 @@ public class ExtendedMapView extends MapView implements SensorListener {
      *****************************************************************************/
 
     protected void applyMapViewListener() {
-        // System.out.println("~~~~~~~~~~~~~~~~ New GestureDetector");
         final GestureDetector gd = new GestureDetector(
                 new GestureDetector.SimpleOnGestureListener() {
 
