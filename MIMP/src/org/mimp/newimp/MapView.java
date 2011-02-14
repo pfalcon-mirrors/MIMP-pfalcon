@@ -150,7 +150,6 @@ public class MapView extends View implements IMapView {
                         if (tile != null && tile.getBitmap() != null) {
                             painted = true;
                             canvas.drawBitmap(tile.getBitmap(),posx,posy,null);
-                            canvas.drawText(tilex + " " + tiley, posx+128, posy+128, getTextPaint());
                         }
                     }
                     Point p = move[iMove];
