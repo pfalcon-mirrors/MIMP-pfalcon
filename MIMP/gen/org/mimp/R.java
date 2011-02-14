@@ -69,16 +69,18 @@ containing a value of this type.
         public static final int textColorPressed=0x7f010005;
     }
     public static final class drawable {
-        public static final int android_orange=0x7f020006;
-        public static final int android_yellow=0x7f020007;
-        public static final int black=0x7f020008;
-        public static final int blue_location=0x7f020000;
-        public static final int bubble=0x7f020001;
-        public static final int empty=0x7f020002;
-        public static final int icon=0x7f020003;
-        public static final int red=0x7f020009;
-        public static final int shadow=0x7f020004;
-        public static final int white=0x7f020005;
+        public static final int android_orange=0x7f020008;
+        public static final int android_yellow=0x7f020009;
+        public static final int arrow=0x7f020000;
+        public static final int black=0x7f02000a;
+        public static final int blue_location=0x7f020001;
+        public static final int bubble=0x7f020002;
+        public static final int empty=0x7f020003;
+        public static final int icon=0x7f020004;
+        public static final int logo=0x7f020005;
+        public static final int red=0x7f02000b;
+        public static final int shadow=0x7f020006;
+        public static final int white=0x7f020007;
     }
     public static final class id {
         public static final int BigText=0x7f07000e;
@@ -122,7 +124,7 @@ containing a value of this type.
     public static final class string {
         public static final int about=0x7f060001;
         public static final int app_name=0x7f060000;
-        public static final int bubble_interactions_add_wpt=0x7f060028;
+        public static final int bubble_interactions_add_wpt=0x7f060030;
         public static final int clear=0x7f060006;
         public static final int error=0x7f060003;
         public static final int inline_preferences_gps=0x7f060012;
@@ -136,21 +138,29 @@ containing a value of this type.
         public static final int map_menu_position=0x7f060008;
         public static final int map_menu_search=0x7f060007;
         public static final int map_menu_settings=0x7f06000d;
-        public static final int navigation_destination_unavailable=0x7f06002b;
-        public static final int navigation_directions_error=0x7f060029;
-        public static final int navigation_position_unavailable=0x7f06002a;
+        public static final int navigation_destination_unavailable=0x7f060033;
+        public static final int navigation_directions_error=0x7f060031;
+        public static final int navigation_position_unavailable=0x7f060032;
         public static final int none=0x7f060002;
         public static final int search=0x7f060004;
         public static final int searchbox_title=0x7f060010;
         public static final int select=0x7f060005;
+        public static final int settings_bg_color_confirm=0x7f06002e;
+        public static final int settings_bg_color_dialog=0x7f06002d;
+        public static final int settings_color_inner=0x7f060028;
+        public static final int settings_color_outer=0x7f060029;
+        public static final int settings_default_color_confirm=0x7f06002f;
         public static final int settings_dialog_list_title=0x7f060023;
         public static final int settings_directions=0x7f060015;
+        public static final int settings_enable_color_outer=0x7f06002a;
         public static final int settings_gps=0x7f060016;
         public static final int settings_gps_follow=0x7f060024;
         public static final int settings_gps_precision=0x7f060025;
         public static final int settings_maps=0x7f060014;
         public static final int settings_resolution=0x7f060017;
         public static final int settings_search=0x7f060018;
+        public static final int settings_summary_color_inner=0x7f06002b;
+        public static final int settings_summary_color_outer=0x7f06002c;
         public static final int settings_summary_directions=0x7f06001c;
         public static final int settings_summary_gps=0x7f06001d;
         public static final int settings_summary_gps_follow=0x7f060026;

@@ -1,10 +1,11 @@
-package org.mapping.osm;
+package org.mimp.newimp;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URLConnection;
 
-public class NetUtil {
+public class WebTools {
+    
     public static byte[] download(URLConnection cnx) {
         byte[] dat = null;
         try {

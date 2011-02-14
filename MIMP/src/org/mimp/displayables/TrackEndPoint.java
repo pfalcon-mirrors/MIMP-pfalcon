@@ -1,10 +1,12 @@
 package org.mimp.displayables;
 
-import android.content.Context;
-import android.graphics.Paint;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.view.MotionEvent;
 
 public class TrackEndPoint extends MapPointOverlay {
 
@@ -31,5 +33,18 @@ public class TrackEndPoint extends MapPointOverlay {
             corePaint.setAntiAlias(true);
         }
         return corePaint;
+    }
+
+    @Override
+    protected boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+            long when) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTouchEvent(MotionEvent e, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

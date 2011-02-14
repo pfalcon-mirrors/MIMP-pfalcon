@@ -3,6 +3,9 @@ package org.mimp.displayables;
 import java.util.List;
 
 import org.mimp.globals.S;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
+import org.mimp.newimp.Overlay;
 import org.mimp.screens.BubbleInteractionScreen;
 
 import android.app.Activity;
@@ -15,10 +18,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
+import android.view.MotionEvent;
 
 public class BubbleOverlay extends Overlay {
 
@@ -93,7 +93,6 @@ public class BubbleOverlay extends Overlay {
 
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-        super.draw(canvas, mapView, shadow);
         if (shadow == false) { // bored to draw a shadow if you do it send me
                                // the code ;)
             // First determine the screen coordinates of the selected
@@ -219,7 +218,6 @@ public class BubbleOverlay extends Overlay {
 
     @Override
     public boolean onTap(GeoPoint p, MapView mapView) {
-        super.onTap(p, mapView);
         if (isTapOnElement(p, mapView)) {
             String[] array = new String[mAddress.size()];
             for (int i = 0; i < mAddress.size(); i++) {
@@ -231,10 +229,12 @@ public class BubbleOverlay extends Overlay {
                     .putExtra("address", array).putExtra("coords", coords);
             ((Activity) mContext).startActivityForResult(mIntent,
                     S.BubbleInteractionScreen_RQC);
+            return true;
         }
         return false;
     }
 
+    @Override
     public boolean isTapOnElement(GeoPoint p, MapView mapView) {
         Point screenCoords = new Point();
         mapView.getProjection().toPixels(selectedMapLocation, screenCoords);
@@ -247,6 +247,19 @@ public class BubbleOverlay extends Overlay {
         if (hitTestRecr.contains(screenCoords.x, screenCoords.y)) {
             return true;
         }
+        return false;
+    }
+
+    @Override
+    protected boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+            long when) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTouchEvent(MotionEvent e, MapView mapView) {
+        // TODO Auto-generated method stub
         return false;
     }
 }

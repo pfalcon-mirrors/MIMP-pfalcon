@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.mimp.R;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,9 +17,6 @@ import android.location.Geocoder;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
 
 public class Locator {
 

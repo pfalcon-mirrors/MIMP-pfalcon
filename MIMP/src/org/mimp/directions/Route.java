@@ -2,7 +2,7 @@ package org.mimp.directions;
 
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 /**
  * Represents the driving directions path. The route consists of a ordered list

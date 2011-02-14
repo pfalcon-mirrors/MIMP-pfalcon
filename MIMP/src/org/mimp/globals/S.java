@@ -1,6 +1,5 @@
 package org.mimp.globals;
 
-import android.net.Uri;
 
 /**
  * @author hellhand
@@ -35,6 +34,7 @@ public class S {
 
     public static final int BubbleInteractionScreen_RQC = 1;
     public static final int TracksScreen_RQC = 2;
+    public static final int SettingsScreen_RQC = 3;
 
     /**
      * ResultCodes = RequestCode + 100 to RequestCode + 199
@@ -44,6 +44,16 @@ public class S {
     public static final int BubbleInteractionScreen_WAYPOINT = 101;
     public static final int TracksScreen_LOADTRACK = 200;
     
+    /**
+     * Map URLs 
+     */
+    
+    //http://a.tile.opencyclemap.org/cycle/0/0/0.png
+    public static final String OpenCycleMapsURL = "http://a.tile.opencyclemap.org/cycle/";
+    //http://tile.openstreetmap.org/0/0/0.png
+    public static final String OpenStreetMapsURL = "http://tile.openstreetmap.org/";
+    //http://a.tile.cloudmade.com/333d990d389d5e65a7714dd738b2fc77/1/256/5/17/12.png
+    public static final String CloudMadeMapsURL = "http://a.tile.cloudmade.com/";
     
     /**
      * database connection
@@ -52,6 +62,5 @@ public class S {
     public static final String DATABASE_NAME = "gpsdata.db";
     public static final int DATABASE_VERSION = 1;
     public static final String AUTHORITY = "org.mimp";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-            + "/gpspoint");
+    //public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/gpspoint");
 }

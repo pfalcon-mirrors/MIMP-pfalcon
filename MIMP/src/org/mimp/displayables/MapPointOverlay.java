@@ -1,5 +1,9 @@
 package org.mimp.displayables;
 
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
+import org.mimp.newimp.Overlay;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -7,10 +11,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
 
 public abstract class MapPointOverlay extends Overlay {
 
@@ -55,9 +55,7 @@ public abstract class MapPointOverlay extends Overlay {
 
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-        super.draw(canvas, mapView, shadow);
-        if (shadow == false) { // bored to draw a shadow if you do it send me
-                               // the code ;)
+        if (shadow == false) {
             // First determine the screen coordinates of the selected
             // MapLocation
             Point selDestinationOffset = new Point();

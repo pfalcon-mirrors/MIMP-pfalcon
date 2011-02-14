@@ -3,7 +3,7 @@ package org.mimp.directions.impl;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.mapping.osm.NetUtil;
+import org.mimp.newimp.NetUtil;
 
 public class Gmaps {
     public static double[] findLocation(String query) {

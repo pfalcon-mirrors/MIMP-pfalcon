@@ -1,29 +1,36 @@
 package org.mimp.screens;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import org.mimp.R;
 import org.mimp.directions.DrivingDirections;
-import org.mimp.directions.DrivingDirectionsFactory;
-import org.mimp.directions.Route;
 import org.mimp.directions.DrivingDirections.IDirectionsListener;
 import org.mimp.directions.DrivingDirections.Mode;
+import org.mimp.directions.DrivingDirectionsFactory;
+import org.mimp.directions.Route;
 import org.mimp.directions.impl.DrivingDirectionsGoogleKML;
 import org.mimp.directions.impl.Locator;
 import org.mimp.displayables.LineMapOverlay;
 import org.mimp.displayables.OverlayGroup;
 import org.mimp.displayables.TrackEndPoint;
 import org.mimp.displayables.TrackStartPoint;
-import org.mimp.dom.GeoPointer;
 import org.mimp.dom.ParsedFile;
 import org.mimp.dom.ParsedFileFactory;
 import org.mimp.dom.ParsedObject;
 import org.mimp.globals.S;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapController;
 import org.mimp.views.ExtendedMapView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,25 +41,20 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView.LayoutParams;
-
-public class MapScreen extends MapActivity implements LocationListener,
+public class MapScreen extends Activity implements LocationListener,
         IDirectionsListener {
-
-    private boolean ROUTE = false;
 
     private ExtendedMapView mMapView;
     private MapController mMapController;
@@ -61,6 +63,7 @@ public class MapScreen extends MapActivity implements LocationListener,
     private Display mDisplay;
     private DrivingDirectionsGoogleKML mDirectionsGoogleKML;
     private boolean mTrackLoaded;
+    private static File mExtFolder = Environment.getExternalStorageDirectory();
 
     /*****************************************************************************
      * 
@@ -68,7 +71,6 @@ public class MapScreen extends MapActivity implements LocationListener,
      * 
      *****************************************************************************/
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +92,7 @@ public class MapScreen extends MapActivity implements LocationListener,
 
         zoomLayout.addView(zoomView, new LinearLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        mMapView.displayZoomControls(true);
+        mMapView.getZoomControls().hide();
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -119,8 +121,6 @@ public class MapScreen extends MapActivity implements LocationListener,
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println("requestCode : " + requestCode + " resultCode : "
-                + resultCode);
         if (requestCode == S.BubbleInteractionScreen_RQC) {
             if (resultCode == S.BubbleInteractionScreen_DIRECTIONS) {
                 int[] coords = data.getIntArrayExtra("coords");
@@ -137,28 +137,72 @@ public class MapScreen extends MapActivity implements LocationListener,
                 loadTracksFile(file);
             }
         }
+        else if (requestCode == S.SettingsScreen_RQC) {
+            mMapView.getTileController().reset();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
+    
     @Override
     protected void onDestroy() {
-        if (isListening()) {
-            disableLocationListener();
-        }
+        mLocationManager.removeUpdates(this);
+        mMapView.saveState();
         super.onDestroy();
     }
 
     private void doChecks() {
-        checkMapStyle();
         checkCompass();
         checkListener();
-        checkTrack();
         checkPerspective();
     }
+    
+    public void assetToSD() {
+        String[] files = null;
+        try {
+            files = this.getResources().getAssets().list("");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        File folder = new File(mExtFolder.getAbsolutePath() + File.separator
+                + "MIMP" + File.separator + "Tiles" + File.separator);
+        folder.mkdirs();
+        
+        for(String fileName : files)
+        {
+            if(fileName.compareTo("images") == 0 ||
+                    fileName.compareTo("sounds") == 0 ||
+                    fileName.compareTo("webkit") == 0)
+                continue;
+            try
+            {
+                File outFile = new File(folder, fileName);
+                if(outFile.exists()) continue;
 
-    @Override
-    protected boolean isRouteDisplayed() {
-        return ROUTE;
+                InputStream in = getAssets().open(fileName);
+                OutputStream out = new FileOutputStream(outFile);
+
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0)
+                {
+                    out.write(buf, 0, len);
+                }
+
+                in.close();
+                out.close();
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     /*****************************************************************************
@@ -166,12 +210,6 @@ public class MapScreen extends MapActivity implements LocationListener,
      * User configuration loading
      * 
      *****************************************************************************/
-
-    private void checkMapStyle() {
-        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        boolean mode = settings.getBoolean("mapstyle", true);
-        mMapView.setSatellite(mode);
-    }
 
     public void checkCompass() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
@@ -225,10 +263,6 @@ public class MapScreen extends MapActivity implements LocationListener,
         }
     }
 
-    private void checkTrack() {
-        // TODO: check whenever a track should be displayed from a search
-    }
-
     /*****************************************************************************
      * 
      * Screens handling // TODO to remove and replace by dispatcher or not
@@ -240,7 +274,7 @@ public class MapScreen extends MapActivity implements LocationListener,
      * Shows setings screen
      */
     private void showSettings() {
-        startActivity(new Intent(MapScreen.this, SettingsScreen.class));
+        startActivityForResult(new Intent(MapScreen.this, SettingsScreen.class),S.SettingsScreen_RQC);
     }
     
     private void showTracks() {
@@ -293,8 +327,6 @@ public class MapScreen extends MapActivity implements LocationListener,
                 android.R.drawable.ic_menu_mylocation);
         menu.add(0, S.COMPASS, 0, R.string.map_menu_compass).setIcon(
                 android.R.drawable.ic_menu_compass);
-        menu.add(1, S.MAP, 0, R.string.map_menu_mapstyle).setIcon(
-                android.R.drawable.ic_menu_mapmode);
         menu.add(2, S.SET, 0, R.string.map_menu_settings).setIcon(
                 android.R.drawable.ic_menu_preferences);
         menu.add(2, S.CLEAR, 0, R.string.clear).setIcon(
@@ -315,9 +347,6 @@ public class MapScreen extends MapActivity implements LocationListener,
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case S.MAP:
-                changeMapStyle();
-                return true;
             case S.SET:
                 showSettings();
                 return true;
@@ -405,17 +434,6 @@ public class MapScreen extends MapActivity implements LocationListener,
      * User configuration changes
      * 
      *****************************************************************************/
-
-    private void changeMapStyle() {
-        SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-
-        boolean mode = settings.getBoolean("mapstyle", true);
-        mMapView.setSatellite(!mode);
-
-        editor.putBoolean("mapstyle", !mode);
-        editor.commit();
-    }
 
     private void changePerspective() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
@@ -546,7 +564,7 @@ public class MapScreen extends MapActivity implements LocationListener,
         }
         Vector<GeoPoint> geoPoints = new Vector<GeoPoint>();
         Location location = mMapView.getLocationOverlay().getLastFix();
-        GeoPoint start = new GeoPointer(location.getLatitude(),
+        GeoPoint start = new GeoPoint(location.getLatitude(),
                 location.getLongitude());
         geoPoints.add(start);
         geoPoints.add(end);

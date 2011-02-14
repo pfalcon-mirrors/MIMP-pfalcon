@@ -12,13 +12,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.mimp.directions.DrivingDirections;
 import org.mimp.directions.Placemark;
+import org.mimp.newimp.GeoPoint;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import android.os.AsyncTask;
-
-import com.google.android.maps.GeoPoint;
 
 /**
  * Implementation of DrivingDirections that connects to the Google Maps web

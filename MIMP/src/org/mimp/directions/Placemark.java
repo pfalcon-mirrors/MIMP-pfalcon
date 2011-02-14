@@ -1,6 +1,6 @@
 package org.mimp.directions;
 
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 /**
  * Represents a major placemark along a driving route.

@@ -15,12 +15,12 @@ import android.view.Window;
 
 public class SettingsScreen extends PreferenceActivity implements OnPreferenceClickListener, OnColorChangedListener {
 
-    ColorPickerDialog colorPickerDialog;
-    int innerColor = 0;
-    int outerColor = 0;
-    Preference innerPref;
-    Preference outerPref;
-    int baseColor = Color.argb(200, 100, 170, 240);
+    private ColorPickerDialog colorPickerDialog;
+    private int innerColor = 0;
+    private int outerColor = 0;
+    private Preference innerPref;
+    private Preference outerPref;
+    private int baseColor = Color.argb(200, 100, 170, 240);
     
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Vector;
 
 import org.mimp.globals.S;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
+import org.mimp.newimp.Overlay;
+import org.mimp.newimp.Projection;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,11 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.Projection;
+import android.view.MotionEvent;
 
 public class LineMapOverlay extends Overlay {
 
@@ -36,6 +36,7 @@ public class LineMapOverlay extends Overlay {
     private int outerColor;
     private Context mContext;
     private boolean showOuter;
+    private SharedPreferences settings;
 
     /*****************************************************************************
      * 
@@ -62,12 +63,14 @@ public class LineMapOverlay extends Overlay {
             int height, int width) {
         this.mContext = context;
         this.geoPoints = new Vector<GeoPoint>(geoPoints);
+        this.settings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
     }
 
     public void setLineMapOverlay(Context context, Vector<GeoPoint> geoPoints,
             int height, int width) {
         this.mContext = context;
         this.geoPoints = geoPoints;
+        this.settings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
     }
 
     /*****************************************************************************
@@ -77,12 +80,10 @@ public class LineMapOverlay extends Overlay {
      *****************************************************************************/
 
     @Override
-    public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-        super.draw(canvas, mapView, shadow);
+    public void draw(Canvas canvas, MapView mapView, boolean shadow) {;
         if (shadow) {
             return;
         }
-        SharedPreferences settings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
         innerColor = settings.getInt("inner_color", -932926736);
         outerColor = settings.getInt("outer_color", -932926736);
         showOuter = settings.getBoolean("enable_track_outer_color", false);
@@ -95,7 +96,6 @@ public class LineMapOverlay extends Overlay {
             projection.toPixels(geoPoints.get(i), screenPointb);
             thePath.lineTo(screenPointb.x, screenPointb.y);
         }
-        
         if (showOuter) {
             this.pathPaint.setARGB(Color.alpha(outerColor), Color.red(outerColor), Color.green(outerColor), Color.blue(outerColor));
             this.pathPaint.setStrokeWidth(10);
@@ -110,5 +110,30 @@ public class LineMapOverlay extends Overlay {
     public void draw(Canvas canvas, MapView mapView, boolean shadow, int x,
             int y) {
 
+    }
+
+    @Override
+    protected boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+            long when) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTap(GeoPoint p, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTouchEvent(MotionEvent e, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isTapOnElement(GeoPoint p, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

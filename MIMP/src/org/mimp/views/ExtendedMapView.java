@@ -1,30 +1,19 @@
 package org.mimp.views;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
 
 import org.mimp.displayables.BubbleOverlay;
 import org.mimp.displayables.OverlayGroup;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.hardware.SensorListener;
 import android.location.Address;
-import android.location.Geocoder;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-
-@SuppressWarnings("deprecation")
-public class ExtendedMapView extends MapView implements SensorListener {
+public class ExtendedMapView extends MapView {
 
     /*****************************************************************************
      * 
@@ -36,8 +25,6 @@ public class ExtendedMapView extends MapView implements SensorListener {
     private Matrix mMatrix = new Matrix();
     private boolean mPerspective = false;
     private final SmoothCanvas mCanvas = new SmoothCanvas();
-    private float mHeading = 0;
-    private MyLocationOverlay mMapLocationOverlay;
     private BubbleOverlay mBubbleOverlay;
     private OverlayGroup mOverlayGroup = new OverlayGroup();
 
@@ -50,41 +37,12 @@ public class ExtendedMapView extends MapView implements SensorListener {
     public ExtendedMapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        addLocationOverlay();
-        getOverlays().add(mOverlayGroup);
-    }
-
-    public ExtendedMapView(Context context, String apiKey) {
-        super(context, apiKey);
-        mContext = context;
-        addLocationOverlay();
         getOverlays().add(mOverlayGroup);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        applyMapViewListener();
-    }
-
-    /*****************************************************************************
-     * 
-     * Location handling
-     * 
-     *****************************************************************************/
-
-    private void addLocationOverlay() {
-        mMapLocationOverlay = new MyLocationOverlay(mContext, this);
-        mMapLocationOverlay.runOnFirstFix(new Runnable() {
-            public void run() {
-                getController().animateTo(mMapLocationOverlay.getMyLocation());
-            }
-        });
-        getOverlays().add(mMapLocationOverlay);
-    }
-
-    public MyLocationOverlay getLocationOverlay() {
-        return mMapLocationOverlay;
     }
 
     /*****************************************************************************
@@ -113,7 +71,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
             mMatrix.setPolyToPoly(src, 0, dst, 0, src.length >> 1);
             canvas.save(Canvas.MATRIX_SAVE_FLAG);
             canvas.concat(mMatrix);
-            canvas.rotate(-mHeading, getWidth() * 0.5f, getHeight() * 0.5f);
+            canvas.rotate(0, getWidth() * 0.5f, getHeight() * 0.5f);
             mCanvas.delegate = canvas;
             super.draw(mCanvas);
             canvas.restore();
@@ -122,6 +80,8 @@ public class ExtendedMapView extends MapView implements SensorListener {
             canvas.save(Canvas.MATRIX_SAVE_FLAG);
             mCanvas.delegate = canvas;
             super.draw(canvas);
+            if (mBubbleOverlay != null)
+                mBubbleOverlay.draw(canvas, this, false);
             canvas.restore();
         }
     }
@@ -131,12 +91,21 @@ public class ExtendedMapView extends MapView implements SensorListener {
     }
     
     public void removeBubble() {
-        getOverlays().remove(mBubbleOverlay);
+        mBubbleOverlay = null;
         invalidate();
     }
     
     public void unloadTracks() {
         mOverlayGroup.clear();
+        invalidate();
+    }
+    
+    public BubbleOverlay getBubbleOverlay() {
+        return mBubbleOverlay;
+    }
+    
+    public void setBubbleOverlay(BubbleOverlay bubbleOverlay) {
+        mBubbleOverlay = bubbleOverlay;
         invalidate();
     }
     
@@ -148,113 +117,7 @@ public class ExtendedMapView extends MapView implements SensorListener {
         Vector<String> address = new Vector<String>();
         for (int i = 0; i < addresses.getMaxAddressLineIndex(); i++)
             address.add(addresses.getAddressLine(i).trim());
-        mBubbleOverlay = new BubbleOverlay(address, p,
-                mContext);
-        getOverlays().add(mBubbleOverlay);
+        mBubbleOverlay = new BubbleOverlay(address, p, mContext);
         invalidate();
-    }
-    
-    /*****************************************************************************
-     * 
-     * Sensor handling
-     * 
-     *****************************************************************************/
-
-    public void onSensorChanged(int sensor, float[] values) {
-        if (mPerspective) {
-            synchronized (this) {
-                mHeading = values[0];
-                invalidate();
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(int paramInt1, int paramInt2) {
-
-    }
-
-    /*****************************************************************************
-     * 
-     * Event handling
-     * 
-     *****************************************************************************/
-
-    protected void applyMapViewListener() {
-        final GestureDetector gd = new GestureDetector(
-                new GestureDetector.SimpleOnGestureListener() {
-
-                    @Override
-                    public boolean onSingleTapConfirmed(MotionEvent e) {
-                        GeoPoint p = getProjection().fromPixels((int) e.getX(),
-                                (int) e.getY());
-                        if (isForChild(p) == true) {
-                            return false;
-                        }
-                        getOverlays().remove(mBubbleOverlay);
-                        invalidate();
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2,
-                            float velocityX, float velocityY) {
-                        return true;
-                    }
-
-                    @Override
-                    public void onLongPress(MotionEvent e) {
-                        super.onLongPress(e);
-
-                        GeoPoint p = getProjection().fromPixels((int) e.getX(),
-                                (int) e.getY());
-                        Geocoder geoCoder = new Geocoder(mContext,
-                                Locale.getDefault());
-                        try {
-                            List<Address> addresses = geoCoder.getFromLocation(
-                                    p.getLatitudeE6() / 1E6,
-                                    p.getLongitudeE6() / 1E6, 1);
-                            Vector<String> address = new Vector<String>();
-                            if (addresses.size() > 0) {
-                                for (int i = 0; i < addresses.get(0)
-                                        .getMaxAddressLineIndex(); i++)
-                                    address.add(addresses.get(0)
-                                            .getAddressLine(i).trim());
-                            }
-                            if (mBubbleOverlay != null) {
-                                getOverlays().remove(mBubbleOverlay);
-                                invalidate();
-                            }
-                            mBubbleOverlay = new BubbleOverlay(address, p,
-                                    mContext);
-                            getOverlays().add(mBubbleOverlay);
-                            invalidate();
-                        }
-                        catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public boolean onDoubleTapEvent(MotionEvent e) {
-                        getController().zoomInFixing((int) e.getX(),
-                                (int) e.getY());
-                        return super.onDoubleTapEvent(e);
-                    }
-                });
-        this.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent ev) {
-                return gd.onTouchEvent(ev);
-            }
-        });
-    }
-
-    public boolean isForChild(GeoPoint p) {
-        if (mBubbleOverlay != null
-                && mBubbleOverlay.isTapOnElement(p, this) == true) {
-            return true;
-        }
-        return false;
     }
 }

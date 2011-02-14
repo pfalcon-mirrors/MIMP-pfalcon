@@ -2,7 +2,7 @@ package org.mimp.directions;
 
 import java.util.Vector;
 
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 public abstract class DrivingDirections {
     public interface IDirectionsListener {

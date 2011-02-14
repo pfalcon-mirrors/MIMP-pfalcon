@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.mimp.directions.Placemark;
 import org.mimp.directions.Route;
-
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 public class RouteImpl implements Route {
     private String totalDistance;

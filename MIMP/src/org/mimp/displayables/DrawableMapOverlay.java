@@ -1,18 +1,15 @@
 package org.mimp.displayables;
 
-import org.mapping.osm.OsmApi;
-import org.mapping.osm.OsmView;
-import org.mimp.R;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
+import org.mimp.newimp.Overlay;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
+import android.view.MotionEvent;
 
 public class DrawableMapOverlay extends Overlay {
 
@@ -43,8 +40,6 @@ public class DrawableMapOverlay extends Overlay {
 
     @Override
     public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-        super.draw(canvas, mapView, shadow);
-
         // Convert geo coordinates to screen pixels
         Point screenPoint = new Point();
         mapView.getProjection().toPixels(geoPoint, screenPoint);
@@ -67,45 +62,27 @@ public class DrawableMapOverlay extends Overlay {
                     - markerImage.getHeight(), null);
     }
 
-    public void draw(Canvas canvas, MapView mapView, boolean shadow, int x,
-            int y) {
-
-        // Convert geo coordinates to screen pixels
-        Point screenPoint = new Point();
-        int[] pa = OsmApi.LatLngToPixel(
-                new double[] { geoPoint.getLatitudeE6() / 1E6,
-                        geoPoint.getLongitudeE6() / 1E6 },
-                ((OsmView) mapView).getScale());
-        screenPoint = new Point(pa[0] - x + mapView.getWidth() / 2,
-                mapView.getHeight() - (pa[1] - y + mapView.getHeight() / 2));
-        Bitmap markerImage = null;
-        // Read the image
-        if (shadow) {
-            markerImage = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.shadow);
-        }
-        else {
-            markerImage = BitmapFactory.decodeResource(context.getResources(),
-                    drawable);
-        }
-
-        // Draw it around the given coordinates
-        if (type == LEFT)
-            canvas.drawBitmap(markerImage,
-                    screenPoint.x - markerImage.getWidth(), screenPoint.y
-                            - markerImage.getHeight(), null);
-        else if (type == CENTER)
-            canvas.drawBitmap(markerImage,
-                    screenPoint.x - markerImage.getWidth() / 2, screenPoint.y
-                            - markerImage.getHeight(), null);
-        else if (type == RIGHT)
-            canvas.drawBitmap(markerImage, screenPoint.x, screenPoint.y
-                    - markerImage.getHeight(), null);
+    @Override
+    public boolean onTap(GeoPoint p, MapView mapView) {
+        return true;
     }
 
     @Override
-    public boolean onTap(GeoPoint p, MapView mapView) {
+    protected boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+            long when) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-        return true;
+    @Override
+    protected boolean onTouchEvent(MotionEvent e, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isTapOnElement(GeoPoint p, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

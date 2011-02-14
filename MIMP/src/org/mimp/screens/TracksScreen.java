@@ -46,7 +46,7 @@ public class TracksScreen extends Activity implements OnItemClickListener {
         mListView.setOnItemClickListener(this);
         mListView.setAdapter(mTrackListAdapter);
         
-        String path = mExtFolder.getAbsolutePath() + File.separator + "Tracks" + File.separator;
+        String path = mExtFolder.getAbsolutePath() + File.separator + "MIMP" + File.separator + "Tracks" + File.separator;
         mBaseFolder = new File(path);
         mBaseFolder.mkdirs();
         fetchFiles();

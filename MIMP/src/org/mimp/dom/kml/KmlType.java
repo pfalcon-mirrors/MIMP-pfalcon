@@ -5,8 +5,7 @@ import java.util.Vector;
 
 import org.mimp.dom.ParsedObject;
 import org.mimp.dom.gpx.WptType;
-
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 public class KmlType implements ParsedObject  {
 

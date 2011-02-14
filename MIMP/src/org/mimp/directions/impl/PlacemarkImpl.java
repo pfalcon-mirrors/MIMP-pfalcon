@@ -1,8 +1,7 @@
 package org.mimp.directions.impl;
 
 import org.mimp.directions.Placemark;
-
-import com.google.android.maps.GeoPoint;
+import org.mimp.newimp.GeoPoint;
 
 public class PlacemarkImpl implements Placemark {
     private GeoPoint location;

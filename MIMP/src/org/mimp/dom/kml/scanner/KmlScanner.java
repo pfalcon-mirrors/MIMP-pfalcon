@@ -426,7 +426,6 @@ public class KmlScanner {
         }
         if ("LineString".equals(parentNode)) {
             String[] pairs = coordinates.split(" |\\r?\\n");
-            System.out.println("pairs : " + pairs.length);
             try {
                 for (int i = 0; i < pairs.length-1; i++) {
                     String[] coord = pairs[i].split(",");

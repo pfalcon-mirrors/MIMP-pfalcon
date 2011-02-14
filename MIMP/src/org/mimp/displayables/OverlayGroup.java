@@ -2,10 +2,12 @@ package org.mimp.displayables;
 
 import java.util.Vector;
 
-import android.graphics.Canvas;
+import org.mimp.newimp.GeoPoint;
+import org.mimp.newimp.MapView;
+import org.mimp.newimp.Overlay;
 
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
+import android.graphics.Canvas;
+import android.view.MotionEvent;
 
 public class OverlayGroup extends Overlay {
 
@@ -26,7 +28,6 @@ public class OverlayGroup extends Overlay {
         for (Overlay mOverlay : mOverlaysVector) {
             mOverlay.draw(canvas, mapView, shadow);
         }
-        super.draw(canvas, mapView, shadow);
     }
 
     public void clear() {
@@ -47,5 +48,30 @@ public class OverlayGroup extends Overlay {
 
     public Vector<Overlay> getOverlays() {
         return mOverlaysVector;
+    }
+
+    @Override
+    protected boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+            long when) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTap(GeoPoint p, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean onTouchEvent(MotionEvent e, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isTapOnElement(GeoPoint p, MapView mapView) {
+        // TODO Auto-generated method stub
+        return false;
     }
 }
