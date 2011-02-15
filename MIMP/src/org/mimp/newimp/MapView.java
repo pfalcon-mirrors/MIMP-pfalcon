@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
@@ -161,16 +160,6 @@ public class MapView extends View implements IMapView {
                 iMove = (iMove + 1) % move.length;
             }
         }
-    }
-    
-    private Paint textPaint;
-    private Paint getTextPaint() {
-        if (textPaint == null) {
-            textPaint = new Paint();
-            textPaint.setARGB(255, 0, 0, 0);
-            textPaint.setAntiAlias(true);
-        }
-        return textPaint;
     }
 
     /**
