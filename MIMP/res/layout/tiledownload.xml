@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#ff000000">
+    
+    <TextView
+        android:text="@string/tiledownload_choosemap"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dip"
+        android:paddingTop="4dip"
+        android:paddingBottom="4dip"
+        android:textSize="16dip"
+        android:textColor="#ffe5e5e5"
+        android:background="#181818"/>
+  
+    <Spinner 
+        android:id="@+id/tiledownload_mapchooser"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dip"
+        android:entries="@array/entries_list_map_names"/>
+  
+    <TextView
+        android:text="@string/tiledownload_choosezoom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="6dip"
+        android:paddingTop="4dip"
+        android:paddingBottom="4dip"
+        android:textSize="16dip"
+        android:textColor="#ffe5e5e5"
+        android:background="#181818"/>
+        
+    <ListView 
+        android:id="@+id/tiledownload_zoomlist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"/>
+  
+    <Button
+        android:id="@+id/tiledownload_downloadbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/download"/>
+        
+</LinearLayout>

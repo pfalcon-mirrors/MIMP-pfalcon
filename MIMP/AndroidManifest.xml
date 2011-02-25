@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.mimp"
-      android:versionCode="1"
-      android:versionName="1.0">
+      android:versionCode="3"
+      android:versionName="1.1">
     <application android:icon="@drawable/logo" android:label="@string/app_name">
     <uses-library android:name="com.google.android.maps" />  
 
@@ -21,40 +21,54 @@
             <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
         </activity>
 
-		<activity android:name=".screens.AboutScreen" android:label="AboutScreen">
+		<activity android:name=".screens.AboutScreen" android:label="About">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
 
-		<activity android:name=".screens.SettingsScreen" android:label="SettingsScreen">
+		<activity android:name=".screens.SettingsScreen" android:label="Settings">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
 
-		<activity android:name=".screens.ResolutionScreen" android:label="ResolutionScreen">
+		<activity android:name=".screens.ResolutionScreen" android:label="Resolution">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
 
-        <activity android:name=".screens.BubbleInteractionScreen" android:label="BubbleInteractionScreen">
+        <activity android:name=".screens.BubbleInteractionScreen" android:label="Bubble Interactions">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>  
 
-        <activity android:name=".screens.TracksScreen" android:label="TracksScreen">
+        <activity android:name=".screens.TracksScreen" android:label="Tracks">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>  
+        </activity>
+        
+        <activity android:name=".screens.TrackDetailsScreen" android:label="Track Details">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".screens.TileDownloadScreen" android:label="Tile Download">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <provider android:name=".search.LocationSearchProvider"
                   android:authorities="com.mimp.search.LocationSearchProvider" />

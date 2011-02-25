@@ -47,5 +47,13 @@
         <item>Remove the waypoint from the current track or delete track if it is the only waypoint</item>
         <item>Send address via email ...</item>
     </string-array>
+    
+    <string-array name="entries_list_track_interactions_body_info">
+        <item>Cache tiles</item>
+    </string-array>
 
+    <string-array name="entries_list_track_interactions_body_descr">
+        <item>Download tiles contained into track bounds to use while offline</item>
+    </string-array>
+    
 </resources>

@@ -13,6 +13,31 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string-array name="entries_list_directions_modes">
         <item>A pieds</item>
         <item>En voiture</item>
@@ -47,4 +72,12 @@
         <item>Send address via email ...</item>
     </string-array>
 
+    <string-array name="entries_list_track_interactions_body_info">
+        <item>Mise en cache</item>
+    </string-array>
+
+    <string-array name="entries_list_track_interactions_body_descr">
+        <item>Telechargement des dalles dans les limites du tracé</item>
+    </string-array>
+    
 </resources>

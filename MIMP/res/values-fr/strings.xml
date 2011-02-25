@@ -14,6 +14,7 @@
     <string name="search">Recherche</string>
     <string name="select">Choisissez une proposition de la liste</string>
     <string name="clear">Nettoyer</string>
+    <string name="download">Telecharger</string>
     
     <string name="map_menu_search">Recherche</string>
     <string name="map_menu_position">Ma position</string>
@@ -74,4 +75,6 @@
     <string name="navigation_position_unavailable">Position actuelle non disponible</string>
     <string name="navigation_destination_unavailable">Destination non disponible</string>
     
+    <string name="tiledownload_choosemap">Choisissez un type de carte</string>
+    <string name="tiledownload_choosezoom">Choisissez les niveaux de zoom</string>
 </resources>

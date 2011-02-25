@@ -112,10 +112,17 @@ public class Tile {
     public void save() {
         if (mData != null && mData.length != 0) {
             String url = mSettings.getString("map_provider_name", S.OpenCycleMapsURL);
-            TileFactory.SaveTile(url, this.mData, X, Y, Z);
+            TileFactory.SaveTile(url, mData, X, Y, Z);
         }
     }
 
+    public void save(String provider) {
+        mData = TileFactory.DownloadTile(provider, X, Y, Z);
+        if (mData != null && mData.length != 0) {
+            TileFactory.SaveTile(provider, mData, X, Y, Z);
+        }
+    }
+    
     /**
      * Flag the Tile to be refreshed
      */

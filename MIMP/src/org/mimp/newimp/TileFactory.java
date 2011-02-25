@@ -188,6 +188,7 @@ public class TileFactory {
             try {
                 fileOutputStream = new FileOutputStream(file);
                 fileOutputStream.write(dat);
+                fileOutputStream.flush();
                 fileOutputStream.close();
             }
             catch (IOException e) {

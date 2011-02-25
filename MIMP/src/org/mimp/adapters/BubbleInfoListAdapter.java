@@ -31,7 +31,9 @@ public class BubbleInfoListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        String[] pInfoText = mContext.getResources().getStringArray(
+                R.array.entries_list_bubble_interactions_body_info);
+        return pInfoText.length + 1; // +1 for header
     }
 
     @Override

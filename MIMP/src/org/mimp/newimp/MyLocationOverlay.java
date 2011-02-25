@@ -48,8 +48,8 @@ public class MyLocationOverlay extends Overlay implements IMyLocationOverlay, Se
     private float mAzimuth = -1.0f;
     private Matrix mMatrix = null;
     private Sensor mSensorOrientation = null;
-    private Paint mCircleInnerPaint = null;
     private Paint mCircleBorderPaint = null;
+    private Paint mCircleInnerPaint = null;
     private String mCurrentProvider;
     
     /**
@@ -66,16 +66,16 @@ public class MyLocationOverlay extends Overlay implements IMyLocationOverlay, Se
         ARROW = Bitmap.createScaledBitmap(ARROW, 32, 32, true);
         ARROW_ROTATED = ARROW;
         
-        mCircleInnerPaint = new Paint();
-        mCircleInnerPaint.setColor(0xff6666ff);
-        mCircleInnerPaint.setStyle(Style.STROKE);
-        mCircleInnerPaint.setAntiAlias(true);
-        mCircleInnerPaint.setStrokeWidth(1.5f);
-
         mCircleBorderPaint = new Paint();
-        mCircleBorderPaint.setColor(0x1f6666ff);
-        mCircleBorderPaint.setStyle(Style.FILL);
+        mCircleBorderPaint.setColor(0xff6666ff);
+        mCircleBorderPaint.setStyle(Style.STROKE);
         mCircleBorderPaint.setAntiAlias(true);
+        mCircleBorderPaint.setStrokeWidth(1.5f);
+
+        mCircleInnerPaint = new Paint();
+        mCircleInnerPaint.setColor(0x1f6666ff);
+        mCircleInnerPaint.setStyle(Style.FILL);
+        mCircleInnerPaint.setAntiAlias(true);
     }
     
     @Override
@@ -221,8 +221,8 @@ public class MyLocationOverlay extends Overlay implements IMyLocationOverlay, Se
                 
         int radius = mScreenPoint.x - distPoint.x;
         
-        canvas.drawCircle(xy[0], xy[1], radius, mCircleInnerPaint);
         canvas.drawCircle(xy[0], xy[1], radius, mCircleBorderPaint);
+        canvas.drawCircle(xy[0], xy[1], radius, mCircleInnerPaint);
         
         float bearing = 0.0f;
         if (mAzimuth > 0.0f) {

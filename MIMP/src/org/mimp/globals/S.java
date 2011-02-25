@@ -48,7 +48,6 @@ public class S {
      * Map URLs 
      */
     
-    //http://a.tile.opencyclemap.org/cycle/0/0/0.png
     public static final String OpenCycleMapsURL = "http://a.tile.opencyclemap.org/cycle/";
     //http://tile.openstreetmap.org/0/0/0.png
     public static final String OpenStreetMapsURL = "http://tile.openstreetmap.org/";

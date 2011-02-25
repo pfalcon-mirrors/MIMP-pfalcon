@@ -390,26 +390,7 @@ public class MapScreen extends Activity implements LocationListener,
             mMapView.unloadTracks();
             ParsedFile parsedFile = ParsedFileFactory.getParsedFile(trackfile);
             ParsedObject parsedObject = parsedFile.getParsedObject();
-            Vector<GeoPoint> geo = parsedObject.getPoints();
-            OverlayGroup overlays = mMapView.getOverlayGroup();
-            mWindowManager = getWindowManager();
-            mDisplay = mWindowManager.getDefaultDisplay();
-
-            LineMapOverlay lineMapOverlay = new LineMapOverlay();
-            lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
-                    mDisplay.getHeight(), mDisplay.getWidth());
-            overlays.add(lineMapOverlay);
-
-            TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
-                    getApplicationContext());
-            overlays.add(startPoint);
-
-            TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size() - 1),
-                    getApplicationContext());
-            overlays.add(endPoint);
-
-            mMapView.invalidate();
-            mMapController.animateTo(geo.get(0));
+            mMapView.setCurrentTrack(parsedObject);
         }
         catch (Exception e) {
             e.printStackTrace();

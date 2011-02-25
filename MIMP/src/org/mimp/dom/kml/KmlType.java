@@ -9,6 +9,10 @@ import org.mimp.newimp.GeoPoint;
 
 public class KmlType implements ParsedObject  {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3237351416668464269L;
     DocumentType document;
     String xmlns;
     

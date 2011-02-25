@@ -9,6 +9,10 @@ import org.mimp.newimp.GeoPoint;
 
 public class GpxType implements ParsedObject {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2659198585170428398L;
     protected MetadataType metadata;
     protected List<WptType> wpt;
     protected List<RteType> rte;

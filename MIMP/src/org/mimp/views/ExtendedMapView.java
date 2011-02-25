@@ -3,7 +3,11 @@ package org.mimp.views;
 import java.util.Vector;
 
 import org.mimp.displayables.BubbleOverlay;
+import org.mimp.displayables.LineMapOverlay;
 import org.mimp.displayables.OverlayGroup;
+import org.mimp.displayables.TrackEndPoint;
+import org.mimp.displayables.TrackStartPoint;
+import org.mimp.dom.ParsedObject;
 import org.mimp.newimp.GeoPoint;
 import org.mimp.newimp.MapView;
 
@@ -27,6 +31,7 @@ public class ExtendedMapView extends MapView {
     private final SmoothCanvas mCanvas = new SmoothCanvas();
     private BubbleOverlay mBubbleOverlay;
     private OverlayGroup mOverlayGroup = new OverlayGroup();
+    private ParsedObject mParsedObject;
 
     /*****************************************************************************
      * 
@@ -119,5 +124,33 @@ public class ExtendedMapView extends MapView {
             address.add(addresses.getAddressLine(i).trim());
         mBubbleOverlay = new BubbleOverlay(address, p, mContext);
         invalidate();
+    }
+
+    public void setCurrentTrack(ParsedObject parsedObject) {
+        Vector<GeoPoint> geo = parsedObject.getPoints();
+        OverlayGroup overlays = getOverlayGroup();
+
+        LineMapOverlay lineMapOverlay = new LineMapOverlay();
+        lineMapOverlay.setLineMapOverlay(mContext, geo,
+                getHeight(), getWidth());
+        overlays.add(lineMapOverlay);
+
+        TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
+                mContext);
+        overlays.add(startPoint);
+
+        TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size() - 1),
+                mContext);
+        overlays.add(endPoint);
+
+        invalidate();
+        getController().animateTo(geo.get(0));
+        
+        mParsedObject = parsedObject;
+    }
+    
+    public ParsedObject getCurrentTrack()
+    {
+        return mParsedObject;
     }
 }

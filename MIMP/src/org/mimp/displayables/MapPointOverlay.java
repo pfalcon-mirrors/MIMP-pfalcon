@@ -14,20 +14,20 @@ import android.graphics.RectF;
 
 public abstract class MapPointOverlay extends Overlay {
 
-    private int POINTER_WIDTH = 20;
-    private int POINTER_HEIGHT = 20;
-    private int BLOC_WIDTH = 20;
-    private int BLOC_HEIGHT = 10;
+    protected int POINTER_WIDTH = 20;
+    protected int POINTER_HEIGHT = 20;
+    protected int BLOC_WIDTH = 20;
+    protected int BLOC_HEIGHT = 10;
 
-    private int CORE_POINTER_WIDTH = 10;
-    private int CORE_POINTER_HEIGHT = 10;
-    private int CORE_BLOC_WIDTH = 10;
-    private int CORE_BLOC_HEIGHT = 10;
+    protected int CORE_POINTER_WIDTH = 10;
+    protected int CORE_POINTER_HEIGHT = 10;
+    protected int CORE_BLOC_WIDTH = 10;
+    protected int CORE_BLOC_HEIGHT = 10;
 
-    private GeoPoint selectedMapLocation;
-    private Paint innerPaint;
-    private Paint corePaint;
-    private Paint borderPaint;
+    protected GeoPoint selectedMapLocation;
+    protected Paint innerPaint;
+    protected Paint corePaint;
+    protected Paint borderPaint;
 
     public enum SIZE {
         BIG, MEDIUM, SMALL

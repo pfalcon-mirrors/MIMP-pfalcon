@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -149,6 +151,8 @@ public class MapView extends View implements IMapView {
                         if (tile != null && tile.getBitmap() != null) {
                             painted = true;
                             canvas.drawBitmap(tile.getBitmap(),posx,posy,null);
+                            canvas.drawRect(posx, posy, posx+256, posy+256, getTextPaint());
+                            canvas.drawText(tilex + " " + tiley + " " + getZoomLevel(), posx+128, posy+128, getTextPaint());
                         }
                     }
                     Point p = move[iMove];
@@ -160,6 +164,17 @@ public class MapView extends View implements IMapView {
                 iMove = (iMove + 1) % move.length;
             }
         }
+    }
+    
+    private Paint textPaint;
+    private Paint getTextPaint() {
+        if (textPaint == null) {
+            textPaint = new Paint();
+            textPaint.setStyle(Style.STROKE);
+            textPaint.setARGB(255, 0, 0, 0);
+            textPaint.setAntiAlias(true);
+        }
+        return textPaint;
     }
 
     /**
