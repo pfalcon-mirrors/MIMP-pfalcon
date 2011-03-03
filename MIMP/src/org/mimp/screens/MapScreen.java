@@ -42,6 +42,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -103,6 +104,7 @@ public class MapScreen extends Activity implements LocationListener,
         /**
          * Setting preferences or previous status
          */        
+        assetToSD();
         doChecks();
     }
 
@@ -171,6 +173,7 @@ public class MapScreen extends Activity implements LocationListener,
         
         for(String fileName : files)
         {
+            Log.d(getClass().toString(), fileName);
             if(fileName.compareTo("images") == 0 ||
                     fileName.compareTo("sounds") == 0 ||
                     fileName.compareTo("webkit") == 0)
@@ -235,7 +238,7 @@ public class MapScreen extends Activity implements LocationListener,
 
     public void checkPerspective() {
         SharedPreferences settings = getSharedPreferences(S.PREFS_NAME, 0);
-        boolean mode = settings.getBoolean("perspective", true);
+        boolean mode = settings.getBoolean("perspective", false);
         if (mode) {
             mMapView.setPerspective(true);
         }
