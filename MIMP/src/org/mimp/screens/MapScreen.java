@@ -25,6 +25,7 @@ import org.mimp.displayables.TrackStartPoint;
 import org.mimp.dom.ParsedFile;
 import org.mimp.dom.ParsedFileFactory;
 import org.mimp.dom.ParsedObject;
+import org.mimp.dom.UnknownType;
 import org.mimp.globals.S;
 import org.mimp.newimp.GeoPoint;
 import org.mimp.newimp.MapController;
@@ -581,25 +582,9 @@ public class MapScreen extends Activity implements LocationListener,
             alert.show();
             return;
         }
-        mWindowManager = getWindowManager();
-        mDisplay = mWindowManager.getDefaultDisplay();
-
-        Vector<GeoPoint> geo = new Vector<GeoPoint>(route.getGeoPoints());
-        OverlayGroup overlays = mMapView.getOverlayGroup();
-
-        LineMapOverlay lineMapOverlay = new LineMapOverlay();
-        lineMapOverlay.setLineMapOverlay(getApplicationContext(), geo,
-                mDisplay.getHeight(), mDisplay.getWidth());
-        overlays.add(lineMapOverlay);
-
-        TrackStartPoint startPoint = new TrackStartPoint(geo.get(0),
-                getApplicationContext());
-        overlays.add(startPoint);
-
-        TrackEndPoint endPoint = new TrackEndPoint(geo.get(geo.size() - 1),
-                getApplicationContext());
-        overlays.add(endPoint);
-
+        UnknownType directionsTrack = new UnknownType();
+        directionsTrack.setGeoPoints(route.getGeoPoints());
+        mMapView.setCurrentTrack(directionsTrack);
         mMapView.invalidate();
     }
 
