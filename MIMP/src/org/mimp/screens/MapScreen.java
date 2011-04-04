@@ -283,7 +283,7 @@ public class MapScreen extends Activity implements LocationListener,
         message += "\n\n";
         message += getString(R.string.about);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Map In My Poket")
+        builder.setTitle(R.string.app_name)
                 .setMessage(message)
                 .setCancelable(false)
                 .setNeutralButton(android.R.string.ok,
