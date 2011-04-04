@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Maps In My Pocket</string>
-    <string name="about">Version 1.4.1\n
-                         \n
-                         Visit\n
+    <string name="version">v1.4.2</string>
+    <string name="about">Visit\n
                          code.google.com/p/mapinmypocket\n
                          \n
                          Created by Boulanger Marc\n
