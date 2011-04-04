@@ -55,6 +55,8 @@ public class GestureListener extends SimpleOnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
+        if (e.getPointerCount() > 0)
+            return;
         GeoPoint geoPoint = mView.getProjection().fromPixels((int) e.getX(),
                 (int) e.getY());
         Geocoder geoCoder = new Geocoder(mContext, Locale.getDefault());
