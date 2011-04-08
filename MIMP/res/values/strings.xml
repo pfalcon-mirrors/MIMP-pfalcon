@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Maps In My Pocket</string>
-    <string name="version">v1.4.2</string>
+    <string name="version">1.4.3</string>
     <string name="about">Visit\n
                          code.google.com/p/mapinmypocket\n
                          \n

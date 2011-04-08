@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 
+
 public class GestureListener extends SimpleOnGestureListener {
 
     private ExtendedMapView mView;
@@ -55,10 +56,10 @@ public class GestureListener extends SimpleOnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
-        if (e.getPointerCount() > 0)
-            return;
         GeoPoint geoPoint = mView.getProjection().fromPixels((int) e.getX(),
                 (int) e.getY());
+        if (TouchListener.lastEvent != null && TouchListener.lastEvent.getPointerCount() > 1)
+            return;
         Geocoder geoCoder = new Geocoder(mContext, Locale.getDefault());
         try {
             List<Address> addresses = geoCoder.getFromLocation(

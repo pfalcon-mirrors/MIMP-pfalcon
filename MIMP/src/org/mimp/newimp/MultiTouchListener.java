@@ -91,7 +91,7 @@ public class MultiTouchListener implements OnMultiTouchListener {
                  * Testing if pinch event
                  */
                 if (Math.abs(distByHypothenuse(distPrevious) - 
-                        distByHypothenuse(distCurrent)) > 3) {
+                        distByHypothenuse(distCurrent)) > 10) {
                     mViewZoom = mView.getZoomLevel();
                     MODE = MODES.PINCH;
                     onPinch(event);

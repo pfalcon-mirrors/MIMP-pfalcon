@@ -3,7 +3,6 @@ package org.mimp.newimp;
 import org.mimp.views.ExtendedMapView;
 
 import android.content.Context;
-import android.os.Debug;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,14 +10,14 @@ import android.view.View.OnTouchListener;
 
 public class TouchListener implements OnTouchListener {
 
-    GestureListener mGestureListener = null;
-    GestureDetector mGestureDetector = null;
+    private GestureListener mGestureListener = null;
+    private GestureDetector mGestureDetector = null;
 
-    MultiTouchListener mMultiTouchListener = null;
+    private MultiTouchListener mMultiTouchListener = null;
 
-    
-    Context mContext = null;
-    MapView mView;
+    public static MotionEvent lastEvent = null;
+    private Context mContext = null;
+    private MapView mView;
     
     public TouchListener(Context context, MapView view) {
         mContext = context;
@@ -38,14 +37,15 @@ public class TouchListener implements OnTouchListener {
             mView.getZoomControls().show();
         }
         mView.getZoomControls().restartTimeOutMillis();
-        if (Debug.isDebuggerConnected())
-            dumpEvent(event);
+        dumpEvent(event);
         if (event.getPointerCount() > 1) {
-            return mMultiTouchListener.onTouchEvent(event);
+            mMultiTouchListener.onTouchEvent(event);
         }
         else {
-            return mGestureDetector.onTouchEvent(event);
+            mGestureDetector.onTouchEvent(event);
         }
+        lastEvent = event;
+        return true;
     }
     
     /** Show an event in the LogCat view, for debugging */

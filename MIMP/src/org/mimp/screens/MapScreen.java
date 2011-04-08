@@ -604,12 +604,11 @@ public class MapScreen extends Activity implements LocationListener,
     private void doSearchQuery(final Intent queryIntent, final String entryPoint) {
         Bundle bundle = queryIntent.getExtras();
         Set<String> keySet = bundle.keySet();
+        System.out.println((String) bundle.get((String) keySet.toArray()[1]));
         List<Address> list = Locator.getLocations(getApplicationContext(), (String) bundle.get((String) keySet.toArray()[1]), 15);
-        if (list.size() > 1) {
-            Toast toast = new Toast(getApplicationContext());
-            toast.setText(R.string.select);
+        if (list != null && list.size() != 1) {
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.select, 10);
             toast.show();
-            throw new UnsupportedOperationException(); 
         }
         else {
             double [] coords = {list.get(0).getLatitude(),list.get(0).getLongitude()};
