@@ -19,6 +19,8 @@ public class MapView extends View implements IMapView {
     protected static final Point[] move = { new Point(1, 0), new Point(0, 1), new Point( -1, 0), new Point(0, -1) };
 
     private TileController mTileController;
+    private TileController mTileOverlayController;
+    private String mOverlayProvider;
     private Context mContext;
 
     private MapZoomControls mZoomControls;
@@ -37,7 +39,12 @@ public class MapView extends View implements IMapView {
     public MapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mTileController = new TileController(this, context.getSharedPreferences(S.PREFS_NAME, 0).getString("map_provider_name", S.OpenCycleMapsURL));
+        SharedPreferences mSettings = context.getSharedPreferences(S.PREFS_NAME, 0);
+        mTileController = new TileController(this, mSettings.getString("map_provider_name", S.OpenCycleMapsURL));
+        mOverlayProvider = mSettings.getString("map_overlay_provider_name", "");
+        if (!"".equals(mOverlayProvider)) {
+            mTileOverlayController = new TileController(this, mOverlayProvider);
+        }
         mTouchListener = new TouchListener(context, this);
         setOnTouchListener(mTouchListener);
         mOverlayList = new ArrayList<Overlay>();
@@ -149,6 +156,14 @@ public class MapView extends View implements IMapView {
                         if (tile != null && tile.getBitmap() != null) {
                             painted = true;
                             canvas.drawBitmap(tile.getBitmap(),posx,posy,null);
+                        }
+
+                        if (!"".equals(mOverlayProvider)) {
+                            tile = mTileOverlayController.getTile(tilex, tiley, getZoomLevel());
+                            if (tile != null && tile.getBitmap() != null) {
+                                painted = true;
+                                canvas.drawBitmap(tile.getBitmap(),posx,posy,null);
+                            }
                         }
                     }
                     Point p = move[iMove];
