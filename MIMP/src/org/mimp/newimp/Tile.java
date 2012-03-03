@@ -42,8 +42,7 @@ public class Tile {
     private byte[] mData = null;
     private Bitmap mBitmap = null;
     private STATUS mState = STATUS.BLANK;
-    private Context mContext;
-    private SharedPreferences mSettings;
+    private String mProviderUrl;
 
     public int getX() {
         return X;
@@ -77,13 +76,12 @@ public class Tile {
         this.mBitmap = bitmap;
     }
 
-    public Tile(int tx, int ty, int tz, Context context) {
+    public Tile(int tx, int ty, int tz, String providerUrl) {
         X = tx;
         Y = ty;
         Z = tz;
         mBitmap = BITMAPBG;
-        mContext = context;
-        mSettings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
+        mProviderUrl = providerUrl;
     }
 
     /**
@@ -93,7 +91,7 @@ public class Tile {
     public void load() {
         if (mState == STATUS.USED)
             return;
-        String url = mSettings.getString("map_provider_name", S.OpenCycleMapsURL);
+        String url = mProviderUrl;
         if (mData == null) {
             mData = TileFactory.OpenTile(url, X, Y, Z);
         }
@@ -111,7 +109,7 @@ public class Tile {
      */
     public void save() {
         if (mData != null && mData.length != 0) {
-            String url = mSettings.getString("map_provider_name", S.OpenCycleMapsURL);
+            String url = mProviderUrl;
             TileFactory.SaveTile(url, mData, X, Y, Z);
         }
     }

@@ -37,7 +37,7 @@ public class MapView extends View implements IMapView {
     public MapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        mTileController = new TileController(this,context);
+        mTileController = new TileController(this, context.getSharedPreferences(S.PREFS_NAME, 0).getString("map_provider_name", S.OpenCycleMapsURL));
         mTouchListener = new TouchListener(context, this);
         setOnTouchListener(mTouchListener);
         mOverlayList = new ArrayList<Overlay>();
