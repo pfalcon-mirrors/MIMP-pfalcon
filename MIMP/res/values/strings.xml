@@ -33,6 +33,7 @@
     <string name="inline_preferences_other">Other options</string>
 
     <string name="settings_maps">Maps</string>
+    <string name="settings_map_overlays">Map overlays</string>
     <string name="settings_directions">Directions</string>
     <string name="settings_gps">GPS</string>
     <string name="settings_resolution">Resolution</string>
@@ -41,6 +42,7 @@
     <string name="settings_voices">Voice</string>
 
     <string name="settings_summary_maps">Let you choose which type of map to use</string>
+    <string name="settings_summary_map_overlays">Let you choose which type of map overlay to use</string>
     <string name="settings_summary_directions">Directions</string>
     <string name="settings_summary_gps">GPS preferences</string>
     <string name="settings_summary_resolution">Resolution</string>
@@ -50,6 +52,7 @@
     <string name="settings_summary_notifications">Choose when and how to receive notifications</string>
     
     <string name="settings_dialog_list_title">Available maps</string>
+    <string name="settings_dialog_overlay_list_title">Available overlays</string>
     
     <string name="settings_gps_follow">Following</string>
     <string name="settings_gps_precision">Precision</string>
