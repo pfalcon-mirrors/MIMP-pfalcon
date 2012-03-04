@@ -134,6 +134,7 @@ public class MapScreen extends Activity implements LocationListener,
         }
         else if (requestCode == S.SettingsScreen_RQC) {
             mMapView.getTileController().reset();
+            mMapView.updateMapProviders();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

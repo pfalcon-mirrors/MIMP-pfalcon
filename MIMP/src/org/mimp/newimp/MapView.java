@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.util.Log;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,7 +21,8 @@ public class MapView extends View implements IMapView {
 
     private TileController mTileController;
     private TileController mTileOverlayController;
-    private String mOverlayProvider;
+    private String mMapProvider = "";
+    private String mOverlayProvider = "";
     private Context mContext;
 
     private MapZoomControls mZoomControls;
@@ -39,12 +41,7 @@ public class MapView extends View implements IMapView {
     public MapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        SharedPreferences mSettings = context.getSharedPreferences(S.PREFS_NAME, 0);
-        mTileController = new TileController(this, mSettings.getString("map_provider_name", S.OpenCycleMapsURL));
-        mOverlayProvider = mSettings.getString("map_overlay_provider_name", "");
-        if (!"".equals(mOverlayProvider)) {
-            mTileOverlayController = new TileController(this, mOverlayProvider);
-        }
+        updateMapProviders();
         mTouchListener = new TouchListener(context, this);
         setOnTouchListener(mTouchListener);
         mOverlayList = new ArrayList<Overlay>();
@@ -53,6 +50,19 @@ public class MapView extends View implements IMapView {
         mProjection = new Projection(this);
         enableLocationOverlay();
     }
+
+    public void updateMapProviders() {
+        SharedPreferences mSettings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
+        mMapProvider = mSettings.getString("map_provider_name", S.OpenCycleMapsURL);
+        mOverlayProvider = mSettings.getString("map_overlay_provider_name", "");
+        Log.d("update", "map: " + mMapProvider);
+        Log.d("update", "overlay: " + mOverlayProvider);
+        mTileController = new TileController(this, mMapProvider);
+        if (!"".equals(mOverlayProvider)) {
+            mTileOverlayController = new TileController(this, mOverlayProvider);
+        }
+    }
+
     
     @Override
     protected void onFinishInflate() {
