@@ -42,7 +42,7 @@ public class Tile {
     private byte[] mData = null;
     private Bitmap mBitmap = null;
     private STATUS mState = STATUS.BLANK;
-    private String mProviderUrl;
+    private MapProvider mProvider;
 
     public int getX() {
         return X;
@@ -76,12 +76,12 @@ public class Tile {
         this.mBitmap = bitmap;
     }
 
-    public Tile(int tx, int ty, int tz, String providerUrl) {
+    public Tile(int tx, int ty, int tz, MapProvider provider) {
         X = tx;
         Y = ty;
         Z = tz;
         mBitmap = BITMAPBG;
-        mProviderUrl = providerUrl;
+        mProvider = provider;
     }
 
     /**
@@ -91,12 +91,11 @@ public class Tile {
     public void load() {
         if (mState == STATUS.USED)
             return;
-        String url = mProviderUrl;
         if (mData == null) {
-            mData = TileFactory.OpenTile(url, X, Y, Z);
+            mData = TileFactory.OpenTile(mProvider, X, Y, Z);
         }
         if (mData == null || mData.length == 0) {
-            mData = TileFactory.DownloadTile(url, X, Y, Z);
+            mData = TileFactory.DownloadTile(mProvider, X, Y, Z);
         }
         if (mData != null) {
             mBitmap = BitmapFactory.decodeByteArray(mData, 0, mData.length);
@@ -109,12 +108,11 @@ public class Tile {
      */
     public void save() {
         if (mData != null && mData.length != 0) {
-            String url = mProviderUrl;
-            TileFactory.SaveTile(url, mData, X, Y, Z);
+            TileFactory.SaveTile(mProvider, mData, X, Y, Z);
         }
     }
 
-    public void save(String provider) {
+    public void save(MapProvider provider) {
         mData = TileFactory.DownloadTile(provider, X, Y, Z);
         if (mData != null && mData.length != 0) {
             TileFactory.SaveTile(provider, mData, X, Y, Z);

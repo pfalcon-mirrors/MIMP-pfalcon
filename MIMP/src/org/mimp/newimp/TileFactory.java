@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import org.mimp.globals.S;
 
 import android.os.Environment;
+import android.util.Log;
 
 public class TileFactory {
 
@@ -82,21 +83,13 @@ public class TileFactory {
      * 
      *****************************************************************************/
 
-    public static byte[] DownloadTile(String map, int tx, int ty, int z) {
-        String url = null;
-        if (map.equals(S.OpenStreetMapsURL)) {
-            url = map + z + "/" + tx + "/" + ty + ".png";
-        }
-        else if (map.equals(S.OpenCycleMapsURL)) {
-            url = map + z + "/" + tx + "/" + ty + ".png";
-        }
-        else if (map.equals(S.CloudMadeMapsURL)) {
-            url = map + "333d990d389d5e65a7714dd738b2fc77/1/256/" + z + "/" + tx + "/" + ty + ".png";
-        }
-        else {
+    public static byte[] DownloadTile(MapProvider provider, int tx, int ty, int z) {
+        String url = provider.getUrl(tx, ty, z);
+        if (url == null) {
             return null;
         }
         byte[] dat = null;
+        Log.d("TileFactory", "Downloading " + url);
         try {
             URLConnection urlConnection = new URL(url).openConnection();
             urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
@@ -116,22 +109,13 @@ public class TileFactory {
      * 
      *****************************************************************************/
 
-    public static byte[] OpenTile(String map, int tx, int ty, int z) {
-        String filename = z + "-" + tx + "-" + ty;
-        byte[] dat = null;
-        String MAPFOLDER = null;
-        if (map.equals(S.OpenStreetMapsURL)) {
-            MAPFOLDER = "OSM";
-        }
-        else if (map.equals(S.OpenCycleMapsURL)) {
-            MAPFOLDER = "OCM";
-        }
-        else if (map.equals(S.CloudMadeMapsURL)) {
-            MAPFOLDER = "CLOUD";
-        }
-        else {
+    public static byte[] OpenTile(MapProvider provider, int tx, int ty, int z) {
+        if (!provider.isCacheable()) {
             return null;
         }
+        String filename = z + "-" + tx + "-" + ty;
+        byte[] dat = null;
+        String MAPFOLDER = provider.getShortName();
         File file = new File(mExtFolder.getAbsolutePath() + File.separator
                 + "MIMP" + File.separator + "Tiles" + File.separator
                 + MAPFOLDER + File.separator);
@@ -163,21 +147,12 @@ public class TileFactory {
      * 
      *****************************************************************************/
 
-    public static void SaveTile(String map, byte[] dat, int tx, int ty, int z) {
-        String filename = z + "-" + tx + "-" + ty;
-        String MAPFOLDER = null;
-        if (map.equals(S.OpenStreetMapsURL)) {
-            MAPFOLDER = "OSM";
-        }
-        else if (map.equals(S.OpenCycleMapsURL)) {
-            MAPFOLDER = "OCM";
-        }
-        else if (map.equals(S.CloudMadeMapsURL)) {
-            MAPFOLDER = "CLOUD";
-        }
-        else {
+    public static void SaveTile(MapProvider provider, byte[] dat, int tx, int ty, int z) {
+        if (!provider.isCacheable()) {
             return;
         }
+        String filename = z + "-" + tx + "-" + ty;
+        String MAPFOLDER = provider.getShortName();
         File file = new File(mExtFolder.getAbsolutePath() + File.separator
                 + "MIMP" + File.separator + "Tiles" + File.separator
                 + MAPFOLDER + File.separator);

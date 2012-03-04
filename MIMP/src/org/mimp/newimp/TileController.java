@@ -19,11 +19,11 @@ public class TileController extends Thread {
     Thread mThreadd;
     View mView;
     Handler mHandler;
-    String mProviderUrl;
+    MapProvider mProvider;
     
-    public TileController(View view, String providerUrl) {
+    public TileController(View view, MapProvider provider) {
         this.mView = view;
-        this.mProviderUrl = providerUrl;
+        this.mProvider = provider;
         mHandler = new Handler();
         mPendingList = new LinkedList<Tile>();
         mTileMap= new Hashtable<Long,Tile>();
@@ -92,7 +92,7 @@ public class TileController extends Thread {
         long key = (long) tz << 48 | (long) ty << 24 |  tx  & 0xFFFFFF ;
         Tile t = mTileMap.get(key);
         if (t == null) {
-            t = new Tile(tx,ty,tz,mProviderUrl);
+            t = new Tile(tx, ty, tz, mProvider);
             mTileMap.put(key, t);
             mKeys.add(key);
             clean();
