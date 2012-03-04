@@ -2,6 +2,7 @@ package org.mimp.screens;
 
 import org.mimp.R;
 import org.mimp.adapters.ZoomListAdapter;
+import org.mimp.globals.S;
 import org.mimp.newimp.Tile;
 import org.mimp.newimp.TileFactory;
 
@@ -165,7 +166,8 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
                         /**
                          * download handling
                          */
-                        Tile t = new Tile(x+llp[0], y+urp[1], z, mContext);
+                        String mapProvider = mContext.getSharedPreferences(S.PREFS_NAME, 0).getString("map_provider_name", S.OpenCycleMapsURL);
+                        Tile t = new Tile(x+llp[0], y+urp[1], z, mapProvider);
                         t.save(mURLs[mSelection]);
                     }                    
                 }
