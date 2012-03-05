@@ -36,6 +36,6 @@ public class MapProvider {
     }
 
     public String toString() {
-        return "<MapProvider " + mShortName + ">";
+        return mDisplayName;
     }
 }
