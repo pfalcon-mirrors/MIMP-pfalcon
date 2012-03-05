@@ -31,7 +31,7 @@ public class MapProviderFactory {
         return null;
     }
 
-    private static MapProvider[] getProvidersArray(ProviderType providerType) {
+    public static MapProvider[] getProvidersArray(ProviderType providerType) {
         if (providerType == ProviderType.MAPS) {
             return MAPS_ARRAY;
         } else if (providerType == ProviderType.MAP_OVERLAYS) {
