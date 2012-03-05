@@ -5,6 +5,9 @@ import org.mimp.adapters.ZoomListAdapter;
 import org.mimp.globals.S;
 import org.mimp.newimp.Tile;
 import org.mimp.newimp.TileFactory;
+import org.mimp.newimp.MapProvider;
+import org.mimp.newimp.MapProviderFactory;
+import org.mimp.newimp.MapProviderFactory.ProviderType;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -19,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
@@ -35,8 +39,7 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
     private Downloader downloader;
     private ProgressDialog progressDialog;
     private Context mContext = this;
-    private String[] mURLs;
-    private int mSelection;
+    private MapProvider mMapProvider;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,10 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
         setContentView(R.layout.tiledownload);
         
         mMapChooser = (Spinner) findViewById(R.id.tiledownload_mapchooser);
+        ArrayAdapter<MapProvider> mapsAdapter = new ArrayAdapter(mContext, android.R.layout.simple_spinner_item,
+          MapProviderFactory.getProvidersArray(ProviderType.MAPS));
+        mapsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mMapChooser.setAdapter(mapsAdapter);
         mMapChooser.setOnItemSelectedListener(this);
         mDownloadButton = (Button) findViewById(R.id.tiledownload_downloadbutton);
         mDownloadButton.setOnClickListener(this);
@@ -53,7 +60,6 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
         mZoomListAdapter = new ZoomListAdapter(this);
         mZoomList.setAdapter(mZoomListAdapter);
         mStatuses = new boolean[20];
-        mURLs = getResources().getStringArray(R.array.entryvalues_list_map_names);
     }
 
     private void showDialog() {
@@ -91,9 +97,9 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
     }
     
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-            long arg3) {
-        mSelection = arg2;
+    public void onItemSelected(AdapterView<?> parent, View view, int pos,
+            long id) {
+        mMapProvider = (MapProvider)parent.getItemAtPosition(pos);
     }
 
     @Override
@@ -166,9 +172,8 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
                         /**
                          * download handling
                          */
-                        String mapProvider = mContext.getSharedPreferences(S.PREFS_NAME, 0).getString("map_provider_name", S.OpenCycleMapsURL);
-                        Tile t = new Tile(x+llp[0], y+urp[1], z, mapProvider);
-                        t.save(mURLs[mSelection]);
+                        Tile t = new Tile(x+llp[0], y+urp[1], z, mMapProvider);
+                        t.save(mMapProvider);
                     }                    
                 }
             }
