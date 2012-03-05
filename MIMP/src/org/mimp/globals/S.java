@@ -43,17 +43,7 @@ public class S {
     public static final int BubbleInteractionScreen_DIRECTIONS = 100;
     public static final int BubbleInteractionScreen_WAYPOINT = 101;
     public static final int TracksScreen_LOADTRACK = 200;
-    
-    /**
-     * Map URLs 
-     */
-    
-    public static final String OpenCycleMapsURL = "http://a.tile.opencyclemap.org/cycle/";
-    //http://tile.openstreetmap.org/0/0/0.png
-    public static final String OpenStreetMapsURL = "http://tile.openstreetmap.org/";
-    //http://a.tile.cloudmade.com/333d990d389d5e65a7714dd738b2fc77/1/256/5/17/12.png
-    public static final String CloudMadeMapsURL = "http://a.tile.cloudmade.com/";
-    
+
     /**
      * database connection
      */

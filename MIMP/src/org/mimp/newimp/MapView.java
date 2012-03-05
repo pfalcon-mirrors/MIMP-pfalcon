@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mimp.globals.S;
 import org.mimp.newimp.interfaces.IMapView;
+import org.mimp.newimp.MapProviderFactory.ProviderType;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,8 +22,8 @@ public class MapView extends View implements IMapView {
 
     private TileController mTileController;
     private TileController mTileOverlayController;
-    private String mMapProvider = "";
-    private String mOverlayProvider = "";
+    private MapProvider mMapProvider;
+    private MapProvider mOverlayProvider;
     private Context mContext;
 
     private MapZoomControls mZoomControls;
@@ -52,14 +53,24 @@ public class MapView extends View implements IMapView {
     }
 
     public void updateMapProviders() {
-        SharedPreferences mSettings = mContext.getSharedPreferences(S.PREFS_NAME, 0);
-        mMapProvider = mSettings.getString("map_provider_name", S.OpenCycleMapsURL);
-        mOverlayProvider = mSettings.getString("map_overlay_provider_name", "");
-        Log.d("update", "map: " + mMapProvider);
-        Log.d("update", "overlay: " + mOverlayProvider);
-        mTileController = new TileController(this, mMapProvider);
-        if (!"".equals(mOverlayProvider)) {
-            mTileOverlayController = new TileController(this, mOverlayProvider);
+        MapProvider newMapProvider
+            = MapProviderFactory.getCurrentProvider(mContext, ProviderType.MAPS);
+        MapProvider newOverlayProvider
+            = MapProviderFactory.getCurrentProvider(mContext, ProviderType.MAP_OVERLAYS);
+
+        if (mMapProvider == null || !newMapProvider.getShortName().equals(mMapProvider.getShortName())) {
+            mMapProvider = newMapProvider;
+            Log.d(getClass().toString(), "map: " + mMapProvider);
+            mTileController = new TileController(this, mMapProvider);
+        }
+        if (mOverlayProvider == null || !newOverlayProvider.getShortName().equals(mOverlayProvider.getShortName())) {
+            mOverlayProvider = newOverlayProvider;
+            Log.d(getClass().toString(), "overlay: " + mOverlayProvider);
+            if (mOverlayProvider.isEmpty()) {
+                mTileOverlayController = null;
+            } else {
+                mTileOverlayController = new TileController(this, mOverlayProvider);
+            }
         }
     }
 
@@ -168,7 +179,7 @@ public class MapView extends View implements IMapView {
                             canvas.drawBitmap(tile.getBitmap(),posx,posy,null);
                         }
 
-                        if (!"".equals(mOverlayProvider)) {
+                        if (mTileOverlayController != null) {
                             tile = mTileOverlayController.getTile(tilex, tiley, getZoomLevel());
                             if (tile != null && tile.getBitmap() != null) {
                                 painted = true;

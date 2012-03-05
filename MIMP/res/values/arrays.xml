@@ -2,28 +2,6 @@
 
 <resources>
 
-    <string-array name="entries_list_map_names">
-        <item>Open Street Map</item>
-        <item>Open Cycle Map</item>
-        <item>Cloud Maps</item>
-    </string-array>
-
-    <string-array name="entryvalues_list_map_names">
-        <item>http://tile.openstreetmap.org/</item>
-        <item>http://a.tile.opencyclemap.org/cycle/</item>
-        <item>http://a.tile.cloudmade.com/</item>
-    </string-array>
-
-    <string-array name="entries_list_map_overlay_names">
-        <item>None</item>
-        <item>Google Hybrid</item>
-    </string-array>
-
-    <string-array name="entryvalues_list_map_overlay_names">
-        <item></item>
-        <item>http://mt1.google.com/vt/lyrs=</item>
-    </string-array>
-
     <string-array name="entries_list_directions_modes">
         <item>Walking</item>
         <item>Driving</item>

@@ -7,17 +7,13 @@
             android:key="map_provider_name"
             android:title="@string/settings_maps"
             android:summary="@string/settings_summary_maps"
-            android:dialogTitle="@string/settings_dialog_list_title"
-            android:entries="@array/entries_list_map_names"
-            android:entryValues="@array/entryvalues_list_map_names" />
+            android:dialogTitle="@string/settings_dialog_list_title" />
 
         <ListPreference
             android:key="map_overlay_provider_name"
             android:title="@string/settings_map_overlays"
             android:summary="@string/settings_summary_map_overlays"
-            android:dialogTitle="@string/settings_dialog_overlay_list_title"
-            android:entries="@array/entries_list_map_overlay_names"
-            android:entryValues="@array/entryvalues_list_map_overlay_names" />
+            android:dialogTitle="@string/settings_dialog_overlay_list_title" />
                 
         <ListPreference
             android:key="map_directions_mode"
