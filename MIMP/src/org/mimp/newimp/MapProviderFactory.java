@@ -88,7 +88,11 @@ public class MapProviderFactory {
             defaultValue = "";
         }
         String shortName = context.getSharedPreferences(S.PREFS_NAME, 0).getString(prefName, defaultValue);
-        return getByShortName(providers, shortName);
+        MapProvider mp = getByShortName(providers, shortName);
+        if (mp == null) {
+            mp = getByShortName(providers, defaultValue);
+        }
+        return mp;
     }
 
     public void setListPreferenceEntries(ListPreference pref, MapProvider.Type providerType) {
