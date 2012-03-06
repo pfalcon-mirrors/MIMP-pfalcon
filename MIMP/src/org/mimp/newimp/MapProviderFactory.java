@@ -41,18 +41,22 @@ public class MapProviderFactory {
 
 
     protected MapProviderFactory() {
-        mMapProviders = new ArrayList<MapProvider>();
-        mOverlayProviders = new ArrayList<MapProvider>();
-        mMapProviders.addAll(Arrays.asList(MAPS_ARRAY));
-        mOverlayProviders.addAll(Arrays.asList(MAP_OVERLAYS_ARRAY));
     }
 
     public static MapProviderFactory i() {
         if (mInstance == null) {
             mInstance = new MapProviderFactory();
-            mInstance.loadProviders(new File(Environment.getExternalStorageDirectory(), S.APP_SUBDIR));
+            mInstance.rescan();
         }
         return mInstance;
+    }
+
+    public void rescan() {
+        mMapProviders = new ArrayList<MapProvider>();
+        mOverlayProviders = new ArrayList<MapProvider>();
+        mMapProviders.addAll(Arrays.asList(MAPS_ARRAY));
+        mOverlayProviders.addAll(Arrays.asList(MAP_OVERLAYS_ARRAY));
+        mInstance.loadProviders(new File(Environment.getExternalStorageDirectory(), S.APP_SUBDIR));
     }
 
     public static MapProvider getByShortName(Collection<MapProvider> providers, String name) {

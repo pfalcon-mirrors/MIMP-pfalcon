@@ -39,6 +39,7 @@ public class SettingsScreen extends PreferenceActivity implements OnPreferenceCl
         outerPref = findPreference("track_outer_color");
         innerPref.setOnPreferenceClickListener(this);
         outerPref.setOnPreferenceClickListener(this);
+        MapProviderFactory.i().rescan();
         MapProviderFactory.i().setListPreferenceEntries(
           (ListPreference)findPreference("map_provider_name"), MapProvider.Type.map);
         MapProviderFactory.i().setListPreferenceEntries(
