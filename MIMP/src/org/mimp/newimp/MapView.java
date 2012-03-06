@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.mimp.globals.S;
 import org.mimp.newimp.interfaces.IMapView;
-import org.mimp.newimp.MapProviderFactory.ProviderType;
+import org.mimp.newimp.MapProvider;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -54,9 +54,9 @@ public class MapView extends View implements IMapView {
 
     public void updateMapProviders() {
         MapProvider newMapProvider
-            = MapProviderFactory.getCurrentProvider(mContext, ProviderType.MAPS);
+            = MapProviderFactory.i().getCurrentProvider(mContext, MapProvider.Type.map);
         MapProvider newOverlayProvider
-            = MapProviderFactory.getCurrentProvider(mContext, ProviderType.MAP_OVERLAYS);
+            = MapProviderFactory.i().getCurrentProvider(mContext, MapProvider.Type.overlay);
 
         if (mMapProvider == null || !newMapProvider.getShortName().equals(mMapProvider.getShortName())) {
             mMapProvider = newMapProvider;

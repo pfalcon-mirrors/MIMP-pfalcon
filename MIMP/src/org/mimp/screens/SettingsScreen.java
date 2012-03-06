@@ -4,8 +4,8 @@ import org.mimp.R;
 import org.mimp.dialogs.ColorPickerDialog;
 import org.mimp.dialogs.ColorPickerDialog.OnColorChangedListener;
 import org.mimp.globals.S;
+import org.mimp.newimp.MapProvider;
 import org.mimp.newimp.MapProviderFactory;
-import org.mimp.newimp.MapProviderFactory.ProviderType;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -39,10 +39,10 @@ public class SettingsScreen extends PreferenceActivity implements OnPreferenceCl
         outerPref = findPreference("track_outer_color");
         innerPref.setOnPreferenceClickListener(this);
         outerPref.setOnPreferenceClickListener(this);
-        MapProviderFactory.setListPreferenceEntries(
-          (ListPreference)findPreference("map_provider_name"), ProviderType.MAPS);
-        MapProviderFactory.setListPreferenceEntries(
-          (ListPreference)findPreference("map_overlay_provider_name"), ProviderType.MAP_OVERLAYS);
+        MapProviderFactory.i().setListPreferenceEntries(
+          (ListPreference)findPreference("map_provider_name"), MapProvider.Type.map);
+        MapProviderFactory.i().setListPreferenceEntries(
+          (ListPreference)findPreference("map_overlay_provider_name"), MapProvider.Type.overlay);
     }
     
     /**

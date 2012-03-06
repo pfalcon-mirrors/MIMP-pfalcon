@@ -7,7 +7,6 @@ import org.mimp.newimp.Tile;
 import org.mimp.newimp.TileFactory;
 import org.mimp.newimp.MapProvider;
 import org.mimp.newimp.MapProviderFactory;
-import org.mimp.newimp.MapProviderFactory.ProviderType;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -50,7 +49,7 @@ public class TileDownloadScreen extends Activity implements OnClickListener, OnI
         
         mMapChooser = (Spinner) findViewById(R.id.tiledownload_mapchooser);
         ArrayAdapter<MapProvider> mapsAdapter = new ArrayAdapter(mContext, android.R.layout.simple_spinner_item,
-          MapProviderFactory.getProvidersArray(ProviderType.MAPS));
+          MapProviderFactory.i().getProviders(MapProvider.Type.map));
         mapsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMapChooser.setAdapter(mapsAdapter);
         mMapChooser.setOnItemSelectedListener(this);
