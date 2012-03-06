@@ -52,4 +52,10 @@ public class S {
     public static final int DATABASE_VERSION = 1;
     public static final String AUTHORITY = "org.mimp";
     //public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/gpspoint");
+
+    /**
+     * File system
+     */
+    // Still need to be prefixed with Environment.getExternalStorageDirectory()
+    public static final String APP_SUBDIR = "MIMP";
 }
